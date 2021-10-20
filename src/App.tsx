@@ -1,26 +1,23 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { Admin, Resource, ListGuesser, defaultTheme } from 'react-admin';
+import { authProvider } from './authProvider';
+import { dataProvider } from './dataProvider';
+import Layout from './Layout';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+import {
+  unstable_createMuiStrictModeTheme,
+  createMuiTheme,
+} from '@material-ui/core/styles';
+
+// FIXME MUI bug https://github.com/mui-org/material-ui/issues/13394
+const theme =
+    process.env.NODE_ENV !== 'production'
+        ? unstable_createMuiStrictModeTheme(defaultTheme)
+        : createMuiTheme(defaultTheme);
+
+const App = () => (
+  <Admin dataProvider={dataProvider} authProvider={authProvider} theme={theme} layout={Layout}>
+  </Admin>
+);
 
 export default App;
