@@ -1,6 +1,6 @@
 import { AuthProvider } from 'react-admin';
 
-localStorage.setItem('username', 'Jane Doe');
+// localStorage.setItem('username', 'Jane Doe');
 
 export const authProvider: AuthProvider = {
     login: ({ username }) => {
