@@ -1,12 +1,20 @@
-import { AuthProvider } from 'react-admin';
+import { AuthProvider, fetchUtils } from 'react-admin';
 
-// localStorage.setItem('username', 'Jane Doe');
+const apiUrl = 'http://localhost:3000/admin/auth';
+const httpClient = fetchUtils.fetchJson;
 
 export const authProvider: AuthProvider = {
-    login: ({ username }) => {
-        localStorage.setItem('username', username);
-        // accept all username/password combinations
-        return Promise.resolve();
+    login: (params: { username: string; password: string }) => {
+        localStorage.setItem('username', params.username);
+        return new Promise<boolean>((resolve, reject) => {
+            httpClient(`${apiUrl}/login`, {
+                method: 'POST',
+                body: JSON.stringify(params),
+            }).then(({ json, status }) => {
+                console.log(json);
+                resolve(status === 200);
+            });
+        });
     },
     logout: () => {
         localStorage.removeItem('username');
