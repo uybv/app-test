@@ -47,23 +47,18 @@ export const productFilters = [
         <SelectInput source="name" />
     </ReferenceInput>,
     <ReferenceInput
-    source="id"
-    reference="tax"
-    sort={{ field: 'id', order: 'ASC' }}
->
-    <SelectInput source="name" />
-</ReferenceInput>,
-    <QuickFilter
-        label="resources.products.fields.stock_lte"
-        source="stock_lte"
-        defaultValue={10}
-    />,
+        source="id"
+        reference="tax"
+        sort={{ field: 'id', order: 'ASC' }}
+    >
+        <SelectInput source="name" />
+    </ReferenceInput>,
 ];
 
 const ListActions = ({ isSmall }: any) => (
     <TopToolbar>
         {isSmall && <FilterButton />}
-        <SortButton fields={['reference', 'sales', 'stock']} />
+        <SortButton fields={['name']} />
         <CreateButton basePath="/product" />
         <ExportButton />
     </TopToolbar>

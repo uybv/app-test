@@ -18,7 +18,7 @@ const BranchList = (props: ListProps) => (
         perPage={20}
         pagination={false}
         component="div"
-        filter={branchFilters}
+        filters={branchFilters}
     >
         <Datagrid optimized rowClick="edit">
             <TextField source="name" />

@@ -42,7 +42,7 @@ export const validatePasswords = ({
 
     if (password && confirm_password && password !== confirm_password) {
         errors.confirm_password = [
-            'resources.customers.errors.password_mismatch',
+            'resources.customer.errors.password_mismatch',
         ];
     }
 
@@ -55,7 +55,7 @@ const VisitorCreate = (props: CreateProps) => {
     return (
         <Create {...props}>
             <SimpleForm validate={validatePasswords}>
-                <SectionTitle label="resources.customers.fieldGroups.identity" />
+                <SectionTitle label="resources.customer.fieldGroups.identity" />
                 <TextInput
                     autoFocus
                     source="first_name"
@@ -77,7 +77,7 @@ const VisitorCreate = (props: CreateProps) => {
                 />
                 <DateInput source="birthday" />
                 <Separator />
-                <SectionTitle label="resources.customers.fieldGroups.address" />
+                <SectionTitle label="resources.customer.fieldGroups.address" />
                 <TextInput
                     source="address"
                     formClassName={classes.address}
@@ -96,7 +96,7 @@ const VisitorCreate = (props: CreateProps) => {
                     helperText={false}
                 />
                 <Separator />
-                <SectionTitle label="resources.customers.fieldGroups.password" />
+                <SectionTitle label="resources.customer.fieldGroups.password" />
                 <PasswordInput
                     source="password"
                     formClassName={classes.password}

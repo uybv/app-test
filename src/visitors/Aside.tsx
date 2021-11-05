@@ -89,7 +89,7 @@ const EventList = ({ record, basePath }: EventListProps) => {
                     <CardContent>
                         <Typography variant="h6" gutterBottom>
                             {translate(
-                                'resources.customers.fieldGroups.history'
+                                'resources.customer.fieldGroups.history'
                             )}
                         </Typography>
                         <Box display="flex">
@@ -104,7 +104,7 @@ const EventList = ({ record, basePath }: EventListProps) => {
                                     <Box flexGrow={1}>
                                         <Typography>
                                             {translate(
-                                                'resources.customers.fields.first_seen'
+                                                'resources.customer.fields.first_seen'
                                             )}
                                         </Typography>
                                         <DateField
@@ -146,7 +146,7 @@ const EventList = ({ record, basePath }: EventListProps) => {
                                     <Box flexGrow={1}>
                                         <Typography>
                                             {translate(
-                                                'resources.customers.fields.last_seen'
+                                                'resources.customer.fields.last_seen'
                                             )}
                                         </Typography>
                                         <DateField

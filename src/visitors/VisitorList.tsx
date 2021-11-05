@@ -58,7 +58,7 @@ const VisitorList = (props: ListProps): ReactElement => {
                     <DateField source="last_login_at" />
                     <NumberField
                         source="total_order"
-                        label="resources.customers.fields.commands"
+                        label="resources.customer.fields.commands"
                         className={classes.nb_commands}
                     />
                     <ColoredNumberField

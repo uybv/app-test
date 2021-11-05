@@ -71,7 +71,7 @@ const MobileGrid = ({ ids, data, basePath }: Props) => {
                     <CardContent className={classes.cardContent}>
                         <div>
                             {translate(
-                                'resources.customers.fields.last_seen_gte'
+                                'resources.customer.fields.last_seen_gte'
                             )}
                             &nbsp;
                             <DateField record={data[id]} source="last_seen" />
@@ -85,12 +85,12 @@ const MobileGrid = ({ ids, data, basePath }: Props) => {
                             <NumberField
                                 record={data[id]}
                                 source="nb_commands"
-                                label="resources.customers.fields.commands"
+                                label="resources.customer.fields.commands"
                             />
                         </div>
                         <div>
                             {translate(
-                                'resources.customers.fields.total_spent'
+                                'resources.customer.fields.total_spent'
                             )}
                             &nbsp; :{' '}
                             <ColoredNumberField

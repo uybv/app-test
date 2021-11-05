@@ -31,7 +31,7 @@ const japaneseDomainMessages = {
         },
     },
     resources: {
-        customers: {
+        customer: {
             name: 'Customer |||| Customers',
             fields: {
                 commands: 'Orders',
@@ -73,7 +73,7 @@ const japaneseDomainMessages = {
                     'The password confirmation is not the same as the password.',
             },
         },
-        orders: {
+        order: {
             name: 'Order',
             amount: '1 order |||| %{smart_count} orders',
             title: 'Order %{reference}',
@@ -105,37 +105,26 @@ const japaneseDomainMessages = {
                 total: 'Totals',
             },
         },
-        products: {
+        product: {
             name: 'Food |||| Foods',
             fields: {
-                category_id: 'Category',
-                height_gte: 'Min height',
-                height_lte: 'Max height',
-                height: 'Height',
+                cat_ids: 'Category',
+                tax_ids: 'Tax',
                 image: 'Image',
+                name: 'Name',
                 price: 'Price',
-                reference: 'Reference',
-                sales: 'Sales',
-                stock_lte: 'Low Stock',
-                stock: 'Stock',
+                prices: 'Prices',
                 thumbnail: 'Thumbnail',
-                width_gte: 'Min width',
-                width_lte: 'Max width',
-                width: 'Width',
             },
             tabs: {
                 image: 'Image',
                 details: 'Details',
                 description: 'Description',
-                reviews: 'Reviews',
+                addition: 'Addition prices',
             },
             filters: {
-                categories: 'Categories',
-                stock: 'Stock',
-                no_stock: 'Out of stock',
-                low_stock: '1 - 9 items',
-                average_stock: '10 - 49 items',
-                enough_stock: '50 items & more',
+                category: 'Categories',
+                tax: 'Tax',
                 sales: 'Sales',
                 best_sellers: 'Best sellers',
                 average_sellers: 'Average',
@@ -143,7 +132,7 @@ const japaneseDomainMessages = {
                 never_sold: 'Never sold',
             },
         },
-        categories: {
+        category: {
             name: 'Category |||| Categories',
             fields: {
                 products: 'Products',

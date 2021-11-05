@@ -37,7 +37,7 @@ const Basket = (props: FieldProps<Order>) => {
             return productIds
                 .map<Product>(
                     productId =>
-                        state.admin.resources.products.data[
+                        state.admin.resources.product.data[
                             productId
                         ] as Product
                 )

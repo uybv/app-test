@@ -51,7 +51,7 @@ const VisitorForm = (props: any) => {
                                 <Box flex={2} mr={{ md: 0, lg: '1em' }}>
                                     <Typography variant="h6" gutterBottom>
                                         {translate(
-                                            'resources.customers.fieldGroups.identity'
+                                            'resources.customer.fieldGroups.identity'
                                         )}
                                     </Typography>
                                     <Box display={{ xs: 'block', sm: 'flex' }}>
@@ -107,7 +107,7 @@ const VisitorForm = (props: any) => {
 
                                     <Typography variant="h6" gutterBottom>
                                         {translate(
-                                            'resources.customers.fieldGroups.address'
+                                            'resources.customer.fieldGroups.address'
                                         )}
                                     </Typography>
                                     <TextInput
@@ -154,7 +154,7 @@ const VisitorForm = (props: any) => {
 
                                     <Typography variant="h6" gutterBottom>
                                         {translate(
-                                            'resources.customers.fieldGroups.change_password'
+                                            'resources.customer.fieldGroups.change_password'
                                         )}
                                     </Typography>
                                     <Box display={{ xs: 'block', sm: 'flex' }}>
@@ -187,7 +187,7 @@ const VisitorForm = (props: any) => {
                                 >
                                     <Typography variant="h6" gutterBottom>
                                         {translate(
-                                            'resources.customers.fieldGroups.stats'
+                                            'resources.customer.fieldGroups.stats'
                                         )}
                                     </Typography>
                                     <div>

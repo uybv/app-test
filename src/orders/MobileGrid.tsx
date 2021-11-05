@@ -76,7 +76,7 @@ const MobileGrid = (props: MobileGridProps) => {
                     />
                     <CardContent className={classes.cardContent}>
                         <span className={classes.cardContentRow}>
-                            {translate('resources.customers.name', 1)}:&nbsp;
+                            {translate('resources.customer.name', 1)}:&nbsp;
                             
                         </span>
                         <span className={classes.cardContentRow}>

@@ -22,7 +22,7 @@ const CategoryTitle = (props: FieldProps<Category>) => {
     const translate = useTranslate();
     return record ? (
         <span>
-            {translate('resources.categories.name', { smart_count: 1 })} &quot;
+            {translate('resources.category.name', { smart_count: 1 })} &quot;
             {record.name}&quot;
         </span>
     ) : null;
@@ -36,7 +36,7 @@ const CategoryEdit = (props: EditProps) => (
             <ReferenceManyField
                 reference="product"
                 target="category_id"
-                label="resources.categories.fields.products"
+                label="resources.category.fields.products"
                 perPage={20}
                 fullWidth
             >

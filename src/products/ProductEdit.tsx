@@ -1,28 +1,22 @@
 import * as React from 'react';
 import {
-    Datagrid,
-    DateField,
     Edit,
-    EditButton,
     EditProps,
     FormTab,
     NumberInput,
-    Pagination,
     ReferenceInput,
-    ReferenceManyField,
     required,
-    SelectInput,
     TabbedForm,
-    TextField,
     TextInput,
-    ImageInput,
-    ImageField
+    ArrayInput,
+    SimpleFormIterator,
+    ReferenceArrayInput,
+    AutocompleteArrayInput
 } from 'react-admin';
 import { InputAdornment } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import RichTextInput from 'ra-input-rich-text';
 
-import CustomerReferenceField from '../visitors/CustomerReferenceField';
 import Poster from './Poster';
 import { styles as createStyles } from './ProductCreate';
 import { Product } from '../types';
@@ -36,12 +30,6 @@ const ProductTitle = ({ record }: ProductTitleProps) =>
 
 const useStyles = makeStyles({
     ...createStyles,
-    comment: {
-        maxWidth: '20em',
-        overflow: 'hidden',
-        textOverflow: 'ellipsis',
-        whiteSpace: 'nowrap',
-    },
     tab: {
         maxWidth: '40em',
         display: 'block',
@@ -54,13 +42,13 @@ const ProductEdit = (props: EditProps) => {
         <Edit {...props} title={<ProductTitle />}>
             <TabbedForm>
                 <FormTab
-                    label="resources.products.tabs.image"
+                    label="resources.product.tabs.image"
                     contentClassName={classes.tab}
                 >
                     <Poster />
                 </FormTab>
                 <FormTab
-                    label="resources.products.tabs.details"
+                    label="resources.product.tabs.details"
                     path="details"
                     contentClassName={classes.tab}
                 >
@@ -77,34 +65,56 @@ const ProductEdit = (props: EditProps) => {
                         }}
                         validate={requiredValidate}
                     />
-                    <ReferenceInput
-                        source="cat_ids"
+                    <ReferenceArrayInput
                         reference="category"
+                        source="cat_ids"
                         validate={required()}
-                        
                     >
-                        <SelectInput source="name" />
-                    </ReferenceInput>
-                    <ReferenceInput
-                        source="tax_ids"
+                        <AutocompleteArrayInput />
+                    </ReferenceArrayInput>
+                    <ReferenceArrayInput
                         reference="tax"
+                        source="tax_ids"
                         validate={required()}
                     >
-                        <SelectInput source="name" />
-                    </ReferenceInput>
-                    <NumberInput
-                        source="stock"
-                        className={classes.stock}
-                        validate={requiredValidate}
-                    />
-                    <NumberInput
-                        source="sales"
-                        className={classes.stock}
-                        validate={requiredValidate}
-                    />
+                        <AutocompleteArrayInput />
+                    </ReferenceArrayInput>
                 </FormTab>
                 <FormTab
-                    label="resources.products.tabs.description"
+                    label="resources.product.tabs.addition"
+                    path="addition_prices"
+                >
+                    <ArrayInput source="addition_prices" label="">
+                        <SimpleFormIterator disableRemove >
+                            <TextInput source="name" validate={required()} />
+                            <ArrayInput source="prices">
+                                <SimpleFormIterator disableRemove >
+                                    <TextInput
+                                        source="name"
+                                        validate={required()}
+                                        className={classes.price}
+                                        formClassName={classes.leftFormGroup}
+                                    />
+                                    <NumberInput
+                                        source="price"
+                                        validate={required()}
+                                        className={classes.price}
+                                        formClassName={classes.rightFormGroup}
+                                        InputProps={{
+                                            startAdornment: (
+                                                <InputAdornment position="start">
+                                                    ¥
+                                                </InputAdornment>
+                                            ),
+                                        }}
+                                    />
+                                </SimpleFormIterator>
+                            </ArrayInput>
+                        </SimpleFormIterator>
+                    </ArrayInput>
+                </FormTab>
+                <FormTab
+                    label="resources.product.tabs.description"
                     path="description"
                     contentClassName={classes.tab}
                 >

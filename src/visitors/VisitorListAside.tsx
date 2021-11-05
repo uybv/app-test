@@ -32,25 +32,25 @@ const Aside = () => (
             <FilterLiveSearch />
 
             <FilterList
-                label="resources.customers.filters.last_visited"
+                label="resources.customer.filters.last_visited"
                 icon={<AccessTimeIcon />}
             >
                 <FilterListItem
-                    label="resources.customers.filters.today"
+                    label="resources.customer.filters.today"
                     value={{
                         last_seen_gte: endOfYesterday().toISOString(),
                         last_seen_lte: undefined,
                     }}
                 />
                 <FilterListItem
-                    label="resources.customers.filters.this_week"
+                    label="resources.customer.filters.this_week"
                     value={{
                         last_seen_gte: startOfWeek(new Date()).toISOString(),
                         last_seen_lte: undefined,
                     }}
                 />
                 <FilterListItem
-                    label="resources.customers.filters.last_week"
+                    label="resources.customer.filters.last_week"
                     value={{
                         last_seen_gte: subWeeks(
                             startOfWeek(new Date()),
@@ -60,14 +60,14 @@ const Aside = () => (
                     }}
                 />
                 <FilterListItem
-                    label="resources.customers.filters.this_month"
+                    label="resources.customer.filters.this_month"
                     value={{
                         last_seen_gte: startOfMonth(new Date()).toISOString(),
                         last_seen_lte: undefined,
                     }}
                 />
                 <FilterListItem
-                    label="resources.customers.filters.last_month"
+                    label="resources.customer.filters.last_month"
                     value={{
                         last_seen_gte: subMonths(
                             startOfMonth(new Date()),
@@ -77,7 +77,7 @@ const Aside = () => (
                     }}
                 />
                 <FilterListItem
-                    label="resources.customers.filters.earlier"
+                    label="resources.customer.filters.earlier"
                     value={{
                         last_seen_gte: undefined,
                         last_seen_lte: subMonths(
@@ -89,7 +89,7 @@ const Aside = () => (
             </FilterList>
 
             <FilterList
-                label="resources.customers.filters.has_ordered"
+                label="resources.customer.filters.has_ordered"
                 icon={<MonetizationOnIcon />}
             >
                 <FilterListItem
@@ -109,7 +109,7 @@ const Aside = () => (
             </FilterList>
 
             <FilterList
-                label="resources.customers.filters.has_newsletter"
+                label="resources.customer.filters.has_newsletter"
                 icon={<MailIcon />}
             >
                 <FilterListItem

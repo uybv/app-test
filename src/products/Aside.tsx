@@ -13,6 +13,7 @@ import {
 } from 'react-admin';
 
 import { Category } from '../types';
+import categories from '../categories';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -28,12 +29,24 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const Aside = () => {
-    const { data, ids } = useGetList<Category>(
+    const listCat = useGetList<any>(
         'category',
         { page: 1, perPage: 100 },
         { field: 'name', order: 'ASC' },
         {}
     );
+    const categories = listCat.data;
+    const catIds = listCat.ids;
+
+    const listTax = useGetList<any>(
+        'tax',
+        { page: 1, perPage: 100 },
+        { field: 'name', order: 'ASC' },
+        {}
+    );
+    const tax = listTax.data;
+    const taxIds = listTax.ids;
+
     const classes = useStyles();
     return (
         <Card className={classes.root}>
@@ -41,11 +54,11 @@ const Aside = () => {
                 <FilterLiveSearch />
 
                 <FilterList
-                    label="resources.products.filters.sales"
+                    label="resources.product.filters.sales"
                     icon={<AttachMoneyIcon />}
                 >
                     <FilterListItem
-                        label="resources.products.filters.best_sellers"
+                        label="resources.product.filters.best_sellers"
                         value={{
                             sales_lte: undefined,
                             sales_gt: 25,
@@ -53,7 +66,7 @@ const Aside = () => {
                         }}
                     />
                     <FilterListItem
-                        label="resources.products.filters.average_sellers"
+                        label="resources.product.filters.average_sellers"
                         value={{
                             sales_lte: 25,
                             sales_gt: 10,
@@ -61,7 +74,7 @@ const Aside = () => {
                         }}
                     />
                     <FilterListItem
-                        label="resources.products.filters.low_sellers"
+                        label="resources.product.filters.low_sellers"
                         value={{
                             sales_lte: 10,
                             sales_gt: 0,
@@ -69,7 +82,7 @@ const Aside = () => {
                         }}
                     />
                     <FilterListItem
-                        label="resources.products.filters.never_sold"
+                        label="resources.product.filters.never_sold"
                         value={{
                             sales_lte: undefined,
                             sales_gt: undefined,
@@ -77,56 +90,31 @@ const Aside = () => {
                         }}
                     />
                 </FilterList>
-
                 <FilterList
-                    label="resources.products.filters.stock"
-                    icon={<BarChartIcon />}
-                >
-                    <FilterListItem
-                        label="resources.products.filters.no_stock"
-                        value={{
-                            stock_lt: undefined,
-                            stock_gt: undefined,
-                            stock: 0,
-                        }}
-                    />
-                    <FilterListItem
-                        label="resources.products.filters.low_stock"
-                        value={{
-                            stock_lt: 10,
-                            stock_gt: 0,
-                            stock: undefined,
-                        }}
-                    />
-                    <FilterListItem
-                        label="resources.products.filters.average_stock"
-                        value={{
-                            stock_lt: 50,
-                            stock_gt: 9,
-                            stock: undefined,
-                        }}
-                    />
-                    <FilterListItem
-                        label="resources.products.filters.enough_stock"
-                        value={{
-                            stock_lt: undefined,
-                            stock_gt: 49,
-                            stock: undefined,
-                        }}
-                    />
-                </FilterList>
-
-                <FilterList
-                    label="resources.products.filters.categories"
+                    label="resources.product.filters.category"
                     icon={<LocalOfferIcon />}
                 >
-                    {ids &&
-                        data &&
-                        ids.map((id: any) => (
+                    {catIds &&
+                        categories &&
+                        catIds.map((id: any) => (
                             <FilterListItem
-                                label={data[id].name}
-                                key={data[id].id}
-                                value={{ category_id: data[id].id }}
+                                label={categories[id].name}
+                                key={categories[id].id}
+                                value={{ cat_ids: categories[id].id }}
+                            />
+                        ))}
+                </FilterList>
+                <FilterList
+                    label="resources.product.filters.tax"
+                    icon={<LocalOfferIcon />}
+                >
+                    {taxIds &&
+                        tax &&
+                        taxIds.map((id: any) => (
+                            <FilterListItem
+                                label={tax[id].name}
+                                key={tax[id].id}
+                                value={{ tax_ids: tax[id].id }}
                             />
                         ))}
                 </FilterList>

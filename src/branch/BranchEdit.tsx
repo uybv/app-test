@@ -41,7 +41,7 @@ const BranchTitle = (props: FieldProps<Category>) => {
     const translate = useTranslate();
     return record ? (
         <span>
-            {translate('resources.categories.name', { smart_count: 1 })} &quot;
+            {translate('resources.branch.name', { smart_count: 1 })} &quot;
             {record.name}&quot;
         </span>
     ) : null;

@@ -2,7 +2,15 @@ import { fetchUtils } from 'react-admin';
 import { stringify } from 'query-string';
 
 const apiUrl = 'http://localhost:3000/admin';
-const httpClient = fetchUtils.fetchJson;
+const httpClient = (url: string, options = {} as any) => {
+    if (!options.headers) {
+        options.headers = new Headers({ Accept: 'application/json' });
+    }
+    // add your own headers here
+    const token = localStorage.getItem('token'); // TODO
+    options.headers.set('Authorization', `Bearer ${token}`);
+    return fetchUtils.fetchJson(url, options);
+};
 
 const getTotal = (headers: Headers): number => {
     if (headers) {

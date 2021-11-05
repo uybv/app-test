@@ -10,7 +10,11 @@ import {
     required,
     CreateProps,
     ImageInput,
-    ImageField
+    ImageField,
+    ArrayInput,
+    ReferenceArrayInput,
+    AutocompleteArrayInput,
+    SimpleFormIterator
 } from 'react-admin';
 import { InputAdornment } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
@@ -18,11 +22,8 @@ import RichTextInput from 'ra-input-rich-text';
 
 export const styles = {
     price: { width: '7em' },
-    width: { width: '7em' },
-    height: { width: '7em' },
-    stock: { width: '7em' },
-    widthFormGroup: { display: 'inline-block' },
-    heightFormGroup: { display: 'inline-block', marginLeft: 32 },
+    leftFormGroup: { display: 'inline-block' },
+    rightFormGroup: { display: 'inline-block', marginLeft: 32 },
 };
 
 const useStyles = makeStyles(styles);
@@ -32,12 +33,12 @@ const ProductCreate = (props: CreateProps) => {
     return (
         <Create {...props}>
             <TabbedForm>
-                <FormTab label="resources.products.tabs.image">
+                <FormTab label="resources.product.tabs.image">
                     <ImageInput source="images" label="Image" accept="image/*" maxSize={1000000} validate={required()}>
                         <ImageField source="src" title="title" />
                     </ImageInput>
                 </FormTab>
-                <FormTab label="resources.products.tabs.details" path="details">
+                <FormTab label="resources.product.tabs.details" path="details">
                     <TextInput source="name" validate={required()} />
                     <NumberInput
                         source="price"
@@ -51,30 +52,56 @@ const ProductCreate = (props: CreateProps) => {
                             ),
                         }}
                     />
-                    
-                    <ReferenceInput
-                        source="cat_ids"
+                    <ReferenceArrayInput
                         reference="category"
+                        source="cat_ids"
                         validate={required()}
-                        
                     >
-                        <SelectInput source="name" />
-                    </ReferenceInput>
-                    <ReferenceInput
-                        source="tax_ids"
+                        <AutocompleteArrayInput />
+                    </ReferenceArrayInput>
+                    <ReferenceArrayInput
                         reference="tax"
+                        source="tax_ids"
                         validate={required()}
                     >
-                        <SelectInput source="name" />
-                    </ReferenceInput>
-                    <NumberInput
-                        source="stock"
-                        validate={required()}
-                        className={classes.stock}
-                    />
+                        <AutocompleteArrayInput />
+                    </ReferenceArrayInput>
                 </FormTab>
                 <FormTab
-                    label="resources.products.tabs.description"
+                    label="resources.product.tabs.addition"
+                    path="addition_prices"
+                >
+                    <ArrayInput source="addition_prices" label="">
+                        <SimpleFormIterator disableRemove >
+                            <TextInput source="name" validate={required()} />
+                            <ArrayInput source="prices">
+                                <SimpleFormIterator disableRemove >
+                                    <TextInput
+                                        source="name"
+                                        validate={required()}
+                                        className={classes.price}
+                                        formClassName={classes.leftFormGroup}
+                                    />
+                                    <NumberInput
+                                        source="price"
+                                        validate={required()}
+                                        className={classes.price}
+                                        formClassName={classes.rightFormGroup}
+                                        InputProps={{
+                                            startAdornment: (
+                                                <InputAdornment position="start">
+                                                    ¥
+                                                </InputAdornment>
+                                            ),
+                                        }}
+                                    />
+                                </SimpleFormIterator>
+                            </ArrayInput>
+                        </SimpleFormIterator>
+                    </ArrayInput>
+                </FormTab>
+                <FormTab
+                    label="resources.product.tabs.description"
                     path="description"
                 >
                     <RichTextInput source="description" label="" />

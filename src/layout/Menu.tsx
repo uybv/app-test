@@ -45,46 +45,34 @@ const Menu = ({ dense = false }: MenuProps) => {
         >
             {' '}
             <DashboardMenuItem />
-            <SubMenu
-                handleToggle={() => handleToggle('menuCatalog')}
-                isOpen={state.menuCatalog}
-                name="pos.menu.catalog"
-                icon={<products.icon />}
+            <MenuItemLink
+                to={{
+                    pathname: '/branch',
+                    state: { _scrollToTop: true },
+                }}
+                primaryText={translate(`resources.branch.name`, {
+                    smart_count: 2,
+                })}
+                leftIcon={<branch.icon />}
                 dense={dense}
-            >
-                <MenuItemLink
-                    to={{
-                        pathname: '/branch',
-                        state: { _scrollToTop: true },
-                    }}
-                    primaryText={translate(`resources.branch.name`, {
-                        smart_count: 2,
-                    })}
-                    leftIcon={<branch.icon />}
-                    dense={dense}
-                />
-                <MenuItemLink
-                    to={{
-                        pathname: '/product',
-                        state: { _scrollToTop: true },
-                    }}
-                    primaryText={translate(`resources.products.name`, {
-                        smart_count: 2,
-                    })}
-                    leftIcon={<products.icon />}
-                    dense={dense}
-                />
-
-            </SubMenu>
-
-
-
+            />
+            <MenuItemLink
+                to={{
+                    pathname: '/product',
+                    state: { _scrollToTop: true },
+                }}
+                primaryText={translate(`resources.product.name`, {
+                    smart_count: 2,
+                })}
+                leftIcon={<products.icon />}
+                dense={dense}
+            />
             <MenuItemLink
                 to={{
                     pathname: '/order',
                     state: { _scrollToTop: true },
                 }}
-                primaryText={translate(`resources.orders.name`, {
+                primaryText={translate(`resources.order.name`, {
                     smart_count: 2,
                 })}
                 leftIcon={<orders.icon />}
@@ -95,7 +83,7 @@ const Menu = ({ dense = false }: MenuProps) => {
                     pathname: '/customer',
                     state: { _scrollToTop: true },
                 }}
-                primaryText={translate(`resources.customers.name`, {
+                primaryText={translate(`resources.customer.name`, {
                     smart_count: 2,
                 })}
                 leftIcon={<visitors.icon />}
@@ -106,7 +94,7 @@ const Menu = ({ dense = false }: MenuProps) => {
                     pathname: '/category',
                     state: { _scrollToTop: true },
                 }}
-                primaryText={translate(`resources.categories.name`, {
+                primaryText={translate(`resources.category.name`, {
                     smart_count: 2,
                 })}
                 leftIcon={<categories.icon />}
