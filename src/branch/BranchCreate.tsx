@@ -8,7 +8,9 @@ import {
     required,
     ImageInput,
     ImageField,
-    NumberInput
+    NumberInput,
+    ReferenceArrayInput,
+    AutocompleteArrayInput
 } from 'react-admin';
 import { Typography, Box } from '@material-ui/core';
 import { makeStyles, Theme } from '@material-ui/core/styles';
@@ -34,7 +36,6 @@ const BranchCreate = (props: CreateProps) => {
     return (
         <Create {...props}>
             <SimpleForm>
-                <SectionTitle label="" />
                 <ImageInput source="images" label="Banner" accept="image/*" maxSize={1000000} validate={required()}>
                     <ImageField source="src" title="title" />
                 </ImageInput>
@@ -58,10 +59,16 @@ const BranchCreate = (props: CreateProps) => {
                     formClassName={classes.heightFormGroup}
                     placeholder={'Longitude'}
                 />
+                <ReferenceArrayInput
+                    reference="product"
+                    source="food_ids"
+                    validate={required()}
+                >
+                    <AutocompleteArrayInput />
+                </ReferenceArrayInput>
                 <TextInput
                     source="description"
                     formClassName={classes.description}
-                    validate={[required()]}
                 />
             </SimpleForm>
         </Create>

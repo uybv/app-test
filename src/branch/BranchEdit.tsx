@@ -12,6 +12,8 @@ import {
     useTranslate,
     ImageField,
     NumberInput,
+    ReferenceArrayInput,
+    AutocompleteArrayInput,
     required
 } from 'react-admin';
 
@@ -69,38 +71,17 @@ const BranchEdit = (props: EditProps) => {
                     formClassName={classes.heightFormGroup}
                     placeholder={'Longitude'}
                 />
+                <ReferenceArrayInput
+                    reference="product"
+                    source="food_ids"
+                    validate={required()}
+                >
+                    <AutocompleteArrayInput />
+                </ReferenceArrayInput>
                 <TextInput
                     source="description"
                     formClassName={classes.description}
-                    validate={[required()]}
                 />
-                <ReferenceManyField
-                    reference="product"
-                    target="branch_id"
-                    label="resources.branch.fields.products"
-                    perPage={20}
-                    fullWidth
-                >
-                    <Datagrid>
-                        <ThumbnailField />
-                        <ProductRefField source="reference" />
-                        <NumberField
-                            source="price"
-                            options={{ style: 'currency', currency: 'USD' }}
-                        />
-                        <NumberField
-                            source="width"
-                            options={{ minimumFractionDigits: 2 }}
-                        />
-                        <NumberField
-                            source="height"
-                            options={{ minimumFractionDigits: 2 }}
-                        />
-                        <NumberField source="stock" />
-                        <NumberField source="sales" />
-                        <EditButton />
-                    </Datagrid>
-                </ReferenceManyField>
             </SimpleForm>
         </Edit>
     );
