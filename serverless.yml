@@ -1,0 +1,12 @@
+org: avadkk
+app: wgs-app
+service: wgs-app-admin
+name: wgs-app-admin
+frameworkVersion: '2'
+component: website
+
+inputs:
+  src:
+    src: ./src
+    hook: npm run build
+    dist: ./build
