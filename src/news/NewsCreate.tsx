@@ -29,12 +29,12 @@ const NewsCreate = (props: CreateProps) => {
     const classes = useStyles(props);
 
     const tags: any[] = [
-        {id: 'demo', name: 'demo'},
-        {id: 'demo1', name: 'demo1'},
+        { id: 'demo', name: 'demo' },
+        { id: 'demo1', name: 'demo1' },
     ];
     const keywords: any[] = [
-        {id: 'demo11', name: 'demo11'},
-        {id: 'demo1', name: 'demo1'},
+        { id: 'demo11', name: 'demo11' },
+        { id: 'demo1', name: 'demo1' },
     ];
 
     const transform = (data: any) => ({
@@ -46,7 +46,12 @@ const NewsCreate = (props: CreateProps) => {
     return (
         <Create {...props} transform={transform}>
             <SimpleForm>
-                <ImageInput source="images" label="Banner" accept="image/*" maxSize={1000000} validate={required()}>
+                <ImageInput source="images"
+                    label="Banner"
+                    accept="image/*"
+                    maxSize={1000000}
+                // validate={required()}
+                >
                     <ImageField source="src" title="title" />
                 </ImageInput>
                 <TextInput

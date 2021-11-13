@@ -34,7 +34,13 @@ const ProductCreate = (props: CreateProps) => {
         <Create {...props}>
             <TabbedForm>
                 <FormTab label="resources.product.tabs.image">
-                    <ImageInput source="images" label="resources.product.fields.image" accept="image/*" maxSize={1000000} validate={required()}>
+                    <ImageInput
+                        source="images"
+                        label="resources.product.fields.image"
+                        accept="image/*"
+                        maxSize={1000000}
+                        // validate={required()}
+                    >
                         <ImageField source="src" title="title" />
                     </ImageInput>
                 </FormTab>
