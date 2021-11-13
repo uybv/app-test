@@ -85,7 +85,7 @@ const Dashboard = () => {
             recentOrders,
             revenue: aggregations.revenue.toLocaleString(undefined, {
                 style: 'currency',
-                currency: 'USD',
+                currency: 'JPY',
                 minimumFractionDigits: 0,
                 maximumFractionDigits: 0,
             }),

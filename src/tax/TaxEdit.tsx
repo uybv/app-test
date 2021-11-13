@@ -11,24 +11,26 @@ import {
     NumberField,
     Datagrid,
     EditButton,
-    required
+    required,
+    minValue,
+    maxValue
 } from 'react-admin';
 
+import { InputAdornment } from '@material-ui/core';
 import ThumbnailField from '../products/ThumbnailField';
 import ProductRefField from '../products/ProductRefField';
 
 import { makeStyles } from '@material-ui/core/styles';
-import { Category } from '../types';
 
 export const styles = {
     name: { width: 600 },
-    value: { width: 600 },
+    value: { width: 200 },
     description: { width: 600 },
 };
 
 const useStyles = makeStyles(styles);
 
-const TaxTitle = (props: FieldProps<Category>) => {
+const TaxTitle = (props: FieldProps<any>) => {
     const { record } = props;
     const translate = useTranslate();
     return record ? (
@@ -47,19 +49,28 @@ const TaxEdit = (props: EditProps) => {
             <SimpleForm>
                 <TextInput
                     source="name"
-                    formClassName={classes.name}
+                    className={classes.name}
                     validate={[required()]}
                 />
                 <NumberInput
                     source="value"
-                    validate={required()}
-                    formClassName={classes.value}
+                    validate={[required(), minValue(0), maxValue(100)]}
+                    className={classes.value}
+                    min="0"
+                    max="100"
+                    InputProps={{
+                        startAdornment: (
+                            <InputAdornment position="start">
+                                %
+                            </InputAdornment>
+                        ),
+                    }}
                 />
                 <TextInput
                     source="description"
-                    formClassName={classes.description}
+                    className={classes.description}
                 />
-                <ReferenceManyField
+                {/* <ReferenceManyField
                     reference="product"
                     target="tax_ids"
                     label="resources.branch.fields.products"
@@ -85,7 +96,7 @@ const TaxEdit = (props: EditProps) => {
                         <NumberField source="sales" />
                         <EditButton />
                     </Datagrid>
-                </ReferenceManyField>
+                </ReferenceManyField> */}
             </SimpleForm>
         </Edit>
     );

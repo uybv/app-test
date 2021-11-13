@@ -27,7 +27,7 @@ import { makeStyles } from '@material-ui/core/styles';
 
 import NbItemsField from './NbItemsField';
 import MobileGrid from './MobileGrid';
-import { Customer } from '../types';
+import { Customer, OrderState } from '../types';
 
 const orderFilters = [
     <SearchInput source="q" alwaysOn />,
@@ -35,15 +35,15 @@ const orderFilters = [
         <AutocompleteInput
             optionText={(choice: Customer) =>
                 choice && choice.id // the empty choice is { id: '' }
-                    ? `${choice.first_name} ${choice.last_name}`
+                    ? `${choice.display_name.first_name} ${choice.display_name.last_name}`
                     : ''
             }
         />
     </ReferenceInput>,
-    <DateInput source="date_gte" />,
-    <DateInput source="date_lte" />,
-    <TextInput source="total_gte" />,
-    <NullableBooleanInput source="returned" />,
+    // <DateInput source="date_gte" />,
+    // <DateInput source="date_lte" />,
+    // <TextInput source="total_gte" />,
+    // <NullableBooleanInput source="returned" />,
 ];
 
 const useDatagridStyles = makeStyles({
@@ -51,9 +51,10 @@ const useDatagridStyles = makeStyles({
 });
 
 const tabs = [
-    { id: 'ordered', name: 'ordered' },
-    { id: 'delivered', name: 'delivered' },
-    { id: 'cancelled', name: 'cancelled' },
+    { id: 1, name: '注文済み' },
+    { id: 3, name: '来店待ち' },
+    { id: 4, name: '完了' },
+    { id: 9, name: 'キャンセル済み' },
 ];
 
 interface TabbedDatagridProps extends DatagridProps {}
@@ -63,24 +64,30 @@ const useGetTotals = (filterValues: any) => {
         'order',
         { perPage: 1, page: 1 },
         { field: 'id', order: 'ASC' },
-        { ...filterValues, status: 'ordered' }
+        { ...filterValues, st: [OrderState.CART, OrderState.PAID] }
     );
-    const { total: totalDelivered } = useGetList(
+    const { total: totalWaitingReceive } = useGetList(
         'order',
         { perPage: 1, page: 1 },
         { field: 'id', order: 'ASC' },
-        { ...filterValues, status: 'delivered' }
+        { ...filterValues, st: OrderState.WAITING_RECEIVE }
+    );
+    const { total: totalCompleted } = useGetList(
+        'order',
+        { perPage: 1, page: 1 },
+        { field: 'id', order: 'ASC' },
+        { ...filterValues, st: OrderState.COMPLETE }
     );
     const { total: totalCancelled } = useGetList(
         'order',
         { perPage: 1, page: 1 },
         { field: 'id', order: 'ASC' },
-        { ...filterValues, status: 'cancelled' }
+        { ...filterValues, st: OrderState.CANCEL }
     );
-
     return {
         ordered: totalOrdered,
-        delivered: totalDelivered,
+        waitingReceive: totalWaitingReceive,
+        completed: totalCompleted,
         cancelled: totalCancelled,
     };
 };
@@ -93,35 +100,42 @@ const TabbedDatagrid = (props: TabbedDatagridProps) => {
         theme.breakpoints.down('xs')
     );
     const [ordered, setOrdered] = useState<Identifier[]>([] as Identifier[]);
-    const [delivered, setDelivered] = useState<Identifier[]>(
+    const [waitingReceive, setWaitingReceive] = useState<Identifier[]>(
+        [] as Identifier[]
+    );
+    const [completed, setCompleted] = useState<Identifier[]>(
         [] as Identifier[]
     );
     const [cancelled, setCancelled] = useState<Identifier[]>(
         [] as Identifier[]
     );
     const totals = useGetTotals(filterValues) as any;
-
+    
     useEffect(() => {
-        if (ids && ids !== filterValues.status) {
-            switch (filterValues.status) {
-                case 'ordered':
+        console.log(ids);
+        if (ids && ids !== filterValues.st) {
+            switch (filterValues.st) {
+                case OrderState.CART:
                     setOrdered(ids);
                     break;
-                case 'delivered':
-                    setDelivered(ids);
+                case OrderState.WAITING_RECEIVE:
+                    setWaitingReceive(ids);
+                    break;
+                case OrderState.COMPLETE:
+                    setCompleted(ids);
                     break;
                 case 'cancelled':
                     setCancelled(ids);
                     break;
             }
         }
-    }, [ids, filterValues.status]);
+    }, [ids, filterValues.st]);
 
     const handleChange = useCallback(
         (event: React.ChangeEvent<{}>, value: any) => {
             setFilters &&
                 setFilters(
-                    { ...filterValues, status: value },
+                    { ...filterValues, st: value },
                     displayedFilters
                 );
         },
@@ -129,10 +143,12 @@ const TabbedDatagrid = (props: TabbedDatagridProps) => {
     );
 
     const selectedIds =
-        filterValues.status === 'ordered'
+        filterValues.st === OrderState.CART
             ? ordered
-            : filterValues.status === 'delivered'
-            ? delivered
+            : filterValues.st === OrderState.WAITING_RECEIVE
+            ? waitingReceive
+            : filterValues.st === OrderState.COMPLETE
+            ? completed
             : cancelled;
 
     return (
@@ -140,7 +156,7 @@ const TabbedDatagrid = (props: TabbedDatagridProps) => {
             <Tabs
                 variant="fullWidth"
                 centered
-                value={filterValues.status}
+                value={filterValues.st}
                 indicatorColor="primary"
                 onChange={handleChange}
             >
@@ -165,7 +181,7 @@ const TabbedDatagrid = (props: TabbedDatagridProps) => {
                 </ListContextProvider>
             ) : (
                 <div>
-                    {filterValues.status === 'ordered' && (
+                    {filterValues.st === OrderState.CART && (
                         <ListContextProvider
                             value={{ ...listContext, ids: ordered }}
                         >
@@ -176,16 +192,34 @@ const TabbedDatagrid = (props: TabbedDatagridProps) => {
                                     source="total"
                                     options={{
                                         style: 'currency',
-                                        currency: 'USD',
+                                        currency: 'JYP',
                                     }}
                                     className={classes.total}
                                 />
                             </Datagrid>
                         </ListContextProvider>
                     )}
-                    {filterValues.status === 'delivered' && (
+                    {filterValues.st === OrderState.WAITING_RECEIVE && (
                         <ListContextProvider
-                            value={{ ...listContext, ids: delivered }}
+                            value={{ ...listContext, ids: waitingReceive }}
+                        >
+                            <Datagrid {...props} optimized rowClick="edit">
+                                <DateField source="date" showTime />
+                                <TextField source="reference" />
+                                <NumberField
+                                    source="total"
+                                    options={{
+                                        style: 'currency',
+                                        currency: 'JYP',
+                                    }}
+                                    className={classes.total}
+                                />
+                            </Datagrid>
+                        </ListContextProvider>
+                    )}
+                    {filterValues.st === OrderState.COMPLETE && (
+                        <ListContextProvider
+                            value={{ ...listContext, ids: completed }}
                         >
                             <Datagrid {...props} rowClick="edit">
                                 <DateField source="date" showTime />
@@ -195,7 +229,7 @@ const TabbedDatagrid = (props: TabbedDatagridProps) => {
                                     source="total"
                                     options={{
                                         style: 'currency',
-                                        currency: 'USD',
+                                        currency: 'JPY',
                                     }}
                                     className={classes.total}
                                 />
@@ -203,7 +237,7 @@ const TabbedDatagrid = (props: TabbedDatagridProps) => {
                             </Datagrid>
                         </ListContextProvider>
                     )}
-                    {filterValues.status === 'cancelled' && (
+                    {filterValues.st === OrderState.CANCEL && (
                         <ListContextProvider
                             value={{ ...listContext, ids: cancelled }}
                         >
@@ -215,7 +249,7 @@ const TabbedDatagrid = (props: TabbedDatagridProps) => {
                                     source="total"
                                     options={{
                                         style: 'currency',
-                                        currency: 'USD',
+                                        currency: 'JPY',
                                     }}
                                     className={classes.total}
                                 />
@@ -232,7 +266,7 @@ const TabbedDatagrid = (props: TabbedDatagridProps) => {
 const OrderList = (props: ListProps) => (
     <List
         {...props}
-        filterDefaultValues={{ status: 'ordered' }}
+        filterDefaultValues={{ st: OrderState.CART }}
         sort={{ field: 'date', order: 'DESC' }}
         perPage={25}
         filters={orderFilters}

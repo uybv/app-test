@@ -27,10 +27,6 @@ const CategoryCreate = (props: CreateProps) => {
     return (
         <Create {...props}>
             <SimpleForm>
-                <SectionTitle label="" />
-                <ImageInput source="images" label="Banner" accept="image/*" maxSize={1000000} validate={required()}>
-                        <ImageField source="src" title="title" />
-                    </ImageInput>
                 <TextInput
                     autoFocus
                     source="name"
@@ -40,7 +36,6 @@ const CategoryCreate = (props: CreateProps) => {
                 <TextInput
                     source="description"
                     formClassName={classes.description}
-                    validate={requiredValidate}
                 />
             </SimpleForm>
         </Create>

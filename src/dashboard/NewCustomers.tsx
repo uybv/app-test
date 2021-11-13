@@ -64,7 +64,7 @@ const NewCustomers = () => {
                                   <Avatar src={`${record.avatar}?size=32x32`} />
                               </ListItemAvatar>
                               <ListItemText
-                                  primary={`${record.first_name} ${record.last_name}`}
+                                  primary={`${record.display_name.first_name} ${record.display_name.last_name}`}
                               />
                           </ListItem>
                       ))

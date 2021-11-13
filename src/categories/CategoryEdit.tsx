@@ -31,11 +31,10 @@ const CategoryTitle = (props: FieldProps<Category>) => {
 const CategoryEdit = (props: EditProps) => (
     <Edit title={<CategoryTitle />} {...props}>
         <SimpleForm>
-            <ImageField source="banner" title="title" />
             <TextInput source="name" />
             <ReferenceManyField
                 reference="product"
-                target="category_id"
+                target="cat_ids"
                 label="resources.category.fields.products"
                 perPage={20}
                 fullWidth
@@ -45,18 +44,8 @@ const CategoryEdit = (props: EditProps) => (
                     <ProductRefField source="name" />
                     <NumberField
                         source="price"
-                        options={{ style: 'currency', currency: 'USD' }}
+                        options={{ style: 'currency', currency: 'JPY' }}
                     />
-                    <NumberField
-                        source="width"
-                        options={{ minimumFractionDigits: 2 }}
-                    />
-                    <NumberField
-                        source="height"
-                        options={{ minimumFractionDigits: 2 }}
-                    />
-                    <NumberField source="stock" />
-                    <NumberField source="sales" />
                     <EditButton />
                 </Datagrid>
             </ReferenceManyField>

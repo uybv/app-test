@@ -50,6 +50,7 @@ const MobileGrid = ({ ids, data, basePath }: Props) => {
     if (!ids || !data) {
         return null;
     }
+    console.log(data);
 
     return (
         <div className={classes.root}>
@@ -58,7 +59,7 @@ const MobileGrid = ({ ids, data, basePath }: Props) => {
                     <CardHeader
                         title={
                             <div className={classes.cardTitleContent}>
-                                <h2>{`${data[id].first_name} ${data[id].last_name}`}</h2>
+                                <h2>{`${data[id].display_name.first_name} ${data[id].display_name.last_name}`}</h2>
                                 <EditButton
                                     resource="visitors"
                                     basePath={basePath}
@@ -71,21 +72,21 @@ const MobileGrid = ({ ids, data, basePath }: Props) => {
                     <CardContent className={classes.cardContent}>
                         <div>
                             {translate(
-                                'resources.customer.fields.last_seen_gte'
+                                'resources.customer.fields.last_seen'
                             )}
                             &nbsp;
                             <DateField record={data[id]} source="last_seen" />
                         </div>
                         <div>
                             {translate(
-                                'resources.commands.name',
+                                'resources.order.name',
                                 data[id].nb_commands || 1
                             )}
                             &nbsp;:&nbsp;
                             <NumberField
                                 record={data[id]}
-                                source="nb_commands"
-                                label="resources.customer.fields.commands"
+                                source="order"
+                                label="resources.customer.fields.order"
                             />
                         </div>
                         <div>
@@ -96,7 +97,7 @@ const MobileGrid = ({ ids, data, basePath }: Props) => {
                             <ColoredNumberField
                                 record={data[id]}
                                 source="total_spent"
-                                options={{ style: 'currency', currency: 'USD' }}
+                                options={{ style: 'currency', currency: 'JPY' }}
                             />
                         </div>
                     </CardContent>

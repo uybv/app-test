@@ -24,7 +24,7 @@ const VisitorEdit = (props: EditProps) => {
     return (
         <Edit
             title={<VisitorTitle />}
-            aside={<Aside />}
+            // aside={<Aside />}
             component="div"
             {...props}
         >
@@ -60,8 +60,8 @@ const VisitorForm = (props: any) => {
                                             mr={{ xs: 0, sm: '0.5em' }}
                                         >
                                             <TextInput
-                                                source="first_name"
-                                                resource="customers"
+                                                label="resources.customer.fields.display_name.first_name"
+                                                source="display_name.first_name"
                                                 validate={requiredValidate}
                                                 fullWidth
                                             />
@@ -71,8 +71,32 @@ const VisitorForm = (props: any) => {
                                             ml={{ xs: 0, sm: '0.5em' }}
                                         >
                                             <TextInput
-                                                source="last_name"
-                                                resource="customers"
+                                                label="resources.customer.fields.display_name.last_name"
+                                                source="display_name.last_name"
+                                                validate={requiredValidate}
+                                                fullWidth
+                                            />
+                                        </Box>
+                                    </Box>
+                                    <Box display={{ xs: 'block', sm: 'flex' }}>
+                                        <Box
+                                            flex={1}
+                                            mr={{ xs: 0, sm: '0.5em' }}
+                                        >
+                                            <TextInput
+                                                label="resources.customer.fields.display_name.first_name_kata"
+                                                source="display_name.first_name_kata"
+                                                validate={requiredValidate}
+                                                fullWidth
+                                            />
+                                        </Box>
+                                        <Box
+                                            flex={1}
+                                            ml={{ xs: 0, sm: '0.5em' }}
+                                        >
+                                            <TextInput
+                                                label="resources.customer.fields.display_name.last_name_kata"
+                                                source="display_name.last_name_kata"
                                                 validate={requiredValidate}
                                                 fullWidth
                                             />
@@ -81,7 +105,6 @@ const VisitorForm = (props: any) => {
                                     <TextInput
                                         type="email"
                                         source="email"
-                                        resource="customers"
                                         validate={[email(), required()]}
                                         fullWidth
                                     />
@@ -92,7 +115,6 @@ const VisitorForm = (props: any) => {
                                         >
                                             <DateInput
                                                 source="birthday"
-                                                resource="customers"
                                                 fullWidth
                                                 helperText={false}
                                             />
@@ -111,8 +133,8 @@ const VisitorForm = (props: any) => {
                                         )}
                                     </Typography>
                                     <TextInput
-                                        source="address"
-                                        resource="customers"
+                                        label="resources.customer.fields.address.address"
+                                        source="address.address"
                                         multiline
                                         fullWidth
                                         helperText={false}
@@ -123,27 +145,38 @@ const VisitorForm = (props: any) => {
                                             mr={{ xs: 0, sm: '0.5em' }}
                                         >
                                             <TextInput
-                                                source="city"
-                                                resource="customers"
+                                                label="resources.customer.fields.address.prefecture"
+                                                source="address.prefecture"
                                                 fullWidth
                                                 helperText={false}
                                             />
                                         </Box>
                                         <Box
-                                            flex={1}
+                                            flex={2}
                                             mr={{ xs: 0, sm: '0.5em' }}
                                         >
                                             <TextInput
-                                                source="stateAbbr"
-                                                resource="customers"
+                                                label="resources.customer.fields.address.city"
+                                                source="address.city"
+                                                fullWidth
+                                                helperText={false}
+                                            />
+                                        </Box>
+                                        <Box
+                                            flex={2}
+                                            mr={{ xs: 0, sm: '0.5em' }}
+                                        >
+                                            <TextInput
+                                                label="resources.customer.fields.address.apartment"
+                                                source="address.apartment"
                                                 fullWidth
                                                 helperText={false}
                                             />
                                         </Box>
                                         <Box flex={2}>
                                             <TextInput
-                                                source="zipcode"
-                                                resource="customers"
+                                                label="resources.customer.fields.address.postal_code"
+                                                source="address.postal_code"
                                                 fullWidth
                                                 helperText={false}
                                             />
@@ -151,34 +184,6 @@ const VisitorForm = (props: any) => {
                                     </Box>
 
                                     <Box mt="1em" />
-
-                                    <Typography variant="h6" gutterBottom>
-                                        {translate(
-                                            'resources.customer.fieldGroups.change_password'
-                                        )}
-                                    </Typography>
-                                    <Box display={{ xs: 'block', sm: 'flex' }}>
-                                        <Box
-                                            flex={1}
-                                            mr={{ xs: 0, sm: '0.5em' }}
-                                        >
-                                            <PasswordInput
-                                                source="password"
-                                                resource="customers"
-                                                fullWidth
-                                            />
-                                        </Box>
-                                        <Box
-                                            flex={1}
-                                            ml={{ xs: 0, sm: '0.5em' }}
-                                        >
-                                            <PasswordInput
-                                                source="confirm_password"
-                                                resource="customers"
-                                                fullWidth
-                                            />
-                                        </Box>
-                                    </Box>
                                 </Box>
                                 <Box
                                     flex={1}

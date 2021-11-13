@@ -25,13 +25,13 @@ const Basket = (props: FieldProps<Order>) => {
             type: 'getMany',
             resource: 'products',
             payload: {
-                ids: record ? record.basket.map(item => item.product_id) : [],
+                ids: record ? record.foods.map(item => item.id) : [],
             },
         },
         {},
         state => {
             const productIds = record
-                ? record.basket.map(item => item.product_id)
+                ? record.foods.map(item => item.id)
                 : [];
 
             return productIds
@@ -74,21 +74,21 @@ const Basket = (props: FieldProps<Order>) => {
                 </TableRow>
             </TableHead>
             <TableBody>
-                {record.basket.map(
+                {record.foods.map(
                     (item: any) =>
-                        products[item.product_id] && (
-                            <TableRow key={item.product_id}>
+                        products[item.id] && (
+                            <TableRow key={item.id}>
                                 <TableCell>
-                                    <Link to={`/products/${item.product_id}`}>
-                                        {products[item.product_id].reference}
+                                    <Link to={`/products/${item.id}`}>
+                                        {products[item.id].name}
                                     </Link>
                                 </TableCell>
                                 <TableCell className={classes.rightAlignedCell}>
                                     {products[
-                                        item.product_id
+                                        item.id
                                     ].price.toLocaleString(undefined, {
                                         style: 'currency',
-                                        currency: 'USD',
+                                        currency: 'JPY',
                                     })}
                                 </TableCell>
                                 <TableCell className={classes.rightAlignedCell}>
@@ -96,11 +96,10 @@ const Basket = (props: FieldProps<Order>) => {
                                 </TableCell>
                                 <TableCell className={classes.rightAlignedCell}>
                                     {(
-                                        products[item.product_id].price *
-                                        item.quantity
+                                        products[item.id].price 
                                     ).toLocaleString(undefined, {
                                         style: 'currency',
-                                        currency: 'USD',
+                                        currency: 'JPY',
                                     })}
                                 </TableCell>
                             </TableRow>

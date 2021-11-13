@@ -11,39 +11,43 @@ const japaneseDomainMessages = {
             dark: 'Dark',
         },
         dashboard: {
-            monthly_revenue: 'Monthly Revenue',
-            month_history: '30 Day Revenue History',
-            new_orders: 'New Orders',
-            pending_reviews: 'Pending Reviews',
-            all_reviews: 'See all reviews',
-            new_customers: 'New Customers',
-            all_customers: 'See all customers',
-            pending_orders: 'Pending Orders',
+            monthly_revenue: '当月売上',
+            month_history: '売り上げ履歴',
+            new_orders: '新規注文',
+            new_customers: '新規登録ユーザー',
+            all_customers: 'ユーザー一覧',
+            pending_orders: 'オーダー：承認待ち',
             order: {
                 items:
                     'by %{customer_name}, one item |||| by %{customer_name}, %{nb_items} items',
             },
         },
-        menu: {
-            sales: 'Sales',
-            catalog: 'Catalog',
-            customers: 'Customers',
-        },
     },
     resources: {
         customer: {
-            name: 'Customer |||| Customers',
+            name: 'ユーザー管理',
             fields: {
-                commands: 'Orders',
-                first_seen: 'First seen',
-                groups: 'Segments',
-                last_seen: 'Last seen',
-                last_seen_gte: 'Visited Since',
-                name: 'Name',
+                order: 'ユーザー：オーダー履歴',
+                display_name: {
+                    first_name: '性',
+                    last_name: '名',
+                    first_name_kata: '性（カナ）',
+                    last_name_kata: '名（カナ）',
+                },
+                address: {
+                    postal_code: '郵便番号',
+                    prefecture: '都道府県',
+                    city: '市区町村',
+                    address: '住所',
+                    apartment: 'アパートメント名',
+                },
+                email: 'Eメール',
+                nickname: 'ニックネーム',
+                brithday: '生年月日',
                 total_spent: 'Total spent',
-                password: 'Password',
-                confirm_password: 'Confirm password',
-                stateAbbr: 'State',
+                password: 'パスワード',
+                confirm_password: 'パスワード確認',
+                last_seen: 'Last seen'
             },
             filters: {
                 last_visited: 'Last visited',
@@ -55,15 +59,12 @@ const japaneseDomainMessages = {
                 earlier: 'Earlier',
                 has_ordered: 'Has ordered',
                 has_newsletter: 'Has newsletter',
-                group: 'Segment',
             },
             fieldGroups: {
-                identity: 'Identity',
-                address: 'Address',
-                stats: 'Stats',
-                history: 'History',
-                password: 'Password',
-                change_password: 'Change Password',
+                identity: '性別',
+                address: '住所',
+                stats: 'ユーザーステータス',
+                history: '履歴',
             },
             page: {
                 delete: 'Delete Customer',
@@ -74,7 +75,7 @@ const japaneseDomainMessages = {
             },
         },
         order: {
-            name: 'Order',
+            name: 'オーダー管理',
             amount: '1 order |||| %{smart_count} orders',
             title: 'Order %{reference}',
             fields: {
@@ -106,21 +107,31 @@ const japaneseDomainMessages = {
             },
         },
         product: {
-            name: 'Food |||| Foods',
+            name: '商品 |||| 商品',
             fields: {
-                cat_ids: 'Category',
-                tax_ids: 'Tax',
-                image: 'Image',
-                name: 'Name',
-                price: 'Price',
-                prices: 'Prices',
-                thumbnail: 'Thumbnail',
+                category: 'カテゴリー',
+                tax: '税金',
+                image: '画像',
+                name: '氏名',
+                price: '価格',
+                price_no_tax: '価格（税抜き）',
+                information: {
+                    name: '商品情報',
+                    item_title: 'オプション：項目名前',
+                    item_content: 'オプション：項目内容'
+                },
+                option: {
+                    name: 'オプション',
+                    item_display_name: 'オプション：項目',
+                    item_price: '項目価格'
+                }
             },
             tabs: {
-                image: 'Image',
-                details: 'Details',
-                description: 'Description',
-                addition: 'Addition prices',
+                image: '画像',
+                details: '内容',
+                options: 'オプション',
+                information: '商品情報',
+                description: '内容',
             },
             filters: {
                 category: 'Categories',
@@ -133,19 +144,22 @@ const japaneseDomainMessages = {
             },
         },
         category: {
-            name: 'Category |||| Categories',
+            name: 'カテゴリー |||| カテゴリー',
             fields: {
-                products: 'Products',
+                products: '商品一覧（メニュー）',
             },
         },
         branch: {
-            name: 'Branch',
+            name: '店舗',
             fields: {
-                products: 'Products',
+                products: '商品一覧（メニュー）',
             },
         },
         tax: {
-            name: 'Tax',
+            name: '税金',
+        },
+        news: {
+            name: 'ニュース',
         },
     }
 }

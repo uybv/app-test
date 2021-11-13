@@ -17,6 +17,7 @@ import products from '../products';
 import categories from '../categories';
 import branch from '../branch';
 import tax from '../tax';
+import news from '../news';
 import SubMenu from './SubMenu';
 
 type MenuName = 'menuCatalog' | 'menuSales' | 'menuCustomers';
@@ -109,6 +110,17 @@ const Menu = ({ dense = false }: MenuProps) => {
                     smart_count: 2,
                 })}
                 leftIcon={<tax.icon />}
+                dense={dense}
+            />
+            <MenuItemLink
+                to={{
+                    pathname: '/news',
+                    state: { _scrollToTop: true },
+                }}
+                primaryText={translate(`resources.news.name`, {
+                    smart_count: 2,
+                })}
+                leftIcon={<news.icon />}
                 dense={dense}
             />
         </div>

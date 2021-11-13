@@ -6,8 +6,8 @@ import {
     TextInput,
     useTranslate,
     required,
-    ImageInput,
-    ImageField,
+    minValue,
+    maxValue,
     NumberInput,
     ReferenceArrayInput,
     AutocompleteArrayInput
@@ -20,10 +20,9 @@ export const styles = {
     banner: { width: 600 },
     description: { width: 600 },
     location: { width: 600 },
-    price: { width: '7em' },
-    width: { width: '7em' },
-    height: { width: '7em' },
-    stock: { width: '7em' },
+    food: { width: 600 },
+    width: { width: 200 },
+    height: { width: 200 },
     widthFormGroup: { display: 'inline-block' },
     heightFormGroup: { display: 'inline-block', marginLeft: 32 },
 };
@@ -36,39 +35,36 @@ const BranchCreate = (props: CreateProps) => {
     return (
         <Create {...props}>
             <SimpleForm>
-                <ImageInput source="images" label="Banner" accept="image/*" maxSize={1000000} validate={required()}>
-                    <ImageField source="src" title="title" />
-                </ImageInput>
                 <TextInput
                     autoFocus
                     source="name"
-                    formClassName={classes.name}
+                    className={classes.name}
                     validate={[required()]}
                 />
                 <NumberInput
                     source="location.x"
-                    validate={required()}
+                    validate={[required(), minValue(0)]}
                     className={classes.width}
                     formClassName={classes.widthFormGroup}
                     placeholder={'Latitude'}
                 />
                 <NumberInput
                     source="location.y"
-                    validate={required()}
+                    validate={[required(), minValue(0)]}
                     className={classes.height}
                     formClassName={classes.heightFormGroup}
                     placeholder={'Longitude'}
                 />
                 <ReferenceArrayInput
+                    className={classes.food}
                     reference="product"
                     source="food_ids"
-                    validate={required()}
                 >
                     <AutocompleteArrayInput />
                 </ReferenceArrayInput>
                 <TextInput
                     source="description"
-                    formClassName={classes.description}
+                    className={classes.description}
                 />
             </SimpleForm>
         </Create>

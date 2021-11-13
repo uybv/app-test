@@ -11,43 +11,94 @@ export interface Category extends Record {
 }
 
 export interface Product extends Record {
-    category_id: Identifier;
-    description: string;
-    height: number;
-    image: string;
-    price: number;
-    reference: string;
-    stock: number;
-    thumbnail: string;
-    width: number;
+    name: string;
+    description?: string;
+    image?: string;
+    price: number,
+    addition_prices?: {
+        name: string;
+        prices: {
+            name: string;
+            price: number;
+            is_default?: boolean;
+        }[];
+    }[];
+    information?: {
+        title: string;
+        content: string;
+    }[];
+    st: number;
+    tax_ids?: string[];
+    cat_ids?: string[];
 }
 
 export interface Customer extends Record {
-    first_name: string;
-    last_name: string;
-    address: string;
-    stateAbbr: string;
-    city: string;
-    zipcode: string;
-    avatar: string;
-    birthday: string;
-    first_seen: string;
-    last_seen: string;
-    has_ordered: boolean;
-    latest_purchase: string;
-    has_newsletter: boolean;
-    groups: string[];
-    nb_commands: number;
-    total_spent: number;
+    email: string;
+    username: string;
+    display_name: {
+        first_name?: string;
+        last_name?: string;
+        first_name_kata?: string;
+        last_name_kata?: string;
+        nick_name?: string;
+    };
+    birth_day: number;
+    gender: number;
+    phone_number: string;
+    address: {
+        postal_code?: string;
+        prefecture?: string;
+        city?: string;
+        address?: string;
+        apartment?: string;
+    };
+    social_linkeds: {
+        type: number,
+        token: string
+    }[];
+    st?: number;
+    last_login_at: number;
+    verify_token: string;
+    secret_question: {
+        question: string;
+        answer: string;
+    },
+    email_settings: {
+        campaign?: boolean;
+        new_food?: boolean;
+    }
 }
 
-export type OrderStatus = 'ordered' | 'delivered' | 'cancelled';
+export enum OrderState {
+    CART = 1,
+    PAID = 2,
+    PROCESS = 3,
+    WAITING_RECEIVE = 4,
+    CANCEL = 9,
+    COMPLETE = 10,
+}
+
 
 export interface Order extends Record {
-    status: OrderStatus;
-    basket: BasketItem[];
-    date: Date;
-    total: number;
+    st: OrderState;
+    foods: {
+        id: string;
+        name: string;
+        additions: {
+            name: string;
+            option_name: string;
+            price: number;
+        }[];
+        price: number;
+    }[];
+    user_id: string;
+    branch_id: string;
+    queuing: number;
+    order_date: number;
+    note?: string;
+    created_time?: number;
+    paid_time?: number;
+    complete_time?: number;
 }
 
 export interface BasketItem {

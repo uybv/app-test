@@ -1,26 +1,19 @@
 import * as React from 'react';
 import {
-    Datagrid,
     Edit,
     EditProps,
-    EditButton,
     FieldProps,
-    NumberField,
-    ReferenceManyField,
     SimpleForm,
     TextInput,
     useTranslate,
-    ImageField,
     NumberInput,
     ReferenceArrayInput,
     AutocompleteArrayInput,
-    required
+    required,
+    minValue
 } from 'react-admin';
 
-import ThumbnailField from '../products/ThumbnailField';
-import ProductRefField from '../products/ProductRefField';
-import { Typography, Box } from '@material-ui/core';
-import { makeStyles, Theme } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import { Category } from '../types';
 
 export const styles = {
@@ -28,10 +21,9 @@ export const styles = {
     banner: { width: 600 },
     description: { width: 600 },
     location: { width: 600 },
-    price: { width: '7em' },
-    width: { width: '7em' },
-    height: { width: '7em' },
-    stock: { width: '7em' },
+    food: { width: 600 },
+    width: { width: 200 },
+    height: { width: 200 },
     widthFormGroup: { display: 'inline-block' },
     heightFormGroup: { display: 'inline-block', marginLeft: 32 },
 };
@@ -55,23 +47,23 @@ const BranchEdit = (props: EditProps) => {
     return (
         <Edit title={<BranchTitle />} {...props}>
             <SimpleForm>
-                <ImageField source="banner" title="title" formClassName={classes.banner} />
-                <TextInput source="name" formClassName={classes.name} validate={[required()]} />
+                <TextInput source="name" className={classes.name} validate={[required()]} />
                 <NumberInput
                     source="location.x"
-                    validate={required()}
+                    validate={[required(), minValue(0)]}
                     className={classes.width}
                     formClassName={classes.widthFormGroup}
                     placeholder={'Latitude'}
                 />
                 <NumberInput
                     source="location.y"
-                    validate={required()}
+                    validate={[required(), minValue(0)]}
                     className={classes.height}
                     formClassName={classes.heightFormGroup}
                     placeholder={'Longitude'}
                 />
                 <ReferenceArrayInput
+                    className={classes.food}
                     reference="product"
                     source="food_ids"
                     validate={required()}
@@ -80,7 +72,7 @@ const BranchEdit = (props: EditProps) => {
                 </ReferenceArrayInput>
                 <TextInput
                     source="description"
-                    formClassName={classes.description}
+                    className={classes.description}
                 />
             </SimpleForm>
         </Edit>

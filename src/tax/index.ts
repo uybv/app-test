@@ -1,4 +1,4 @@
-import Icon from '@material-ui/icons/TableChart';
+import Icon from '@material-ui/icons/TrendingUp';
 
 import TaxList from './TaxList';
 import TaxEdit from './TaxEdit';

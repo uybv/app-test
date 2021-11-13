@@ -21,9 +21,9 @@ import { ReactElement } from 'react';
 
 const visitorFilters = [
     <SearchInput source="q" alwaysOn />,
-    <DateInput source="last_seen_gte" />,
-    <NullableBooleanInput source="has_ordered" />,
-    <NullableBooleanInput source="has_newsletter" defaultValue />
+    // <DateInput source="last_seen_gte" />,
+    // <NullableBooleanInput source="has_ordered" />,
+    // <NullableBooleanInput source="has_newsletter" defaultValue />
 ];
 
 const useStyles = makeStyles(theme => ({
@@ -45,10 +45,10 @@ const VisitorList = (props: ListProps): ReactElement => {
     return (
         <List
             {...props}
-            filters={isSmall ? visitorFilters : undefined}
+            filters={visitorFilters}
             sort={{ field: 'last_seen', order: 'DESC' }}
             perPage={25}
-            aside={<VisitorListAside />}
+            // aside={<VisitorListAside />}
         >
             {isXsmall ? (
                 <MobileGrid />
@@ -58,7 +58,7 @@ const VisitorList = (props: ListProps): ReactElement => {
                     <DateField source="last_login_at" />
                     <NumberField
                         source="total_order"
-                        label="resources.customer.fields.commands"
+                        label="resources.customer.fields.order"
                         className={classes.nb_commands}
                     />
                     <ColoredNumberField

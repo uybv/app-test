@@ -34,7 +34,7 @@ const ProductCreate = (props: CreateProps) => {
         <Create {...props}>
             <TabbedForm>
                 <FormTab label="resources.product.tabs.image">
-                    <ImageInput source="images" label="Image" accept="image/*" maxSize={1000000} validate={required()}>
+                    <ImageInput source="images" label="resources.product.fields.image" accept="image/*" maxSize={1000000} validate={required()}>
                         <ImageField source="src" title="title" />
                     </ImageInput>
                 </FormTab>
@@ -68,13 +68,13 @@ const ProductCreate = (props: CreateProps) => {
                     </ReferenceArrayInput>
                 </FormTab>
                 <FormTab
-                    label="resources.product.tabs.addition"
-                    path="addition_prices"
+                    label="resources.product.tabs.options"
+                    path="options"
                 >
                     <ArrayInput source="addition_prices" label="">
                         <SimpleFormIterator disableRemove >
                             <TextInput source="name" validate={required()} />
-                            <ArrayInput source="prices">
+                            <ArrayInput label="resources.product.fields.price" source="prices">
                                 <SimpleFormIterator disableRemove >
                                     <TextInput
                                         source="name"
@@ -97,6 +97,22 @@ const ProductCreate = (props: CreateProps) => {
                                     />
                                 </SimpleFormIterator>
                             </ArrayInput>
+                        </SimpleFormIterator>
+                    </ArrayInput>
+                </FormTab>
+                <FormTab
+                    label="resources.product.tabs.information"
+                    path="information"
+                >
+                    <ArrayInput source="information" label="">
+                        <SimpleFormIterator disableRemove >
+                            <TextInput
+                                label="resources.product.fields.information.item_title"
+                                source="title" validate={required()}
+                            />
+                            <RichTextInput
+                                label="resources.product.fields.information.item_content"
+                                source="content" validate={required()} />
                         </SimpleFormIterator>
                     </ArrayInput>
                 </FormTab>

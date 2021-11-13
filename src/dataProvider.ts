@@ -15,7 +15,7 @@ const httpClient = (url: string, options = {} as any) => {
 const getTotal = (headers: Headers): number => {
     if (headers) {
         const total: string = headers.get('x-total-count') || '';
-        
+
         return parseInt(total);
     }
     return 0;
@@ -33,7 +33,7 @@ export const dataProvider = {
         const url = `${apiUrl}/${resource}?${stringify(query)}`;
         return httpClient(url).then(({ headers, json }) => ({
             data: json ? json : [],
-            total: getTotal(headers) || 10,
+            total: getTotal(headers),
         }));
     },
 
@@ -65,7 +65,7 @@ export const dataProvider = {
 
         return httpClient(url).then(({ headers, json }) => ({
             data: json ? json : [],
-            total: getTotal(headers) || 10,
+            total: getTotal(headers),
         }));
     },
 
@@ -82,7 +82,7 @@ export const dataProvider = {
         const query = {
             filter: JSON.stringify({ id: params.ids }),
         };
-        return httpClient(`${apiUrl}/${resource}/update-many?${stringify(query)}`, {
+        return httpClient(`${apiUrl}/${resource}?${stringify(query)}`, {
             method: 'PUT',
             body: JSON.stringify(params.data),
         }).then(({ json }) => ({ data: json }));
@@ -106,9 +106,9 @@ export const dataProvider = {
 
     deleteMany: (resource: string, params: any) => {
         const query = {
-            filter: JSON.stringify({ id: params.ids }),
+            ids: JSON.stringify(params.ids),
         };
-        return httpClient(`${apiUrl}/${resource}/delete-many?${stringify(query)}`, {
+        return httpClient(`${apiUrl}/${resource}?${stringify(query)}`, {
             method: 'DELETE',
             body: JSON.stringify(params.data),
         }).then(({ json }) => ({ data: json }));
@@ -125,7 +125,7 @@ const processDataWithImage = async (resource: string, params: any) => {
          * For posts update only, convert uploaded image in base 64 and attach it to
          * the `image` sent property, with `src` and `title` attributes.
          */
-    
+
         // Freshly dropped images are File objects and must be converted to base64 strings
         const newImages = images.filter(
             (i: any) => i.rawFile instanceof File

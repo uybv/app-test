@@ -1,4 +1,4 @@
-import Icon from '@material-ui/icons/Map';
+import Icon from '@material-ui/icons/Store';
 
 import BranchList from './BranchList';
 import BranchEdit from './BranchEdit';

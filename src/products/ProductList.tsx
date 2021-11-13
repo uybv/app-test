@@ -20,6 +20,7 @@ import {
     TopToolbar,
     useListContext,
     useTranslate,
+    ListToolbar
 } from 'react-admin';
 
 import GridList from './GridList';
@@ -39,26 +40,12 @@ const QuickFilter = ({ label }: InputProps) => {
 
 export const productFilters = [
     <SearchInput source="q" alwaysOn />,
-    <ReferenceInput
-        source="id"
-        reference="category"
-        sort={{ field: 'id', order: 'ASC' }}
-    >
-        <SelectInput source="name" />
-    </ReferenceInput>,
-    <ReferenceInput
-        source="id"
-        reference="tax"
-        sort={{ field: 'id', order: 'ASC' }}
-    >
-        <SelectInput source="name" />
-    </ReferenceInput>,
 ];
 
 const ListActions = ({ isSmall }: any) => (
     <TopToolbar>
         {isSmall && <FilterButton />}
-        <SortButton fields={['name']} />
+        {/* <SortButton fields={['name']} /> */}
         <CreateButton basePath="/product" />
         <ExportButton />
     </TopToolbar>
@@ -72,6 +59,10 @@ const ProductList = (props: ListProps) => {
             sort={{ field: 'reference', order: 'ASC' }}
             {...props}
         >
+            <ListToolbar
+                filters={productFilters}
+                actions={<ListActions/>}
+            />
             <ProductListView isSmall={isSmall} />
         </ListBase>
     );
@@ -82,17 +73,9 @@ const ProductListView = ({ isSmall }: { isSmall: boolean }) => {
     return (
         <>
             <Title defaultTitle={defaultTitle} />
-            <FilterContext.Provider value={productFilters}>
-                <ListActions isSmall={isSmall} />
-                {isSmall && (
-                    <Box m={1}>
-                        <FilterForm />
-                    </Box>
-                )}
-            </FilterContext.Provider>
             <Box display="flex">
-                <Aside />
-                <Box width={isSmall ? 'auto' : 'calc(100% - 16em)'}>
+                {/* <Aside /> */}
+                <Box width={'100%'}>
                     <GridList />
                     <Pagination rowsPerPageOptions={[10, 20, 40]} />
                 </Box>

@@ -12,6 +12,7 @@ import products from './products';
 import categories from './categories';
 import branch from './branch';
 import tax from './tax';
+import news from './news';
 
 import {
   unstable_createMuiStrictModeTheme,
@@ -42,6 +43,7 @@ const App = () => (
     <Resource name="category" {...categories} />
     <Resource name="branch" {...branch} />
     <Resource name="tax" {...tax} />
+    <Resource name="news" {...news} />
   </Admin>
 );
 
