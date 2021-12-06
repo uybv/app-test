@@ -15,6 +15,7 @@
     "lodash": "~4.17.5",
     "moment": "^2.29.1",
     "prop-types": "^15.7.2",
+    "qrcode.react": "^1.0.1",
     "query-string": "^7.0.1",
     "ra-data-json-server": "^3.19.0",
     "ra-input-rich-text": "^3.19.0",
@@ -22,6 +23,7 @@
     "react-admin": "^3.19.0",
     "react-beautiful-dnd": "^13.0.0",
     "react-dom": "^17.0.2",
+    "react-qr-code": "^2.0.3",
     "react-router-dom": "^5.3.0",
     "react-scripts": "4.0.3",
     "recharts": "^2.1.6"
@@ -34,6 +36,7 @@
     "@types/jest": "^27.0.2",
     "@types/lodash": "~4.14.168",
     "@types/node": "^12.20.33",
+    "@types/qrcode.react": "^1.0.2",
     "@types/react": "^17.0.30",
     "@types/react-beautiful-dnd": "^13.0.0",
     "@types/react-dom": "^17.0.9",

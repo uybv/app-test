@@ -183,6 +183,7 @@ const japaneseDomainMessages = {
             fields: {
                 name: '氏名',
                 description: '内容',
+                created_at: '登録日',
             }
         },
         news: {
@@ -194,6 +195,7 @@ const japaneseDomainMessages = {
                 description: '内容',
                 publish_time: '公開日',
                 expired_time: '期限設定',
+                created_at: '登録日',
             }
         },
         staff: {

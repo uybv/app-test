@@ -6,12 +6,21 @@ import {
     TextField,
     SearchInput,
 } from 'react-admin';
+import QRCode from 'qrcode.react';
 import KeywordsField from './KeywordsField';
 import TagsField from './TagsField';
 
 const filters = [
     <SearchInput source="q" alwaysOn />,
 ];
+
+const QrCodeField = (props: any) => {
+    const { record } = props;
+    if (!record) return null;
+    return (
+        <QRCode size={120} value={"https://dev-app-api.wgs.jp/app/qr/?type=news&id=" + record.id} />
+    );
+};
 
 const NewList = (props: ListProps) => (
     <List
@@ -23,6 +32,7 @@ const NewList = (props: ListProps) => (
         filters={filters}
     >
         <Datagrid optimized rowClick="edit">
+            <QrCodeField />
             <TextField source="title" />
             <DateField source="publish_time" showTime />
             <DateField source="expired_time" showTime />
