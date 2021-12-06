@@ -137,9 +137,9 @@ const Login = () => {
                                     <LockIcon />
                                 </Avatar>
                             </div>
-                            <div className={classes.hint}>
+                            {/* <div className={classes.hint}>
                                 Hint: demo / demo
-                            </div>
+                            </div> */}
                             <div className={classes.form}>
                                 <div className={classes.input}>
                                     <Field

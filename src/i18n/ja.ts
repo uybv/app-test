@@ -151,6 +151,8 @@ const japaneseDomainMessages = {
         category: {
             name: 'カテゴリー |||| カテゴリー',
             fields: {
+                name: '氏名',
+                description: '内容',
                 products: '商品一覧（メニュー）',
                 created_at: '登録日',
             },
@@ -178,9 +180,21 @@ const japaneseDomainMessages = {
         },
         tax: {
             name: '税金',
+            fields: {
+                name: '氏名',
+                description: '内容',
+            }
         },
         news: {
             name: 'ニュース',
+            fields: {
+                name: '氏名',
+                title: 'タイトル',
+                banner: '画像',
+                description: '内容',
+                publish_time: '公開日',
+                expired_time: '期限設定',
+            }
         },
         staff: {
             name: 'スタッフ',
