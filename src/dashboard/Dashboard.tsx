@@ -56,7 +56,7 @@ const Dashboard = () => {
         const { data: recentOrders } = await dataProvider.getList<Order>(
             'order',
             {
-                filter: { date_gte: aMonthAgo.toISOString() },
+                filter: { date_gte: aMonthAgo.toISOString(), st: [OrderState.CART, OrderState.PAID] },
                 sort: { field: 'date', order: 'DESC' },
                 pagination: { page: 1, perPage: 50 },
             }
