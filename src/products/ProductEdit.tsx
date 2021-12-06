@@ -4,7 +4,8 @@ import {
     EditProps,
     FormTab,
     NumberInput,
-    ReferenceInput,
+    ImageInput,
+    ImageField,
     required,
     TabbedForm,
     TextInput,
@@ -38,6 +39,7 @@ const useStyles = makeStyles({
 
 const ProductEdit = (props: EditProps) => {
     const classes = useStyles();
+    const [changeImage, setChangeImage] = React.useState(false);
     return (
         <Edit {...props} title={<ProductTitle />}>
             <TabbedForm>
@@ -45,7 +47,21 @@ const ProductEdit = (props: EditProps) => {
                     label="resources.product.tabs.image"
                     contentClassName={classes.tab}
                 >
-                    <Poster />
+                    {!changeImage && (
+                        <Poster />
+                    )}
+                    <ImageInput
+                        source="images"
+                        label="resources.product.fields.image"
+                        accept="image/*"
+                        maxSize={1000000}
+                        onChange={() => {
+                            setChangeImage(true)
+                        }}
+                        // validate={required()}
+                    >
+                        <ImageField source="src" title="title" />
+                    </ImageInput>
                 </FormTab>
                 <FormTab
                     label="resources.product.tabs.details"
@@ -69,7 +85,7 @@ const ProductEdit = (props: EditProps) => {
                         reference="category"
                         source="cat_ids"
                         validate={required()}
-                    >
+                    >   
                         <AutocompleteArrayInput />
                     </ReferenceArrayInput>
                     <ReferenceArrayInput

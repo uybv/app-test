@@ -6,7 +6,7 @@ import {
     SimpleForm,
     TextInput,
     useTranslate,
-    AutocompleteArrayInput,
+    ImageInput,
     ImageField,
     DateTimeInput,
     required
@@ -53,10 +53,25 @@ const NewsEdit = (props: EditProps) => {
         expired_time: moment(data.expired_time).valueOf(),
     });
 
+    const [changeImage, setChangeImage] = React.useState(false);
+
     return (
         <Edit title={<NewsTitle />} transform={transform} {...props}>
             <SimpleForm>
-                <ImageField source="banner" title="title" />
+                {!changeImage && (
+                    <ImageField source="banner" title="title" />
+                )}
+                <ImageInput source="images"
+                    label="resources.news.fields.banner"
+                    accept="image/*"
+                    maxSize={1000000}
+                    validate={required()}
+                    onChange={() => {
+                        setChangeImage(true);
+                    }}
+                >
+                    <ImageField source="src" title="title" />
+                </ImageInput>
                 <TextInput
                     autoFocus
                     source="title"

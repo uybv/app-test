@@ -47,10 +47,10 @@ const NewsCreate = (props: CreateProps) => {
         <Create {...props} transform={transform}>
             <SimpleForm>
                 <ImageInput source="images"
-                    label="Banner"
+                    label="resources.news.fields.banner"
                     accept="image/*"
                     maxSize={1000000}
-                // validate={required()}
+                    validate={required()}
                 >
                     <ImageField source="src" title="title" />
                 </ImageInput>

@@ -39,7 +39,7 @@ const ProductCreate = (props: CreateProps) => {
                         label="resources.product.fields.image"
                         accept="image/*"
                         maxSize={1000000}
-                        // validate={required()}
+                        validate={required()}
                     >
                         <ImageField source="src" title="title" />
                     </ImageInput>
