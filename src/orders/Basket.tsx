@@ -23,7 +23,7 @@ const Basket = (props: FieldProps<Order>) => {
     const { loaded, data: products } = useQueryWithStore<AppState>(
         {
             type: 'getMany',
-            resource: 'products',
+            resource: 'product',
             payload: {
                 ids: record ? record.foods.map(item => item.id) : [],
             },
@@ -57,19 +57,19 @@ const Basket = (props: FieldProps<Order>) => {
                 <TableRow>
                     <TableCell>
                         {translate(
-                            'resources.commands.fields.basket.reference'
+                            'resources.order.fields.basket.reference'
                         )}
                     </TableCell>
                     <TableCell className={classes.rightAlignedCell}>
                         {translate(
-                            'resources.commands.fields.basket.unit_price'
+                            'resources.order.fields.basket.unit_price'
                         )}
                     </TableCell>
                     <TableCell className={classes.rightAlignedCell}>
-                        {translate('resources.commands.fields.basket.quantity')}
+                        {translate('resources.order.fields.basket.quantity')}
                     </TableCell>
                     <TableCell className={classes.rightAlignedCell}>
-                        {translate('resources.commands.fields.basket.total')}
+                        {translate('resources.order.fields.basket.total')}
                     </TableCell>
                 </TableRow>
             </TableHead>

@@ -59,7 +59,7 @@ const MobileGrid = (props: MobileGridProps) => {
                         title={
                             <div className={classes.cardTitleContent}>
                                 <span>
-                                    {translate('resources.commands.name', 1)}
+                                    {translate('resources.order.name', 1)}
                                     :&nbsp;
                                     <TextField
                                         record={data[id]}
@@ -89,7 +89,7 @@ const MobileGrid = (props: MobileGridProps) => {
                         </span>
                         <span className={classes.cardContentRow}>
                             {translate(
-                                'resources.commands.fields.basket.total'
+                                'resources.order.fields.basket.total'
                             )}
                             :&nbsp;
                             <NumberField
@@ -99,12 +99,12 @@ const MobileGrid = (props: MobileGridProps) => {
                             />
                         </span>
                         <span className={classes.cardContentRow}>
-                            {translate('resources.commands.fields.status')}
+                            {translate('resources.order.fields.status')}
                             :&nbsp;
                             <TextField source="status" record={data[id]} />
                         </span>
                         <span className={classes.cardContentRow}>
-                            {translate('resources.commands.fields.returned')}
+                            {translate('resources.order.fields.returned')}
                             :&nbsp;
                             <BooleanField record={data[id]} source="returned" />
                         </span>

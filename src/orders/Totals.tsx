@@ -1,5 +1,5 @@
 import * as React from 'react';
-// import classnames from 'classnames';
+import clsx from 'clsx';
 import { Table, TableBody, TableCell, TableRow } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { FieldProps, useTranslate } from 'react-admin';
@@ -22,50 +22,24 @@ const Totals = (props: FieldProps<Order>) => {
             <TableBody>
                 <TableRow>
                     <TableCell>
-                        {translate('resources.commands.fields.basket.sum')}
+                        {translate('resources.order.fields.basket.sum')}
                     </TableCell>
                     <TableCell className={classes.rightAlignedCell}>
-                        {record?.total_ex_taxes.toLocaleString(undefined, {
+                        {record?.total.toLocaleString(undefined, {
                             style: 'currency',
-                            currency: 'USD',
-                        })}
-                    </TableCell>
-                </TableRow>
-                <TableRow>
-                    <TableCell>
-                        {translate('resources.commands.fields.basket.delivery')}
-                    </TableCell>
-                    <TableCell className={classes.rightAlignedCell}>
-                        {record?.delivery_fees.toLocaleString(undefined, {
-                            style: 'currency',
-                            currency: 'USD',
-                        })}
-                    </TableCell>
-                </TableRow>
-                <TableRow>
-                    <TableCell>
-                        {translate('resources.commands.fields.basket.taxes')} (
-                        {record?.tax_rate.toLocaleString(undefined, {
-                            style: 'percent',
-                        })}
-                        )
-                    </TableCell>
-                    <TableCell className={classes.rightAlignedCell}>
-                        {record?.taxes.toLocaleString(undefined, {
-                            style: 'currency',
-                            currency: 'USD',
+                            currency: 'JPY',
                         })}
                     </TableCell>
                 </TableRow>
                 <TableRow>
                     <TableCell className={classes.boldCell}>
-                        {translate('resources.commands.fields.basket.total')}
+                        {translate('resources.order.fields.basket.total')}
                     </TableCell>
                     <TableCell
-                        // className={classnames(
-                        //     classes.boldCell,
-                        //     classes.rightAlignedCell
-                        // )}
+                        className={clsx(
+                            classes.boldCell,
+                            classes.rightAlignedCell
+                        )}
                     >
                         {record?.total.toLocaleString(undefined, {
                             style: 'currency',

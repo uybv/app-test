@@ -26,7 +26,7 @@ const aggregateOrdersByDay = (orders: Order[]): { [key: string]: number } =>
     orders
         .filter((order: Order) => order.status !== 'cancelled')
         .reduce((acc, curr) => {
-            const day = format(curr.date, 'YYYY-MM-DD');
+            const day = moment(curr.created_time).format('YYYY-MM-DD');
             if (!acc[day]) {
                 acc[day] = 0;
             }

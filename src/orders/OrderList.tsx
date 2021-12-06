@@ -28,6 +28,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import NbItemsField from './NbItemsField';
 import MobileGrid from './MobileGrid';
 import { Customer, OrderState } from '../types';
+import CustomerReferenceField from '../visitors/CustomerReferenceField';
+import AddressField from '../visitors/AddressField';
 
 const orderFilters = [
     <SearchInput source="q" alwaysOn />,
@@ -57,7 +59,7 @@ const tabs = [
     { id: 9, name: 'キャンセル済み' },
 ];
 
-interface TabbedDatagridProps extends DatagridProps {}
+interface TabbedDatagridProps extends DatagridProps { }
 
 const useGetTotals = (filterValues: any) => {
     const { total: totalOrdered } = useGetList(
@@ -110,12 +112,13 @@ const TabbedDatagrid = (props: TabbedDatagridProps) => {
         [] as Identifier[]
     );
     const totals = useGetTotals(filterValues) as any;
-    
+
     useEffect(() => {
         console.log(ids);
         if (ids && ids !== filterValues.st) {
             switch (filterValues.st) {
                 case OrderState.CART:
+                case OrderState.PAID:
                     setOrdered(ids);
                     break;
                 case OrderState.WAITING_RECEIVE:
@@ -124,7 +127,7 @@ const TabbedDatagrid = (props: TabbedDatagridProps) => {
                 case OrderState.COMPLETE:
                     setCompleted(ids);
                     break;
-                case 'cancelled':
+                case OrderState.CANCEL:
                     setCancelled(ids);
                     break;
             }
@@ -146,10 +149,10 @@ const TabbedDatagrid = (props: TabbedDatagridProps) => {
         filterValues.st === OrderState.CART
             ? ordered
             : filterValues.st === OrderState.WAITING_RECEIVE
-            ? waitingReceive
-            : filterValues.st === OrderState.COMPLETE
-            ? completed
-            : cancelled;
+                ? waitingReceive
+                : filterValues.st === OrderState.COMPLETE
+                    ? completed
+                    : cancelled;
 
     return (
         <Fragment>
@@ -186,8 +189,9 @@ const TabbedDatagrid = (props: TabbedDatagridProps) => {
                             value={{ ...listContext, ids: ordered }}
                         >
                             <Datagrid {...props} optimized rowClick="edit">
-                                <DateField source="date" showTime />
-                                <TextField source="reference" />
+                                <DateField source="created_time" showTime />
+                                <CustomerReferenceField />
+                                <NbItemsField />
                                 <NumberField
                                     source="total"
                                     options={{
@@ -204,8 +208,9 @@ const TabbedDatagrid = (props: TabbedDatagridProps) => {
                             value={{ ...listContext, ids: waitingReceive }}
                         >
                             <Datagrid {...props} optimized rowClick="edit">
-                                <DateField source="date" showTime />
-                                <TextField source="reference" />
+                                <DateField source="created_time" showTime />
+                                <CustomerReferenceField />
+                                <NbItemsField />
                                 <NumberField
                                     source="total"
                                     options={{
@@ -222,18 +227,18 @@ const TabbedDatagrid = (props: TabbedDatagridProps) => {
                             value={{ ...listContext, ids: completed }}
                         >
                             <Datagrid {...props} rowClick="edit">
-                                <DateField source="date" showTime />
-                                <TextField source="reference" />
+                                <DateField source="created_time" showTime />
+                                <CustomerReferenceField />
                                 <NbItemsField />
                                 <NumberField
                                     source="total"
                                     options={{
                                         style: 'currency',
-                                        currency: 'JPY',
+                                        currency: 'JYP',
                                     }}
                                     className={classes.total}
                                 />
-                                <BooleanField source="returned" />
+                                {/* <BooleanField source="returned" /> */}
                             </Datagrid>
                         </ListContextProvider>
                     )}
@@ -242,18 +247,18 @@ const TabbedDatagrid = (props: TabbedDatagridProps) => {
                             value={{ ...listContext, ids: cancelled }}
                         >
                             <Datagrid {...props} rowClick="edit">
-                                <DateField source="date" showTime />
-                                <TextField source="reference" />
+                                <DateField source="created_time" showTime />
+                                <CustomerReferenceField />
                                 <NbItemsField />
                                 <NumberField
                                     source="total"
                                     options={{
                                         style: 'currency',
-                                        currency: 'JPY',
+                                        currency: 'JYP',
                                     }}
                                     className={classes.total}
                                 />
-                                <BooleanField source="returned" />
+                                {/* <BooleanField source="returned" /> */}
                             </Datagrid>
                         </ListContextProvider>
                     )}

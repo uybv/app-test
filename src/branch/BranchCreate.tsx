@@ -7,7 +7,6 @@ import {
     useTranslate,
     required,
     minValue,
-    maxValue,
     NumberInput,
     ReferenceArrayInput,
     AutocompleteArrayInput
@@ -16,15 +15,10 @@ import { Typography, Box } from '@material-ui/core';
 import { makeStyles, Theme } from '@material-ui/core/styles';
 
 export const styles = {
-    name: { width: 600 },
-    banner: { width: 600 },
-    description: { width: 600 },
-    location: { width: 600 },
-    food: { width: 600 },
-    width: { width: 200 },
-    height: { width: 200 },
-    widthFormGroup: { display: 'inline-block' },
-    heightFormGroup: { display: 'inline-block', marginLeft: 32 },
+    width600: { width: 600 },
+    width200: { width: 200 },
+    leftFormGroup: { display: 'inline-block' },
+    rightFormGroup: { display: 'inline-block', marginLeft: 32 },
 };
 
 const useStyles = makeStyles(styles);
@@ -38,46 +32,53 @@ const BranchCreate = (props: CreateProps) => {
                 <TextInput
                     autoFocus
                     source="name"
-                    className={classes.name}
+                    className={classes.width600}
+                    validate={[required()]}
+                />
+                <TextInput
+                    autoFocus
+                    source="address.postal_code"
+                    className={classes.width600}
+                    validate={[required()]}
+                />
+                <TextInput
+                    autoFocus
+                    source="address.address"
+                    className={classes.width600}
                     validate={[required()]}
                 />
                 <NumberInput
-                    source="location.x"
+                    source="address.location.x"
                     validate={[required(), minValue(0)]}
-                    className={classes.width}
-                    formClassName={classes.widthFormGroup}
-                    placeholder={'Latitude'}
+                    className={classes.width200}
+                    formClassName={classes.leftFormGroup}
                 />
                 <NumberInput
-                    source="location.y"
+                    source="address.location.y"
                     validate={[required(), minValue(0)]}
-                    className={classes.height}
-                    formClassName={classes.heightFormGroup}
-                    placeholder={'Longitude'}
+                    className={classes.width200}
+                    formClassName={classes.rightFormGroup}
                 />
                 <ReferenceArrayInput
-                    className={classes.food}
+                    className={classes.width600}
                     reference="product"
                     source="food_ids"
                 >
                     <AutocompleteArrayInput />
                 </ReferenceArrayInput>
+                <ReferenceArrayInput
+                    className={classes.width600}
+                    reference="staff"
+                    source="staff_ids"
+                >
+                    <AutocompleteArrayInput />
+                </ReferenceArrayInput>
                 <TextInput
                     source="description"
-                    className={classes.description}
+                    className={classes.width600}
                 />
             </SimpleForm>
         </Create>
-    );
-};
-
-const SectionTitle = ({ label }: { label: string }) => {
-    const translate = useTranslate();
-
-    return (
-        <Typography variant="h6" gutterBottom>
-            {translate(label)}
-        </Typography>
     );
 };
 

@@ -9,7 +9,7 @@ import PendingOrders from './PendingOrders';
 import NewCustomers from './NewCustomers';
 import OrderChart from './OrderChart';
 
-import { Customer, Order } from '../types';
+import { Customer, Order, OrderState } from '../types';
 
 interface OrderStats {
     revenue: number;
@@ -62,14 +62,14 @@ const Dashboard = () => {
             }
         );
         const aggregations = recentOrders
-            .filter(order => order.status !== 'cancelled')
+            .filter(order => order.st !== OrderState.CANCEL)
             .reduce(
                 (stats: OrderStats, order) => {
-                    if (order.status !== 'cancelled') {
+                    if (order.st !== OrderState.CART) {
                         stats.revenue += order.total;
                         stats.nbNewOrders++;
                     }
-                    if (order.status === 'ordered') {
+                    if (order.st === OrderState.CART || order.st === OrderState.PAID) {
                         stats.pendingOrders.push(order);
                     }
                     return stats;
@@ -130,10 +130,10 @@ const Dashboard = () => {
                 <VerticalSpacer />
                 <NbNewOrders value={nbNewOrders} />
                 <VerticalSpacer />
-                <PendingOrders
+                {/* <PendingOrders
                     orders={pendingOrders}
                     customers={pendingOrdersCustomers}
-                />
+                /> */}
             </div>
         </div>
     ) : isSmall ? (
@@ -147,10 +147,10 @@ const Dashboard = () => {
                 <OrderChart orders={recentOrders} />
             </div>
             <div style={styles.singleCol}>
-                <PendingOrders
+                {/* <PendingOrders
                     orders={pendingOrders}
                     customers={pendingOrdersCustomers}
-                />
+                /> */}
             </div>
         </div>
     ) : (
@@ -166,10 +166,10 @@ const Dashboard = () => {
                         <OrderChart orders={recentOrders} />
                     </div>
                     <div style={styles.singleCol}>
-                        <PendingOrders
+                        {/* <PendingOrders
                             orders={pendingOrders}
                             customers={pendingOrdersCustomers}
-                        />
+                        /> */}
                     </div>
                 </div>
                 <div style={styles.rightCol}>

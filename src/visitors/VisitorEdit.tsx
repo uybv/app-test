@@ -102,19 +102,36 @@ const VisitorForm = (props: any) => {
                                             />
                                         </Box>
                                     </Box>
-                                    <TextInput
-                                        type="email"
-                                        source="email"
-                                        validate={[email(), required()]}
-                                        fullWidth
-                                    />
+                                    <Box display={{ xs: 'block', sm: 'flex' }}>
+                                        <Box
+                                            flex={1}
+                                            mr={{ xs: 0, sm: '0.5em' }}
+                                        >
+                                            <TextInput
+                                                label="resources.customer.fields.email"
+                                                source="email"
+                                                validate={[email(), required()]}
+                                                fullWidth
+                                            />
+                                        </Box>
+                                        <Box
+                                            flex={1}
+                                            ml={{ xs: 0, sm: '0.5em' }}
+                                        >
+                                            <TextInput
+                                                label="resources.customer.fields.phone"
+                                                source="phone"
+                                                fullWidth
+                                            />
+                                        </Box>
+                                    </Box>
                                     <Box display={{ xs: 'block', sm: 'flex' }}>
                                         <Box
                                             flex={1}
                                             mr={{ xs: 0, sm: '0.5em' }}
                                         >
                                             <DateInput
-                                                source="birthday"
+                                                source="birth_day"
                                                 fullWidth
                                                 helperText={false}
                                             />
@@ -185,7 +202,7 @@ const VisitorForm = (props: any) => {
 
                                     <Box mt="1em" />
                                 </Box>
-                                <Box
+                                {/* <Box
                                     flex={1}
                                     ml={{ xs: 0, lg: '1em' }}
                                     mt={{ xs: '1em', lg: 0 }}
@@ -198,10 +215,10 @@ const VisitorForm = (props: any) => {
                                     <div>
                                         <NullableBooleanInput
                                             source="has_newsletter"
-                                            resource="customers"
+                                            resource="customer"
                                         />
                                     </div>
-                                </Box>
+                                </Box> */}
                             </Box>
                         </CardContent>
                         <Toolbar

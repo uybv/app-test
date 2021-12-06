@@ -33,7 +33,7 @@ const FullNameField = (props: Props) => {
                 record={record}
                 size={size}
             />
-            {record.display_name.first_name} {record.display_name.last_name}
+            {record?.display_name?.first_name ? record?.display_name?.first_name : ''} {record?.display_name?.last_name ? record?.display_name?.last_name : ''}
         </div>
     ) : null;
 };

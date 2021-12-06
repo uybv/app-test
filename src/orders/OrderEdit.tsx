@@ -35,7 +35,7 @@ const OrderTitle = ({ record }: OrderTitleProps) => {
     const translate = useTranslate();
     return record ? (
         <span>
-            {translate('resources.commands.title', {
+            {translate('resources.order.title', {
                 reference: record.reference,
             })}
         </span>
@@ -50,7 +50,7 @@ const CustomerDetails = ({ record }: { record?: Customer }) => (
             to={`/customers/${record?.id}`}
             style={{ textDecoration: 'none' }}
         >
-            {record?.first_name} {record?.last_name}
+            {record?.display_name.first_name} {record?.display_name.last_name}
         </Typography>
         <Typography
             component={Link}
@@ -63,14 +63,15 @@ const CustomerDetails = ({ record }: { record?: Customer }) => (
     </Box>
 );
 
-const CustomerAddress = ({ record }: { record?: Customer }) => (
-    <Box>
-        <Typography>
-            {record?.first_name} {record?.last_name}
-        </Typography>
-        <Typography>{record?.address}</Typography>
-        <Typography>
-            {record?.city}, {record?.stateAbbr} {record?.zipcode}
+const BranchDetails = ({ record }: { record?: any }) => (
+    <Box display="flex" flexDirection="column">
+        <Typography
+            component={RouterLink}
+            color="primary"
+            to={`/branch/${record?.id}`}
+            style={{ textDecoration: 'none' }}
+        >
+            {record?.name}
         </Typography>
     </Box>
 );
@@ -94,111 +95,90 @@ const OrderForm = (props: any) => {
                                 <Grid item xs={12} sm={12} md={8}>
                                     <Typography variant="h6" gutterBottom>
                                         {translate(
-                                            'resources.commands.section.order'
+                                            'resources.order.section.order'
                                         )}
                                     </Typography>
                                     <Grid container>
                                         <Grid item xs={12} sm={12} md={6}>
                                             <Labeled
-                                                source="date"
-                                                resource="commands"
+                                                source="created_time"
+                                                resource="order"
                                             >
                                                 <DateField
-                                                    source="date"
-                                                    resource="commands"
+                                                    source="created_time"
+                                                    resource="order"
                                                     record={formProps.record}
                                                 />
                                             </Labeled>
                                         </Grid>
                                         <Grid item xs={12} sm={12} md={6}>
-                                            <Labeled
-                                                source="reference"
-                                                resource="commands"
+                                            <Typography variant="subtitle1" gutterBottom>
+                                                {translate(
+                                                    'resources.order.section.branch'
+                                                )}
+                                            </Typography>
+                                            <ReferenceField
+                                                source="branch_id"
+                                                resource="order"
+                                                reference="branch"
+                                                basePath="/branch"
+                                                record={formProps.record}
+                                                link={false}
                                             >
-                                                <TextField
-                                                    source="reference"
-                                                    resource="commands"
-                                                    record={formProps.record}
-                                                />
-                                            </Labeled>
+                                                <BranchDetails />
+                                            </ReferenceField>
                                         </Grid>
                                     </Grid>
                                     <Grid container>
                                         <Grid item xs={12} sm={12} md={6}>
                                             <SelectInput
-                                                resource="commands"
-                                                source="status"
+                                                resource="order"
+                                                source="st"
                                                 choices={[
                                                     {
-                                                        id: 'delivered',
-                                                        name: 'delivered',
+                                                        id: '1',
+                                                        name: '注文済み',
                                                     },
                                                     {
-                                                        id: 'ordered',
-                                                        name: 'ordered',
+                                                        id: '3',
+                                                        name: '来店待ち',
                                                     },
                                                     {
-                                                        id: 'cancelled',
-                                                        name: 'cancelled',
+                                                        id: '4',
+                                                        name: '完了',
                                                     },
                                                     {
-                                                        id: 'unknown',
-                                                        name: 'unknown',
-                                                        disabled: true,
+                                                        id: '9',
+                                                        name: 'キャンセル済み',
                                                     },
                                                 ]}
                                             />
-                                        </Grid>
-                                        <Grid item xs={12} sm={12} md={6}>
-                                            <Box mt={2}>
-                                                <BooleanInput
-                                                    row={true}
-                                                    resource="commands"
-                                                    source="returned"
-                                                />
-                                            </Box>
                                         </Grid>
                                     </Grid>
                                 </Grid>
                                 <Grid item xs={12} sm={12} md={4}>
                                     <Typography variant="h6" gutterBottom>
                                         {translate(
-                                            'resources.commands.section.customer'
+                                            'resources.order.section.customer'
                                         )}
                                     </Typography>
                                     <ReferenceField
-                                        source="customer_id"
-                                        resource="commands"
-                                        reference="customers"
-                                        basePath="/customers"
+                                        source="user_id"
+                                        resource="order"
+                                        reference="customer"
+                                        basePath="/customer"
                                         record={formProps.record}
                                         link={false}
                                     >
                                         <CustomerDetails />
                                     </ReferenceField>
                                     <Spacer />
-
-                                    <Typography variant="h6" gutterBottom>
-                                        {translate(
-                                            'resources.commands.section.shipping_address'
-                                        )}
-                                    </Typography>
-                                    <ReferenceField
-                                        source="customer_id"
-                                        resource="commands"
-                                        reference="customers"
-                                        basePath="/customers"
-                                        record={formProps.record}
-                                        link={false}
-                                    >
-                                        <CustomerAddress />
-                                    </ReferenceField>
                                 </Grid>
                             </Grid>
                             <Spacer />
 
                             <Typography variant="h6" gutterBottom>
-                                {translate('resources.commands.section.items')}
+                                {translate('resources.order.section.items')}
                             </Typography>
                             <Box>
                                 <Basket record={formProps.record} />
@@ -206,7 +186,7 @@ const OrderForm = (props: any) => {
                             <Spacer />
 
                             <Typography variant="h6" gutterBottom>
-                                {translate('resources.commands.section.total')}
+                                {translate('resources.order.section.total')}
                             </Typography>
                             <Box>
                                 <Totals record={formProps.record} />
@@ -219,7 +199,7 @@ const OrderForm = (props: any) => {
                             invalid={formProps.invalid}
                             handleSubmit={formProps.handleSubmit}
                             saving={formProps.saving}
-                            resource="commands"
+                            resource="order"
                         />
                     </Card>
                 </Box>

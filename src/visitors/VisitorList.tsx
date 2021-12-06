@@ -8,6 +8,7 @@ import {
     ListProps,
     NullableBooleanInput,
     NumberField,
+    TextField,
     SearchInput,
 } from 'react-admin';
 import { useMediaQuery, Theme } from '@material-ui/core';
@@ -54,19 +55,20 @@ const VisitorList = (props: ListProps): ReactElement => {
                 <MobileGrid />
             ) : (
                 <Datagrid optimized rowClick="edit">
+                    <TextField source="email" />
                     <CustomerLinkField />
                     <DateField source="last_login_at" />
-                    <NumberField
+                    {/* <NumberField
                         source="total_order"
                         label="resources.customer.fields.order"
                         className={classes.nb_commands}
-                    />
-                    <ColoredNumberField
+                    /> */}
+                    {/* <ColoredNumberField
                         source="total_revenue"
                         options={{ style: 'currency', currency: 'USD' }}
                     />
-                    <DateField source="latest_purchase" showTime />
-                    <BooleanField source="has_newsletter" label="News." />
+                    <DateField source="latest_purchase" showTime /> */}
+                    {/* <BooleanField source="has_newsletter" label="News." /> */}
                 </Datagrid>
             )
             }

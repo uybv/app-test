@@ -61,10 +61,10 @@ const NewCustomers = () => {
                               key={record.id}
                           >
                               <ListItemAvatar>
-                                  <Avatar src={`${record.avatar}?size=32x32`} />
+                                  <Avatar src={`${record?.avatar}?size=32x32`} />
                               </ListItemAvatar>
                               <ListItemText
-                                  primary={`${record.display_name.first_name} ${record.display_name.last_name}`}
+                                  primary={`${record?.display_name?.first_name ? record?.display_name?.first_name : ''} ${record?.display_name?.last_name ? record?.display_name?.last_name : ''}`}
                               />
                           </ListItem>
                       ))

@@ -47,7 +47,8 @@ const japaneseDomainMessages = {
                 total_spent: 'Total spent',
                 password: 'パスワード',
                 confirm_password: 'パスワード確認',
-                last_seen: 'Last seen'
+                last_seen: 'Last seen',
+                created_at: '登録日',
             },
             filters: {
                 last_visited: 'Last visited',
@@ -88,6 +89,7 @@ const japaneseDomainMessages = {
                     taxes: 'Tax',
                     total: 'Total',
                     unit_price: 'Unit Price',
+                    nb_items: 'Total item'
                 },
                 address: 'Address',
                 customer_id: 'Customer',
@@ -97,10 +99,12 @@ const japaneseDomainMessages = {
                 total_gte: 'Min amount',
                 status: 'Status',
                 returned: 'Returned',
+                created_at: '登録日',
             },
             section: {
                 order: 'Order',
                 customer: 'Customer',
+                branch: 'Branch',
                 shipping_address: 'Shipping Address',
                 items: 'Items',
                 total: 'Totals',
@@ -124,7 +128,8 @@ const japaneseDomainMessages = {
                     name: 'オプション',
                     item_display_name: 'オプション：項目',
                     item_price: '項目価格'
-                }
+                },
+                created_at: '登録日',
             },
             tabs: {
                 image: '画像',
@@ -147,12 +152,28 @@ const japaneseDomainMessages = {
             name: 'カテゴリー |||| カテゴリー',
             fields: {
                 products: '商品一覧（メニュー）',
+                created_at: '登録日',
             },
         },
         branch: {
             name: '店舗',
             fields: {
-                products: '商品一覧（メニュー）',
+                name: '氏名',
+                food_ids: '商品一覧（メニュー）',
+                staff_ids: 'スタッフ',
+                address: {
+                    postal_code: '郵便番号',
+                    prefecture: '都道府県',
+                    city: '市区町村',
+                    address: '住所',
+                    apartment: 'アパートメント名',
+                    location: {
+                        x: '経度',
+                        y: '緯度',
+                    }
+                },
+                description: '内容',
+                created_at: '登録日',
             },
         },
         tax: {
@@ -160,6 +181,17 @@ const japaneseDomainMessages = {
         },
         news: {
             name: 'ニュース',
+        },
+        staff: {
+            name: 'スタッフ',
+            fields: {
+                username: 'ユーザーID',
+                display_name: 'ユーザー名',
+                type: 'スタッフ役割',
+                created_at: '登録日',
+                password: 'パスワード',
+                confirm_password: 'パスワード確認',
+            }
         },
     }
 }

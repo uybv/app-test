@@ -8,13 +8,13 @@ const CustomerReferenceField = (
         source?: string;
     }
 ) => (
-    <ReferenceField source="customer_id" reference="customers" {...props}>
+    <ReferenceField source="user_id" reference="customer" {...props}>
         <FullNameField />
     </ReferenceField>
 );
 
 CustomerReferenceField.defaultProps = {
-    source: 'customer_id',
+    source: 'user_id',
     addLabel: true,
 };
 
