@@ -1,12 +1,14 @@
 org: avadkk
-app: wgs-app
-service: wgs-app-admin
-name: wgs-app-admin
+app: wgs
+service: wgs-admin
 frameworkVersion: '2'
+name: wgs-app-admin
 component: website
 
 inputs:
   src:
     src: ./src
+    domain: ${param:domain, 'dev-app-admin.wgs.jp'}
+    region: 'ap-northeast-1'
     hook: npm run build
     dist: ./build
