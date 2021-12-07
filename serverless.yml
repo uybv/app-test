@@ -2,13 +2,13 @@ org: avadkk
 app: wgs
 service: wgs-admin
 frameworkVersion: '2'
-name: wgs-app-admin
+name: wgs-admin
 component: website
+stage: dev
 
 inputs:
   src:
     src: ./src
-    domain: ${param:domain, 'dev-app-admin.wgs.jp'}
     region: 'ap-northeast-1'
-    hook: npm run build
+    hook: 'DISABLE_ESLINT_PLUGIN=true npm run build'
     dist: ./build

@@ -9,6 +9,7 @@ import {
 import QRCode from 'qrcode.react';
 import KeywordsField from './KeywordsField';
 import TagsField from './TagsField';
+import { apiBaseUrl } from '../config';
 
 const filters = [
     <SearchInput source="q" alwaysOn />,
@@ -18,7 +19,7 @@ const QrCodeField = (props: any) => {
     const { record } = props;
     if (!record) return null;
     return (
-        <QRCode size={120} value={"https://dev-app-api.wgs.jp/app/qr/?type=news&id=" + record.id} />
+        <QRCode size={120} value={apiBaseUrl + "/app/qr/?type=news&id=" + record.id} />
     );
 };
 

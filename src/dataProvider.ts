@@ -1,7 +1,9 @@
 import { fetchUtils } from 'react-admin';
 import { stringify } from 'query-string';
+import { apiBaseUrl } from './config';
 
-const apiUrl = 'http://localhost:3000/admin';
+const apiUrl = `${apiBaseUrl}/admin`;
+
 const httpClient = (url: string, options = {} as any) => {
     if (!options.headers) {
         options.headers = new Headers({ Accept: 'application/json' });

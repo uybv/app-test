@@ -1,6 +1,7 @@
 import { AuthProvider, fetchUtils } from 'react-admin';
+import { apiBaseUrl } from './config';
 
-const apiUrl = 'http://localhost:3000/admin/auth';
+const apiUrl = `${apiBaseUrl}/admin/auth`;
 const httpClient = fetchUtils.fetchJson;
 
 export const authProvider: AuthProvider = {
