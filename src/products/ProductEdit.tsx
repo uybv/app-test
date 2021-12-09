@@ -12,7 +12,8 @@ import {
     ArrayInput,
     SimpleFormIterator,
     ReferenceArrayInput,
-    AutocompleteArrayInput
+    AutocompleteArrayInput,
+    minValue
 } from 'react-admin';
 import { InputAdornment } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
@@ -58,7 +59,7 @@ const ProductEdit = (props: EditProps) => {
                         onChange={() => {
                             setChangeImage(true)
                         }}
-                        // validate={required()}
+                    // validate={required()}
                     >
                         <ImageField source="src" title="title" />
                     </ImageInput>
@@ -81,11 +82,24 @@ const ProductEdit = (props: EditProps) => {
                         }}
                         validate={requiredValidate}
                     />
+                    <NumberInput
+                        source="delivery_est"
+                        step="10"
+                        validate={[required(), minValue(0)]}
+                        className={classes.width200}
+                        InputProps={{
+                            startAdornment: (
+                                <InputAdornment position="start">
+                                    分
+                                </InputAdornment>
+                            ),
+                        }}
+                    />
                     <ReferenceArrayInput
                         reference="category"
                         source="cat_ids"
                         validate={required()}
-                    >   
+                    >
                         <AutocompleteArrayInput />
                     </ReferenceArrayInput>
                     <ReferenceArrayInput
@@ -95,16 +109,17 @@ const ProductEdit = (props: EditProps) => {
                     >
                         <AutocompleteArrayInput />
                     </ReferenceArrayInput>
+                    <RichTextInput source="description" />
                 </FormTab>
                 <FormTab
                     label="resources.product.tabs.options"
                     path="options"
                 >
                     <ArrayInput source="addition_prices" label="">
-                        <SimpleFormIterator disableRemove >
+                        <SimpleFormIterator >
                             <TextInput source="name" validate={required()} />
                             <ArrayInput label="resources.product.fields.price" source="prices">
-                                <SimpleFormIterator disableRemove >
+                                <SimpleFormIterator >
                                     <TextInput
                                         source="name"
                                         validate={required()}
@@ -134,7 +149,7 @@ const ProductEdit = (props: EditProps) => {
                     path="information"
                 >
                     <ArrayInput source="information" label="">
-                        <SimpleFormIterator disableRemove >
+                        <SimpleFormIterator >
                             <TextInput
                                 label="resources.product.fields.information.item_title"
                                 source="title" validate={required()}
@@ -144,17 +159,6 @@ const ProductEdit = (props: EditProps) => {
                                 source="content" validate={required()} />
                         </SimpleFormIterator>
                     </ArrayInput>
-                </FormTab>
-                <FormTab
-                    label="resources.product.tabs.description"
-                    path="description"
-                    contentClassName={classes.tab}
-                >
-                    <RichTextInput
-                        source="description"
-                        label=""
-                        validate={requiredValidate}
-                    />
                 </FormTab>
             </TabbedForm>
         </Edit>

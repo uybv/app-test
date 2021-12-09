@@ -14,6 +14,7 @@ import branch from './branch';
 import tax from './tax';
 import news from './news';
 import staff from './staff';
+import slide from './slide';
 
 import {
   unstable_createMuiStrictModeTheme,
@@ -45,6 +46,7 @@ const App = () => (
     <Resource name="branch" {...branch} />
     <Resource name="tax" {...tax} />
     <Resource name="news" {...news} />
+    <Resource name="slide" {...slide} />
     <Resource name="staff" {...staff} />
   </Admin>
 );

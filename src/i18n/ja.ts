@@ -25,7 +25,7 @@ const japaneseDomainMessages = {
     },
     resources: {
         customer: {
-            name: 'ユーザー管理',
+            name: '会員管理',
             fields: {
                 order: 'ユーザー：オーダー履歴',
                 display_name: {
@@ -81,54 +81,51 @@ const japaneseDomainMessages = {
             title: 'Order %{reference}',
             fields: {
                 basket: {
-                    delivery: 'Delivery',
-                    reference: 'Reference',
-                    quantity: 'Quantity',
+                    reference: '商品',
+                    quantity: '数量',
                     sum: 'Sum',
                     tax_rate: 'Tax Rate',
                     taxes: 'Tax',
-                    total: 'Total',
-                    unit_price: 'Unit Price',
+                    total: '総合計',
+                    unit_price: '価格',
                     nb_items: 'Total item'
                 },
-                address: 'Address',
-                customer_id: 'Customer',
-                date_gte: 'Passed Since',
-                date_lte: 'Passed Before',
+                address: '住所',
+                user_id: 'ユーザー管理',
                 nb_items: 'Nb Items',
                 total_gte: 'Min amount',
-                status: 'Status',
+                st: '状態',
                 returned: 'Returned',
-                created_at: '登録日',
+                created_time: '登録日',
             },
             section: {
-                order: 'Order',
-                customer: 'Customer',
-                branch: 'Branch',
-                shipping_address: 'Shipping Address',
+                order: 'オーダー管理',
+                customer: 'ユーザー管理',
+                branch: '店舗',
                 items: 'Items',
                 total: 'Totals',
             },
         },
         product: {
-            name: '商品 |||| 商品',
+            name: '商品管理',
             fields: {
-                category: 'カテゴリー',
-                tax: '税金',
+                cat_ids: 'カテゴリー',
+                tax_ids: '税金',
                 image: '画像',
                 name: '氏名',
                 price: '価格',
                 price_no_tax: '価格（税抜き）',
+                delivery_est: '受け取り時間（予定)',
                 information: {
-                    name: '商品情報',
-                    item_title: 'オプション：項目名前',
-                    item_content: 'オプション：項目内容'
+                    item_title: '項目名前',
+                    item_content: '項目内容'
                 },
                 option: {
                     name: 'オプション',
-                    item_display_name: 'オプション：項目',
+                    item_display_name: '項目',
                     item_price: '項目価格'
                 },
+                description: '内容',
                 created_at: '登録日',
             },
             tabs: {
@@ -149,7 +146,7 @@ const japaneseDomainMessages = {
             },
         },
         category: {
-            name: 'カテゴリー |||| カテゴリー',
+            name: '商品カテゴリ',
             fields: {
                 name: '氏名',
                 description: '内容',
@@ -158,11 +155,21 @@ const japaneseDomainMessages = {
             },
         },
         branch: {
-            name: '店舗',
+            name: '店舗管理',
+            tabs: {
+                info: '店舗情報',
+                menu: '商品一覧（メニュー）',
+                working_times: '営業時間'
+            },
             fields: {
                 name: '氏名',
                 food_ids: '商品一覧（メニュー）',
                 staff_ids: 'スタッフ',
+                delivery_est: '受け取り時間（予定)',
+                working_times: {
+                    start: '開店時間',
+                    end: '閉店時間'
+                },
                 address: {
                     postal_code: '郵便番号',
                     prefecture: '都道府県',
@@ -179,7 +186,7 @@ const japaneseDomainMessages = {
             },
         },
         tax: {
-            name: '税金',
+            name: '消費税設定',
             fields: {
                 name: '氏名',
                 description: '内容',
@@ -198,8 +205,15 @@ const japaneseDomainMessages = {
                 created_at: '登録日',
             }
         },
+        slide: {
+            name: 'スライド',
+            fields: {
+                value: '画像',
+                created_at: '登録日',
+            }
+        },
         staff: {
-            name: 'スタッフ',
+            name: 'スタッフ管理',
             fields: {
                 username: 'ユーザーID',
                 display_name: 'ユーザー名',

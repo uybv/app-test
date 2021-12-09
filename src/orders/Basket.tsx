@@ -7,9 +7,9 @@ import {
     TableRow,
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import { Link, FieldProps, useTranslate, useQueryWithStore } from 'react-admin';
+import { Link, FieldProps, TextField, useTranslate, useQueryWithStore } from 'react-admin';
 
-import { AppState, Order, Product } from '../types';
+import { Order } from '../types';
 
 const useStyles = makeStyles({
     rightAlignedCell: { textAlign: 'right' },
@@ -20,36 +20,7 @@ const Basket = (props: FieldProps<Order>) => {
     const classes = useStyles();
     const translate = useTranslate();
 
-    const { loaded, data: products } = useQueryWithStore<AppState>(
-        {
-            type: 'getMany',
-            resource: 'product',
-            payload: {
-                ids: record ? record.foods.map(item => item.id) : [],
-            },
-        },
-        {},
-        state => {
-            const productIds = record
-                ? record.foods.map(item => item.id)
-                : [];
-
-            return productIds
-                .map<Product>(
-                    productId =>
-                        state.admin.resources.product.data[
-                            productId
-                        ] as Product
-                )
-                .filter(r => typeof r !== 'undefined')
-                .reduce((prev, next) => {
-                    prev[next.id] = next;
-                    return prev;
-                }, {} as { [key: string]: Product });
-        }
-    );
-
-    if (!loaded || !record) return null;
+    if (!record) return null;
 
     return (
         <Table>
@@ -58,11 +29,6 @@ const Basket = (props: FieldProps<Order>) => {
                     <TableCell>
                         {translate(
                             'resources.order.fields.basket.reference'
-                        )}
-                    </TableCell>
-                    <TableCell className={classes.rightAlignedCell}>
-                        {translate(
-                            'resources.order.fields.basket.unit_price'
                         )}
                     </TableCell>
                     <TableCell className={classes.rightAlignedCell}>
@@ -76,34 +42,32 @@ const Basket = (props: FieldProps<Order>) => {
             <TableBody>
                 {record.foods.map(
                     (item: any) =>
-                        products[item.id] && (
-                            <TableRow key={item.id}>
-                                <TableCell>
-                                    <Link to={`/products/${item.id}`}>
-                                        {products[item.id].name}
-                                    </Link>
-                                </TableCell>
-                                <TableCell className={classes.rightAlignedCell}>
-                                    {products[
-                                        item.id
-                                    ].price.toLocaleString(undefined, {
-                                        style: 'currency',
-                                        currency: 'JPY',
-                                    })}
-                                </TableCell>
-                                <TableCell className={classes.rightAlignedCell}>
-                                    {item.quantity}
-                                </TableCell>
-                                <TableCell className={classes.rightAlignedCell}>
-                                    {(
-                                        products[item.id].price 
-                                    ).toLocaleString(undefined, {
-                                        style: 'currency',
-                                        currency: 'JPY',
-                                    })}
-                                </TableCell>
-                            </TableRow>
-                        )
+                    (
+                        <TableRow key={item.id}>
+                            <TableCell>
+                                <Link to={`/products/${item.id}`}>
+                                    {item.name + '\n'}
+                                </Link>
+                                {item.additions.map((addition: any) => (
+                                    <div>
+                                        {addition.name}: {addition.price.toLocaleString(undefined, {
+                                            style: 'currency',
+                                            currency: 'JPY',
+                                        })}
+                                    </div>
+                                ))}
+                            </TableCell>
+                            <TableCell className={classes.rightAlignedCell}>
+                                {item.quantity}
+                            </TableCell>
+                            <TableCell className={classes.rightAlignedCell}>
+                                {item.price.toLocaleString(undefined, {
+                                    style: 'currency',
+                                    currency: 'JPY',
+                                })}
+                            </TableCell>
+                        </TableRow>
+                    )
                 )}
             </TableBody>
         </Table>

@@ -1,4 +1,4 @@
-import Icon from '@material-ui/icons/ListSharp';
+import Icon from '@material-ui/icons/PeopleOutline';
 
 import StaffList from './StaffList';
 import StaffEdit from './StaffEdit';

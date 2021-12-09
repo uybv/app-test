@@ -19,6 +19,7 @@ import branch from '../branch';
 import tax from '../tax';
 import news from '../news';
 import staff from '../staff';
+import slide from '../slide';
 import SubMenu from './SubMenu';
 
 type MenuName = 'menuCatalog' | 'menuSales' | 'menuCustomers';
@@ -49,28 +50,6 @@ const Menu = ({ dense = false }: MenuProps) => {
             <DashboardMenuItem />
             <MenuItemLink
                 to={{
-                    pathname: '/branch',
-                    state: { _scrollToTop: true },
-                }}
-                primaryText={translate(`resources.branch.name`, {
-                    smart_count: 2,
-                })}
-                leftIcon={<branch.icon />}
-                dense={dense}
-            />
-            <MenuItemLink
-                to={{
-                    pathname: '/product',
-                    state: { _scrollToTop: true },
-                }}
-                primaryText={translate(`resources.product.name`, {
-                    smart_count: 2,
-                })}
-                leftIcon={<products.icon />}
-                dense={dense}
-            />
-            <MenuItemLink
-                to={{
                     pathname: '/order',
                     state: { _scrollToTop: true },
                 }}
@@ -93,6 +72,28 @@ const Menu = ({ dense = false }: MenuProps) => {
             />
             <MenuItemLink
                 to={{
+                    pathname: '/news',
+                    state: { _scrollToTop: true },
+                }}
+                primaryText={translate(`resources.news.name`, {
+                    smart_count: 2,
+                })}
+                leftIcon={<news.icon />}
+                dense={dense}
+            />
+            <MenuItemLink
+                to={{
+                    pathname: '/slide',
+                    state: { _scrollToTop: true },
+                }}
+                primaryText={translate(`resources.slide.name`, {
+                    smart_count: 2,
+                })}
+                leftIcon={<slide.icon />}
+                dense={dense}
+            />
+            <MenuItemLink
+                to={{
                     pathname: '/category',
                     state: { _scrollToTop: true },
                 }}
@@ -100,6 +101,30 @@ const Menu = ({ dense = false }: MenuProps) => {
                     smart_count: 2,
                 })}
                 leftIcon={<categories.icon />}
+                dense={dense}
+            />
+
+            <MenuItemLink
+                to={{
+                    pathname: '/product',
+                    state: { _scrollToTop: true },
+                }}
+                primaryText={translate(`resources.product.name`, {
+                    smart_count: 2,
+                })}
+                leftIcon={<products.icon />}
+                dense={dense}
+            />
+
+            <MenuItemLink
+                to={{
+                    pathname: '/branch',
+                    state: { _scrollToTop: true },
+                }}
+                primaryText={translate(`resources.branch.name`, {
+                    smart_count: 2,
+                })}
+                leftIcon={<branch.icon />}
                 dense={dense}
             />
             <MenuItemLink
@@ -111,17 +136,6 @@ const Menu = ({ dense = false }: MenuProps) => {
                     smart_count: 2,
                 })}
                 leftIcon={<tax.icon />}
-                dense={dense}
-            />
-            <MenuItemLink
-                to={{
-                    pathname: '/news',
-                    state: { _scrollToTop: true },
-                }}
-                primaryText={translate(`resources.news.name`, {
-                    smart_count: 2,
-                })}
-                leftIcon={<news.icon />}
                 dense={dense}
             />
             <MenuItemLink

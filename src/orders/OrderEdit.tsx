@@ -136,19 +136,19 @@ const OrderForm = (props: any) => {
                                                 source="st"
                                                 choices={[
                                                     {
-                                                        id: '1',
+                                                        id: 10,
                                                         name: '注文済み',
                                                     },
                                                     {
-                                                        id: '3',
+                                                        id: 89,
                                                         name: '来店待ち',
                                                     },
                                                     {
-                                                        id: '4',
+                                                        id: 90,
                                                         name: '完了',
                                                     },
                                                     {
-                                                        id: '9',
+                                                        id: 81,
                                                         name: 'キャンセル済み',
                                                     },
                                                 ]}

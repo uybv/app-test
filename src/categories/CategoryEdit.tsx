@@ -33,6 +33,7 @@ const CategoryEdit = (props: EditProps) => (
         <SimpleForm>
             <TextInput source="name" />
             <ReferenceManyField
+                filter={{  }}
                 reference="product"
                 target="cat_ids"
                 label="resources.category.fields.products"

@@ -71,13 +71,15 @@ export interface Customer extends Record {
 
 export enum OrderState {
     CART = 1,
-    PAID = 2,
-    PROCESS = 3,
-    WAITING_RECEIVE = 4,
-    CANCEL = 9,
-    COMPLETE = 10,
+    PAID = 10,
+    WAIT_PAY = 11,
+    PROCESS_PAY = 12,
+    PAID_ERROR = 19,
+    CANCEL_PROCESS = 80,
+    CANCEL = 81,
+    WAITING_RECEIVE = 89,
+    COMPLETE = 90
 }
-
 
 export interface Order extends Record {
     st: OrderState;

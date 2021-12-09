@@ -3,7 +3,7 @@ import {
     Create,
     FormTab,
     NumberInput,
-    ReferenceInput,
+    minValue,
     SelectInput,
     TabbedForm,
     TextInput,
@@ -22,6 +22,7 @@ import RichTextInput from 'ra-input-rich-text';
 
 export const styles = {
     price: { width: '7em' },
+    width200: { width: 200 },
     leftFormGroup: { display: 'inline-block' },
     rightFormGroup: { display: 'inline-block', marginLeft: 32 },
 };
@@ -58,6 +59,19 @@ const ProductCreate = (props: CreateProps) => {
                             ),
                         }}
                     />
+                    <NumberInput
+                        source="delivery_est"
+                        step="10"
+                        validate={[required(), minValue(0)]}
+                        className={classes.width200}
+                        InputProps={{
+                            startAdornment: (
+                                <InputAdornment position="start">
+                                    分
+                                </InputAdornment>
+                            ),
+                        }}
+                    />
                     <ReferenceArrayInput
                         reference="category"
                         source="cat_ids"
@@ -72,16 +86,17 @@ const ProductCreate = (props: CreateProps) => {
                     >
                         <AutocompleteArrayInput />
                     </ReferenceArrayInput>
+                    <RichTextInput source="description" />
                 </FormTab>
                 <FormTab
                     label="resources.product.tabs.options"
                     path="options"
                 >
-                    <ArrayInput source="addition_prices" label="">
-                        <SimpleFormIterator disableRemove >
+                    <ArrayInput source="addition_prices" label="" defaultValue={[{ name: '', prices: [{ name: '', price: 0 }, { name: '', price: 0 }, { name: '', price: 0 }] }]}>
+                        <SimpleFormIterator >
                             <TextInput source="name" validate={required()} />
                             <ArrayInput label="resources.product.fields.price" source="prices">
-                                <SimpleFormIterator disableRemove >
+                                <SimpleFormIterator >
                                     <TextInput
                                         source="name"
                                         validate={required()}
@@ -110,8 +125,8 @@ const ProductCreate = (props: CreateProps) => {
                     label="resources.product.tabs.information"
                     path="information"
                 >
-                    <ArrayInput source="information" label="">
-                        <SimpleFormIterator disableRemove >
+                    <ArrayInput source="information" label="" defaultValue={[{ title: '', content: '' }]}>
+                        <SimpleFormIterator >
                             <TextInput
                                 label="resources.product.fields.information.item_title"
                                 source="title" validate={required()}
@@ -121,12 +136,6 @@ const ProductCreate = (props: CreateProps) => {
                                 source="content" validate={required()} />
                         </SimpleFormIterator>
                     </ArrayInput>
-                </FormTab>
-                <FormTab
-                    label="resources.product.tabs.description"
-                    path="description"
-                >
-                    <RichTextInput source="description" label="" />
                 </FormTab>
             </TabbedForm>
         </Create>

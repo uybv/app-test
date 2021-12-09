@@ -32,8 +32,8 @@ import CustomerReferenceField from '../visitors/CustomerReferenceField';
 import AddressField from '../visitors/AddressField';
 
 const orderFilters = [
-    <SearchInput source="q" alwaysOn />,
-    <ReferenceInput source="customer_id" reference="customer">
+    // <SearchInput source="q" alwaysOn />,
+    <ReferenceInput source="user_id" reference="customer">
         <AutocompleteInput
             optionText={(choice: Customer) =>
                 choice && choice.id // the empty choice is { id: '' }
@@ -53,10 +53,10 @@ const useDatagridStyles = makeStyles({
 });
 
 const tabs = [
-    { id: 1, name: '注文済み' },
-    { id: 3, name: '来店待ち' },
-    { id: 4, name: '完了' },
-    { id: 9, name: 'キャンセル済み' },
+    { id: 10, name: '注文済み' },
+    { id: 89, name: '来店待ち' },
+    { id: 90, name: '完了' },
+    { id: 81, name: 'キャンセル済み' },
 ];
 
 interface TabbedDatagridProps extends DatagridProps { }
@@ -114,7 +114,6 @@ const TabbedDatagrid = (props: TabbedDatagridProps) => {
     const totals = useGetTotals(filterValues) as any;
 
     useEffect(() => {
-        console.log(ids);
         if (ids && ids !== filterValues.st) {
             switch (filterValues.st) {
                 case OrderState.CART:
@@ -146,7 +145,7 @@ const TabbedDatagrid = (props: TabbedDatagridProps) => {
     );
 
     const selectedIds =
-        filterValues.st === OrderState.CART
+        filterValues.st === OrderState.PAID
             ? ordered
             : filterValues.st === OrderState.WAITING_RECEIVE
                 ? waitingReceive
@@ -184,7 +183,7 @@ const TabbedDatagrid = (props: TabbedDatagridProps) => {
                 </ListContextProvider>
             ) : (
                 <div>
-                    {filterValues.st === OrderState.CART && (
+                    {filterValues.st === OrderState.PAID && (
                         <ListContextProvider
                             value={{ ...listContext, ids: ordered }}
                         >
