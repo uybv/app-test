@@ -14,7 +14,7 @@ const SlideCreate = (props: CreateProps) => {
         <Create {...props}>
             <SimpleForm>
                 <ImageInput source="images"
-                    label="resources.slide.fields.value"
+                    label="resources.slide.fields.image"
                     accept="image/*"
                     maxSize={1000000}
                     validate={required()}

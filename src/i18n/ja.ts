@@ -208,7 +208,7 @@ const japaneseDomainMessages = {
         slide: {
             name: 'スライド',
             fields: {
-                value: '画像',
+                image: '画像',
                 created_at: '登録日',
             }
         },

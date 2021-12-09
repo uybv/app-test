@@ -16,7 +16,7 @@ const SlideList = (props: ListProps) => (
         filters={[]}
     >
         <Datagrid optimized rowClick="edit">
-            <ImageField source="value" />
+            <ImageField source="image" />
             <DateField source="created_at" />
         </Datagrid>
     </List>

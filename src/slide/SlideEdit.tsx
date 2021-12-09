@@ -16,10 +16,10 @@ const SlideEdit = (props: EditProps) => {
         <Edit title={""} {...props}>
             <SimpleForm>
                 {!changeImage && (
-                    <ImageField source="value" label={""} />
+                    <ImageField source="image" label={""} />
                 )}
                 <ImageInput source="images"
-                    label="resources.slide.fields.value"
+                    label="resources.slide.fields.image"
                     accept="image/*"
                     maxSize={1000000}
                     validate={required()}
