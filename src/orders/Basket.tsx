@@ -45,9 +45,7 @@ const Basket = (props: FieldProps<Order>) => {
                     (
                         <TableRow key={item.id}>
                             <TableCell>
-                                <Link to={`/products/${item.id}`}>
-                                    {item.name + '\n'}
-                                </Link>
+                                {item.name + '\n'}
                                 {item.additions.map((addition: any) => (
                                     <div>
                                         {addition.name}: {addition.price.toLocaleString(undefined, {

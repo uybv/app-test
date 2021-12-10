@@ -45,18 +45,12 @@ const OrderTitle = ({ record }: OrderTitleProps) => {
 const CustomerDetails = ({ record }: { record?: Customer }) => (
     <Box display="flex" flexDirection="column">
         <Typography
-            component={RouterLink}
             color="primary"
-            to={`/customers/${record?.id}`}
-            style={{ textDecoration: 'none' }}
         >
             {record?.display_name.first_name} {record?.display_name.last_name}
         </Typography>
         <Typography
-            component={Link}
             color="primary"
-            href={`mailto:${record?.email}`}
-            style={{ textDecoration: 'none' }}
         >
             {record?.email}
         </Typography>

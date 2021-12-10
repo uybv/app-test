@@ -28,7 +28,7 @@ interface ProductTitleProps {
 }
 
 const ProductTitle = ({ record }: ProductTitleProps) =>
-    record ? <span>Poster #{record.reference}</span> : null;
+    record ? <span>商品管理 #{record.name}</span> : null;
 
 const useStyles = makeStyles({
     ...createStyles,

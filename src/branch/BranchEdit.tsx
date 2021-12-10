@@ -20,8 +20,10 @@ import QRCode from 'qrcode.react';
 import { apiBaseUrl } from '../config';
 
 import { makeStyles } from '@material-ui/core/styles';
-import { InputAdornment } from '@material-ui/core';
+import { InputAdornment, Button } from '@material-ui/core';
+import { CloudDownload } from '@material-ui/icons'
 import ProductRefField from '../products/ProductRefField';
+import ThumbnailField from '../products/ThumbnailField';
 
 export const styles = {
     width600: { width: 600 },
@@ -36,7 +38,37 @@ const QrCodeField = (props: any) => {
     const { record } = props;
     if (!record) return null;
     return (
-        <QRCode size={120} value={apiBaseUrl + "/app/qr/?type=food-branch&food_id=" + record.id + "&branch_id=" + branchId} />
+        <QRCode id={record.id} size={150} value={apiBaseUrl + "/app/qr/?type=food-branch&food_id=" + record.id + "&branch_id=" + branchId} />
+    );
+};
+
+const QrCodeDownloadButton = (props: any) => {
+    const { record } = props;
+    if (!record) return null;
+    return (
+        <>
+            <Button
+                variant="contained"
+                color="primary"
+                size="small"
+                startIcon={<CloudDownload />}
+                onClick={() => {
+                    const canvas = document.getElementById(record.id) as any;
+                    const pngUrl = canvas.toDataURL('image/png').replace('image/png', 'image/octet-stream');
+                    let downloadLink = document.createElement('a');
+                    downloadLink.href = pngUrl;
+                    downloadLink.download = 'foo_branch_' + record.id + '.png';
+                    document.body.appendChild(downloadLink);
+                    downloadLink.click();
+                    document.body.removeChild(downloadLink);
+                }}
+            >
+                ＱＲコードのダウンロード
+            </Button>
+            <div style={{ display: "none" }}>
+                <QrCodeField  {...props} />
+            </div>
+        </>
     );
 };
 
@@ -165,12 +197,13 @@ const BranchEdit = (props: EditProps) => {
                         fullWidth
                     >
                         <Datagrid>
-                            <QrCodeField />
+                            <ThumbnailField />
                             <ProductRefField source="name" />
                             <NumberField
                                 source="price"
                                 options={{ style: 'currency', currency: 'JPY' }}
                             />
+                            <QrCodeDownloadButton />
                         </Datagrid>
                     </ReferenceArrayField>
                 </FormTab>

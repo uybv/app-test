@@ -4,7 +4,7 @@ import { FieldProps } from 'react-admin';
 import { Product } from '../types';
 
 const useStyles = makeStyles({
-    root: { width: 25, maxWidth: 25, maxHeight: 25 },
+    root: { width: 100, maxWidth: 100, maxHeight: 100 },
 });
 
 const ThumbnailField = (props: FieldProps<Product>) => {

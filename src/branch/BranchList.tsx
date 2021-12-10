@@ -2,11 +2,13 @@ import * as React from 'react';
 import {
     List, ListProps,
     Datagrid,
-    DateField,
+    EditButton,
     TextField,
     SearchInput,
 } from 'react-admin';
 import QRCode from 'qrcode.react';
+import Button from '@material-ui/core/Button';
+import { CloudDownload } from '@material-ui/icons'
 import { apiBaseUrl } from '../config';
 
 const branchFilters = [
@@ -17,7 +19,37 @@ const QrCodeField = (props: any) => {
     const { record } = props;
     if (!record) return null;
     return (
-        <QRCode size={120} value={apiBaseUrl + "/app/qr/?type=news&id=" + record.id} />
+        <QRCode id={record.id} size={150} value={apiBaseUrl + "/app/qr/?type=branch&id=" + record.id} />
+    );
+};
+
+const QrCodeDownloadButton = (props: any) => {
+    const { record } = props;
+    if (!record) return null;
+    return (
+        <>
+            <Button
+                variant="contained"
+                color="primary"
+                size="small"
+                startIcon={<CloudDownload />}
+                onClick={() => {
+                    const canvas = document.getElementById(record.id) as any;
+                    const pngUrl = canvas.toDataURL('image/png').replace('image/png', 'image/octet-stream');
+                    let downloadLink = document.createElement('a');
+                    downloadLink.href = pngUrl;
+                    downloadLink.download = 'branch_' + record.id + '.png';
+                    document.body.appendChild(downloadLink);
+                    downloadLink.click();
+                    document.body.removeChild(downloadLink);
+                }}
+            >
+                ＱＲコードのダウンロード
+            </Button>
+            <div style={{ display: "none" }}>
+                <QrCodeField  {...props} />
+            </div>
+        </>
     );
 };
 
@@ -30,11 +62,11 @@ const BranchList = (props: ListProps) => (
         component="div"
         filters={branchFilters}
     >
-        <Datagrid optimized rowClick="edit">
-            <QrCodeField />
+        <Datagrid optimized>
             <TextField source="name" />
-            <TextField source="description" />
-            <DateField source="created_at" />
+            <TextField source="address.address" />
+            <QrCodeDownloadButton />
+            <EditButton />
         </Datagrid>
     </List>
 );
