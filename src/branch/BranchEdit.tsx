@@ -10,12 +10,18 @@ import {
     NumberInput,
     ReferenceArrayInput,
     AutocompleteArrayInput,
+    ReferenceArrayField,
+    NumberField,
+    Datagrid,
     required,
     minValue
 } from 'react-admin';
+import QRCode from 'qrcode.react';
+import { apiBaseUrl } from '../config';
 
 import { makeStyles } from '@material-ui/core/styles';
 import { InputAdornment } from '@material-ui/core';
+import ProductRefField from '../products/ProductRefField';
 
 export const styles = {
     width600: { width: 600 },
@@ -24,11 +30,24 @@ export const styles = {
     rightFormGroup: { display: 'inline-block', marginLeft: 32 },
 };
 
+let branchId = '';
+
+const QrCodeField = (props: any) => {
+    const { record } = props;
+    if (!record) return null;
+    return (
+        <QRCode size={120} value={apiBaseUrl + "/app/qr/?type=food-branch&food_id=" + record.id + "&branch_id=" + branchId} />
+    );
+};
+
 const useStyles = makeStyles(styles);
 
 const BranchTitle = (props: FieldProps<any>) => {
     const { record } = props;
     const translate = useTranslate();
+    if (record) {
+        branchId = record.id;
+    }
     return record ? (
         <span>
             {translate('resources.branch.name', { smart_count: 1 })} &quot;
@@ -40,10 +59,23 @@ const BranchTitle = (props: FieldProps<any>) => {
 const BranchEdit = (props: EditProps) => {
     const classes = useStyles(props);
 
+    const transform = (data: any) => {
+        const start = data.working_times.start_at.split(":");
+        const end = data.working_times.end_at.split(":");
+        return {
+            ...data,
+            working_times: {
+                start_at: (start[0] * 60 * 60 * 1000) + (start[1] * 60 * 1000),
+                end_at: (end[0] * 60 * 60 * 1000) + (end[1] * 60 * 1000),
+            },
+            delivery_est: data.delivery_est * 60 * 1000,
+        }
+    };
+
     return (
-        <Edit title={<BranchTitle />} {...props}>
+        <Edit title={<BranchTitle />} {...props} transform={transform}>
             <TabbedForm >
-                <FormTab label="resources.branch.tabs.info" path="info">
+                <FormTab label="resources.branch.tabs.info">
                     <TextInput
                         autoFocus
                         source="name"
@@ -76,7 +108,7 @@ const BranchEdit = (props: EditProps) => {
                     />
                     <></>
                     <TextInput
-                        source="working_times.start"
+                        source="working_times.start_at"
                         type='time'
                         defaultValue={'08:00'}
                         validate={[required(), minValue(0)]}
@@ -84,7 +116,7 @@ const BranchEdit = (props: EditProps) => {
                         formClassName={classes.leftFormGroup}
                     />
                     <TextInput
-                        source="working_times.end"
+                        source="working_times.end_at"
                         type='time'
                         defaultValue={'18:00'}
                         validate={[required(), minValue(0)]}
@@ -109,7 +141,7 @@ const BranchEdit = (props: EditProps) => {
                         reference="staff"
                         source="staff_ids"
                     >
-                        <AutocompleteArrayInput />
+                        <AutocompleteArrayInput  optionText="username" />
                     </ReferenceArrayInput>
                     <TextInput
                         source="description"
@@ -124,6 +156,23 @@ const BranchEdit = (props: EditProps) => {
                     >
                         <AutocompleteArrayInput />
                     </ReferenceArrayInput>
+                    <ReferenceArrayField
+                        filter={{}}
+                        reference="product"
+                        source="food_ids"
+                        label=""
+                        perPage={20}
+                        fullWidth
+                    >
+                        <Datagrid>
+                            <QrCodeField />
+                            <ProductRefField source="name" />
+                            <NumberField
+                                source="price"
+                                options={{ style: 'currency', currency: 'JPY' }}
+                            />
+                        </Datagrid>
+                    </ReferenceArrayField>
                 </FormTab>
             </TabbedForm>
         </Edit>

@@ -39,6 +39,8 @@ const Menu = ({ dense = false }: MenuProps) => {
         setState(state => ({ ...state, [menu]: !state[menu] }));
     };
 
+    const [roleType, setRoleType] = useState(localStorage.getItem('roleType'));
+
     return (
         <div
             className={clsx(classes.root, {

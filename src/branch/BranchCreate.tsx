@@ -13,6 +13,7 @@ import {
 } from 'react-admin';
 import { makeStyles } from '@material-ui/core/styles';
 import { InputAdornment } from '@material-ui/core';
+import moment from 'moment';
 
 export const styles = {
     width600: { width: 600 },
@@ -26,10 +27,23 @@ const useStyles = makeStyles(styles);
 const BranchCreate = (props: CreateProps) => {
     const classes = useStyles(props);
 
+    const transform = (data: any) => {
+        const start = data.working_times.start_at.split(":");
+        const end = data.working_times.end_at.split(":");
+        return {
+            ...data,
+            working_times: {
+                start_at: (start[0] * 60 * 60 * 1000) + (start[1] * 60 * 1000),
+                end_at: (end[0] * 60 * 60 * 1000) + (end[1] * 60 * 1000),
+            },
+            delivery_est: data.delivery_est * 60 * 1000,
+        }
+    };
+
     return (
-        <Create {...props}>
+        <Create {...props} transform={transform}>
             <TabbedForm >
-                <FormTab label="resources.branch.tabs.info" path="info">
+                <FormTab label="resources.branch.tabs.info">
                     <TextInput
                         autoFocus
                         source="name"
@@ -62,7 +76,7 @@ const BranchCreate = (props: CreateProps) => {
                     />
                     <></>
                     <TextInput
-                        source="working_times.start"
+                        source="working_times.start_at"
                         type='time'
                         defaultValue={'08:00'}
                         validate={[required(), minValue(0)]}
@@ -70,7 +84,7 @@ const BranchCreate = (props: CreateProps) => {
                         formClassName={classes.leftFormGroup}
                     />
                     <TextInput
-                        source="working_times.end"
+                        source="working_times.end_at"
                         type='time'
                         defaultValue={'18:00'}
                         validate={[required(), minValue(0)]}

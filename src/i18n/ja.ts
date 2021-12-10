@@ -72,7 +72,7 @@ const japaneseDomainMessages = {
             },
             errors: {
                 password_mismatch:
-                    'The password confirmation is not the same as the password.',
+                    'パスワード（確認）はパスワードと一致していません。',
             },
         },
         order: {
@@ -92,6 +92,7 @@ const japaneseDomainMessages = {
                 },
                 address: '住所',
                 user_id: 'ユーザー管理',
+                branch_id: '店舗管理',
                 nb_items: 'Nb Items',
                 total_gte: 'Min amount',
                 st: '状態',
@@ -167,8 +168,8 @@ const japaneseDomainMessages = {
                 staff_ids: 'スタッフ',
                 delivery_est: '受け取り時間（予定)',
                 working_times: {
-                    start: '開店時間',
-                    end: '閉店時間'
+                    start_at: '開店時間',
+                    end_at: '閉店時間'
                 },
                 address: {
                     postal_code: '郵便番号',
@@ -189,6 +190,7 @@ const japaneseDomainMessages = {
             name: '消費税設定',
             fields: {
                 name: '氏名',
+                value: '消費税(%)',
                 description: '内容',
                 created_at: '登録日',
             }
@@ -221,6 +223,10 @@ const japaneseDomainMessages = {
                 created_at: '登録日',
                 password: 'パスワード',
                 confirm_password: 'パスワード確認',
+            },
+            errors: {
+                password_mismatch:
+                    'パスワード（確認）はパスワードと一致していません。',
             }
         },
     }

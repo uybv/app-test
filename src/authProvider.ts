@@ -14,6 +14,7 @@ export const authProvider: AuthProvider = {
                 if (status === 200) {
                     localStorage.setItem('username', params.username);
                     localStorage.setItem('accessToken', json.accessToken);
+                    localStorage.setItem('roleType', json.staff.type);
                 }
                 resolve(status === 200);
             });

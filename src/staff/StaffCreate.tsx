@@ -5,15 +5,15 @@ import {
     SimpleForm,
     TextInput,
     PasswordInput,
-    SelectInput,
-    useTranslate,
     required,
 } from 'react-admin';
-import { Typography, Box } from '@material-ui/core';
-import { makeStyles, Theme } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 
 export const styles = {
     width600: { width: 600 },
+    width300: { width: 300 },
+    leftFormGroup: { display: 'inline-block' },
+    rightFormGroup: { display: 'inline-block', marginLeft: 32 },
 };
 
 export const validatePasswords = ({
@@ -36,8 +36,13 @@ const useStyles = makeStyles(styles);
 const StaffCreate = (props: CreateProps) => {
     const classes = useStyles(props);
 
+    const transform = (data: any) => {
+        delete data.confirm_password;
+        return data;
+    };
+
     return (
-        <Create {...props}>
+        <Create {...props} transform={transform}>
             <SimpleForm validate={validatePasswords}>
                 <TextInput source="username" className={classes.width600} validate={[required()]} />
 
@@ -46,42 +51,20 @@ const StaffCreate = (props: CreateProps) => {
                     validate={[required()]}
                     className={classes.width600}
                 />
-                <SelectInput
-                    resource="staff"
-                    source="type"
-                    choices={[
-                        // {
-                        //     id: '1',
-                        //     name: 'Admin',
-                        // },
-                        {
-                            id: '2',
-                            name: 'Staff',
-                        },
-                    ]}
-                />
                 <PasswordInput
                     source="password"
                     resource="staff"
-                    className={classes.width600}
+                    className={classes.width300}
+                    formClassName={classes.leftFormGroup}
                 />
                 <PasswordInput
                     source="confirm_password"
                     resource="staff"
-                    className={classes.width600}
+                    className={classes.width300}
+                    formClassName={classes.rightFormGroup}
                 />
             </SimpleForm>
         </Create>
-    );
-};
-
-const SectionTitle = ({ label }: { label: string }) => {
-    const translate = useTranslate();
-
-    return (
-        <Typography variant="h6" gutterBottom>
-            {translate(label)}
-        </Typography>
     );
 };
 

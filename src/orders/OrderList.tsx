@@ -29,7 +29,6 @@ import NbItemsField from './NbItemsField';
 import MobileGrid from './MobileGrid';
 import { Customer, OrderState } from '../types';
 import CustomerReferenceField from '../visitors/CustomerReferenceField';
-import AddressField from '../visitors/AddressField';
 
 const orderFilters = [
     // <SearchInput source="q" alwaysOn />,
@@ -42,6 +41,15 @@ const orderFilters = [
             }
         />
     </ReferenceInput>,
+    <ReferenceInput source="branch_id" reference="branch">
+    <AutocompleteInput
+        optionText={(choice: any) =>
+            choice && choice.id // the empty choice is { id: '' }
+                ? `${choice.name}`
+                : ''
+        }
+    />
+</ReferenceInput>,
     // <DateInput source="date_gte" />,
     // <DateInput source="date_lte" />,
     // <TextInput source="total_gte" />,

@@ -6,7 +6,6 @@ import {
     SimpleForm,
     TextInput,
     PasswordInput,
-    SelectInput,
     useTranslate,
     required
 } from 'react-admin';
@@ -16,6 +15,9 @@ import { Category } from '../types';
 
 export const styles = {
     width600: { width: 600 },
+    width300: { width: 300 },
+    leftFormGroup: { display: 'inline-block' },
+    rightFormGroup: { display: 'inline-block', marginLeft: 32 },
 };
 
 export const validatePasswords = ({
@@ -40,7 +42,7 @@ const StaffTitle = (props: FieldProps<Category>) => {
     const translate = useTranslate();
     return record ? (
         <span>
-            {translate('resources.branch.name', { smart_count: 1 })} &quot;
+            {translate('resources.staff.name', { smart_count: 1 })} &quot;
             {record.name}&quot;
         </span>
     ) : null;
@@ -49,39 +51,32 @@ const StaffTitle = (props: FieldProps<Category>) => {
 const StaffEdit = (props: EditProps) => {
     const classes = useStyles(props);
 
+    const transform = (data: any) => {
+        delete data.confirm_password;
+        return data;
+    };
+
     return (
-        <Edit title={<StaffTitle />} {...props}>
+        <Edit title={<StaffTitle />} {...props} transform={transform}>
             <SimpleForm validate={validatePasswords}>
-                <TextInput source="username" className={classes.width600} validate={[required()]} />
+                <TextInput source="username" className={classes.width600} disabled={true} validate={[required()]} />
 
                 <TextInput
                     source="display_name"
                     validate={[required()]}
                     className={classes.width600}
                 />
-                <SelectInput
-                    resource="staff"
-                    source="type"
-                    choices={[
-                        // {
-                        //     id: '1',
-                        //     name: 'Admin',
-                        // },
-                        {
-                            id: '2',
-                            name: 'Staff',
-                        },
-                    ]}
-                />
                 <PasswordInput
                     source="password"
                     resource="staff"
-                    fullWidth
+                    className={classes.width300}
+                    formClassName={classes.leftFormGroup}
                 />
                 <PasswordInput
                     source="confirm_password"
                     resource="staff"
-                    fullWidth
+                    className={classes.width300}
+                    formClassName={classes.rightFormGroup}
                 />
             </SimpleForm>
         </Edit>

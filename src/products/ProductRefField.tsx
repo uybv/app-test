@@ -10,7 +10,7 @@ const ProductRefField = ({ record }: FieldProps<Product>) =>
 
 ProductRefField.defaultProps = {
     source: 'id',
-    label: 'Reference',
+    label: '氏名',
 };
 
 export default ProductRefField;

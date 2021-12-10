@@ -32,24 +32,6 @@ const CategoryEdit = (props: EditProps) => (
     <Edit title={<CategoryTitle />} {...props}>
         <SimpleForm>
             <TextInput source="name" />
-            <ReferenceManyField
-                filter={{  }}
-                reference="product"
-                target="cat_ids"
-                label="resources.category.fields.products"
-                perPage={20}
-                fullWidth
-            >
-                <Datagrid>
-                    <ThumbnailField source="banner" />
-                    <ProductRefField source="name" />
-                    <NumberField
-                        source="price"
-                        options={{ style: 'currency', currency: 'JPY' }}
-                    />
-                    <EditButton />
-                </Datagrid>
-            </ReferenceManyField>
         </SimpleForm>
     </Edit>
 );

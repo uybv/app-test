@@ -31,8 +31,16 @@ const useStyles = makeStyles(styles);
 
 const ProductCreate = (props: CreateProps) => {
     const classes = useStyles();
+
+    const transform = (data: any) => {
+        return {
+            ...data,
+            delivery_est: data.delivery_est * 60 * 1000,
+        }
+    };
+
     return (
-        <Create {...props}>
+        <Create {...props} transform={transform}>
             <TabbedForm>
                 <FormTab label="resources.product.tabs.image">
                     <ImageInput

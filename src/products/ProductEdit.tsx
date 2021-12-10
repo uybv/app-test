@@ -41,8 +41,16 @@ const useStyles = makeStyles({
 const ProductEdit = (props: EditProps) => {
     const classes = useStyles();
     const [changeImage, setChangeImage] = React.useState(false);
+
+    const transform = (data: any) => {
+        return {
+            ...data,
+            delivery_est: data.delivery_est * 60 * 1000,
+        }
+    };
+
     return (
-        <Edit {...props} title={<ProductTitle />}>
+        <Edit {...props} title={<ProductTitle />} transform={transform}>
             <TabbedForm>
                 <FormTab
                     label="resources.product.tabs.image"
