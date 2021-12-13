@@ -171,6 +171,8 @@ const japaneseDomainMessages = {
                     start_at: '開店時間',
                     end_at: '閉店時間'
                 },
+                start_at: '開店時間',
+                end_at: '閉店時間',
                 address: {
                     postal_code: '郵便番号',
                     prefecture: '都道府県',

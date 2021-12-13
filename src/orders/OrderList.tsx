@@ -42,14 +42,14 @@ const orderFilters = [
         />
     </ReferenceInput>,
     <ReferenceInput source="branch_id" reference="branch">
-    <AutocompleteInput
-        optionText={(choice: any) =>
-            choice && choice.id // the empty choice is { id: '' }
-                ? `${choice.name}`
-                : ''
-        }
-    />
-</ReferenceInput>,
+        <AutocompleteInput
+            optionText={(choice: any) =>
+                choice && choice.id // the empty choice is { id: '' }
+                    ? `${choice.name}`
+                    : ''
+            }
+        />
+    </ReferenceInput>,
     // <DateInput source="date_gte" />,
     // <DateInput source="date_lte" />,
     // <TextInput source="total_gte" />,
@@ -61,10 +61,10 @@ const useDatagridStyles = makeStyles({
 });
 
 const tabs = [
-    { id: 10, name: '注文済み' },
-    { id: 89, name: '来店待ち' },
-    { id: 90, name: '完了' },
-    { id: 81, name: 'キャンセル済み' },
+    { id: 1, name: '注文済み' },
+    { id: 2, name: '来店待ち' },
+    { id: 3, name: '完了' },
+    { id: 4, name: 'キャンセル済み' },
 ];
 
 interface TabbedDatagridProps extends DatagridProps { }
@@ -143,14 +143,49 @@ const TabbedDatagrid = (props: TabbedDatagridProps) => {
 
     const handleChange = useCallback(
         (event: React.ChangeEvent<{}>, value: any) => {
+            let st = OrderState.PAID;
+            switch (value) {
+                case 1:
+                    st = OrderState.PAID;
+                    break;
+                case 2:
+                    st = OrderState.WAITING_RECEIVE;
+                    break;
+                case 3:
+                    st = OrderState.COMPLETE;
+                    break;
+                case 4:
+                    st = OrderState.CANCEL;
+                    break;
+            }
             setFilters &&
                 setFilters(
-                    { ...filterValues, st: value },
+                    { ...filterValues, st: st },
                     displayedFilters
                 );
         },
         [displayedFilters, filterValues, setFilters]
     );
+
+    const convertTabIndex = (st: any) => {
+        let index = 1;
+        switch (st) {
+            case OrderState.PAID:
+                index = 1;
+                break;
+            case OrderState.WAITING_RECEIVE:
+                index = 2;
+                break;
+            case OrderState.COMPLETE:
+                index = 3;
+                break;
+            case OrderState.CANCEL:
+                index = 4;
+                break;
+        }
+
+        return index;
+    }
 
     const selectedIds =
         filterValues.st === OrderState.PAID
@@ -166,7 +201,7 @@ const TabbedDatagrid = (props: TabbedDatagridProps) => {
             <Tabs
                 variant="fullWidth"
                 centered
-                value={filterValues.st}
+                value={convertTabIndex(filterValues.st)}
                 indicatorColor="primary"
                 onChange={handleChange}
             >
@@ -278,7 +313,7 @@ const TabbedDatagrid = (props: TabbedDatagridProps) => {
 const OrderList = (props: ListProps) => (
     <List
         {...props}
-        filterDefaultValues={{ st: OrderState.CART }}
+        filterDefaultValues={{ st: OrderState.PAID }}
         sort={{ field: 'date', order: 'DESC' }}
         perPage={25}
         filters={orderFilters}

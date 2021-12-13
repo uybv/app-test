@@ -14,7 +14,11 @@ import {
     NumberField,
     Datagrid,
     required,
-    minValue
+    minValue,
+    ArrayInput,
+    SimpleFormIterator,
+    FormDataConsumer,
+    BooleanInput
 } from 'react-admin';
 import QRCode from 'qrcode.react';
 import { apiBaseUrl } from '../config';
@@ -24,13 +28,8 @@ import { InputAdornment, Button } from '@material-ui/core';
 import { CloudDownload } from '@material-ui/icons'
 import ProductRefField from '../products/ProductRefField';
 import ThumbnailField from '../products/ThumbnailField';
-
-export const styles = {
-    width600: { width: 600 },
-    width200: { width: 200 },
-    leftFormGroup: { display: 'inline-block' },
-    rightFormGroup: { display: 'inline-block', marginLeft: 32 },
-};
+import _ from 'lodash';
+import { getDayOfWeek, styles, transform } from './BranchCreate';
 
 let branchId = '';
 
@@ -91,19 +90,6 @@ const BranchTitle = (props: FieldProps<any>) => {
 const BranchEdit = (props: EditProps) => {
     const classes = useStyles(props);
 
-    const transform = (data: any) => {
-        const start = data.working_times.start_at.split(":");
-        const end = data.working_times.end_at.split(":");
-        return {
-            ...data,
-            working_times: {
-                start_at: (start[0] * 60 * 60 * 1000) + (start[1] * 60 * 1000),
-                end_at: (end[0] * 60 * 60 * 1000) + (end[1] * 60 * 1000),
-            },
-            delivery_est: data.delivery_est * 60 * 1000,
-        }
-    };
-
     return (
         <Edit title={<BranchTitle />} {...props} transform={transform}>
             <TabbedForm >
@@ -130,30 +116,13 @@ const BranchEdit = (props: EditProps) => {
                         source="address.location.x"
                         validate={[required(), minValue(0)]}
                         className={classes.width200}
-                        formClassName={classes.leftFormGroup}
+                        formClassName={classes.displayInlineBlock}
                     />
                     <NumberInput
                         source="address.location.y"
                         validate={[required(), minValue(0)]}
                         className={classes.width200}
-                        formClassName={classes.rightFormGroup}
-                    />
-                    <></>
-                    <TextInput
-                        source="working_times.start_at"
-                        type='time'
-                        defaultValue={'08:00'}
-                        validate={[required(), minValue(0)]}
-                        className={classes.width200}
-                        formClassName={classes.leftFormGroup}
-                    />
-                    <TextInput
-                        source="working_times.end_at"
-                        type='time'
-                        defaultValue={'18:00'}
-                        validate={[required(), minValue(0)]}
-                        className={classes.width200}
-                        formClassName={classes.rightFormGroup}
+                        formClassName={classes.displayInlineBlock}
                     />
                     <NumberInput
                         source="delivery_est"
@@ -173,12 +142,67 @@ const BranchEdit = (props: EditProps) => {
                         reference="staff"
                         source="staff_ids"
                     >
-                        <AutocompleteArrayInput  optionText="username" />
+                        <AutocompleteArrayInput optionText="username" />
                     </ReferenceArrayInput>
                     <TextInput
                         source="description"
                         className={classes.width600}
                     />
+                </FormTab>
+                <FormTab label="resources.branch.tabs.working_times" path="working-times">
+                    <ArrayInput source="working_times" label="">
+                    <SimpleFormIterator getItemLabel={(index) => ''}
+                            disableRemove disableAdd disableReordering >
+                            <FormDataConsumer>
+                                {({
+                                    formData, // The whole form data
+                                    scopedFormData, // The data for this item of the ArrayInput
+                                    getSource, // A function to get the valid source inside an ArrayInput
+                                    ...props
+                                }) =>
+                                    scopedFormData && !_.isUndefined(getSource) ? (
+                                        <div style={{ display: 'flex', alignItems: 'center', minHeight: 85 }}>
+                                            <span style={{ marginLeft: 15, marginRight: 15 }}>
+                                                {
+                                                    getDayOfWeek((props as any).id.substring(
+                                                        (props as any).id.indexOf("[") + 1,
+                                                       (props as any).id.lastIndexOf("]")))
+                                                }
+                                            </span>
+                                            <BooleanInput
+                                                source={getSource('not_holiday')}
+                                                label=""
+                                                className={classes.inputHoliday}
+                                                style={{ flexDirection: 'unset', flexWrap: 'unset' }}
+                                            />
+                                            <span style={{ marginLeft: 15, width: 70, marginRight: 15 }}>{!scopedFormData.not_holiday ? '定休日' : '開く'}</span>
+                                            {scopedFormData.not_holiday && (
+                                                <>
+                                                    <TextInput
+                                                        label=""
+                                                        source={getSource('start_at')} // Will translate to "working_times[0].start_at"
+                                                        type='time'
+                                                        defaultValue={'08:00'}
+                                                        validate={[required(), minValue(0)]}
+                                                        className={classes.inputTime}
+                                                    />
+                                                    <TextInput
+                                                        label=""
+                                                        source={getSource('end_at')} // Will translate to "working_times[0].end_at"
+                                                        type='time'
+                                                        defaultValue={'18:00'}
+                                                        validate={[required(), minValue(0)]}
+                                                        className={classes.inputTime}
+                                                    />
+                                                </>
+                                            )}
+
+                                        </div>
+                                    ) : null
+                                }
+                            </FormDataConsumer>
+                        </SimpleFormIterator>
+                    </ArrayInput>
                 </FormTab>
                 <FormTab label="resources.branch.tabs.menu" path="menu-food">
                     <ReferenceArrayInput

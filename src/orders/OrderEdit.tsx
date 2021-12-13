@@ -44,14 +44,10 @@ const OrderTitle = ({ record }: OrderTitleProps) => {
 
 const CustomerDetails = ({ record }: { record?: Customer }) => (
     <Box display="flex" flexDirection="column">
-        <Typography
-            color="primary"
-        >
+        <Typography>
             {record?.display_name.first_name} {record?.display_name.last_name}
         </Typography>
-        <Typography
-            color="primary"
-        >
+        <Typography>
             {record?.email}
         </Typography>
     </Box>
@@ -59,12 +55,7 @@ const CustomerDetails = ({ record }: { record?: Customer }) => (
 
 const BranchDetails = ({ record }: { record?: any }) => (
     <Box display="flex" flexDirection="column">
-        <Typography
-            component={RouterLink}
-            color="primary"
-            to={`/branch/${record?.id}`}
-            style={{ textDecoration: 'none' }}
-        >
+        <Typography>
             {record?.name}
         </Typography>
     </Box>
