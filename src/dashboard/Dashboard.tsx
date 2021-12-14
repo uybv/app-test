@@ -56,21 +56,18 @@ const Dashboard = () => {
         const { data: recentOrders } = await dataProvider.getList<Order>(
             'order',
             {
-                filter: { date_gte: aMonthAgo.toISOString(), st: [OrderState.CART, OrderState.PAID] },
+                filter: { date_gte: aMonthAgo.toISOString(), st: OrderState.PAID },
                 sort: { field: 'date', order: 'DESC' },
                 pagination: { page: 1, perPage: 50 },
             }
         );
         const aggregations = recentOrders
-            .filter(order => order.st !== OrderState.CANCEL)
             .reduce(
                 (stats: OrderStats, order) => {
-                    if (order.st !== OrderState.CART) {
+                    if (order.st === OrderState.PAID) {
+                        stats.pendingOrders.push(order);
                         stats.revenue += order.total;
                         stats.nbNewOrders++;
-                    }
-                    if (order.st === OrderState.CART || order.st === OrderState.PAID) {
-                        stats.pendingOrders.push(order);
                     }
                     return stats;
                 },
