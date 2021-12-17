@@ -18,14 +18,16 @@ import {
     ArrayInput,
     SimpleFormIterator,
     FormDataConsumer,
-    BooleanInput
+    BooleanInput,
+    TopToolbar,
+    ListButton,
 } from 'react-admin';
 import QRCode from 'qrcode.react';
 import { apiBaseUrl } from '../config';
 
 import { makeStyles } from '@material-ui/core/styles';
 import { InputAdornment, Button } from '@material-ui/core';
-import { CloudDownload } from '@material-ui/icons'
+import { ChevronLeft, CloudDownload } from '@material-ui/icons'
 import ProductRefField from '../products/ProductRefField';
 import ThumbnailField from '../products/ThumbnailField';
 import _ from 'lodash';
@@ -87,12 +89,23 @@ const BranchTitle = (props: FieldProps<any>) => {
     ) : null;
 };
 
+const EditActions = ({ basePath, data }: any) => (
+    <TopToolbar>
+        <ListButton basePath={basePath} icon={<ChevronLeft />} />
+    </TopToolbar>
+);
+
 const BranchEdit = (props: EditProps) => {
     const classes = useStyles(props);
 
     return (
-        <Edit title={<BranchTitle />} {...props} transform={transform}>
-            <TabbedForm >
+        <Edit
+            {...props}
+            title={<BranchTitle />}
+            undoable={false}
+            actions={<EditActions />}
+            transform={transform}>
+            <TabbedForm>
                 <FormTab label="resources.branch.tabs.info">
                     <TextInput
                         autoFocus
@@ -151,7 +164,7 @@ const BranchEdit = (props: EditProps) => {
                 </FormTab>
                 <FormTab label="resources.branch.tabs.working_times" path="working-times">
                     <ArrayInput source="working_times" label="">
-                    <SimpleFormIterator getItemLabel={(index) => ''}
+                        <SimpleFormIterator getItemLabel={(index) => ''}
                             disableRemove disableAdd disableReordering >
                             <FormDataConsumer>
                                 {({
@@ -166,7 +179,7 @@ const BranchEdit = (props: EditProps) => {
                                                 {
                                                     getDayOfWeek((props as any).id.substring(
                                                         (props as any).id.indexOf("[") + 1,
-                                                       (props as any).id.lastIndexOf("]")))
+                                                        (props as any).id.lastIndexOf("]")))
                                                 }
                                             </span>
                                             <BooleanInput

@@ -7,20 +7,15 @@ import {
     TextInput,
     useTranslate,
     NumberInput,
-    ReferenceManyField,
-    NumberField,
-    Datagrid,
-    EditButton,
     required,
     minValue,
-    maxValue
+    maxValue,
+    TopToolbar,
+    ListButton
 } from 'react-admin';
-
 import { InputAdornment } from '@material-ui/core';
-import ThumbnailField from '../products/ThumbnailField';
-import ProductRefField from '../products/ProductRefField';
-
 import { makeStyles } from '@material-ui/core/styles';
+import { ChevronLeft } from '@material-ui/icons';
 
 export const styles = {
     name: { width: 600 },
@@ -41,11 +36,22 @@ const TaxTitle = (props: FieldProps<any>) => {
     ) : null;
 };
 
+const EditActions = ({ basePath, data }: any) => (
+    <TopToolbar>
+        <ListButton basePath={basePath} icon={<ChevronLeft />} />
+    </TopToolbar>
+);
+
 const TaxEdit = (props: EditProps) => {
     const classes = useStyles(props);
 
     return (
-        <Edit title={<TaxTitle />} {...props}>
+        <Edit
+            title={<TaxTitle />}
+            {...props}
+            undoable={false}
+            actions={<EditActions />}
+        >
             <SimpleForm>
                 <TextInput
                     source="name"

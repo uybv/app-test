@@ -7,11 +7,14 @@ import {
     TextInput,
     PasswordInput,
     useTranslate,
-    required
+    required,
+    TopToolbar,
+    ListButton
 } from 'react-admin';
 
 import { makeStyles } from '@material-ui/core/styles';
 import { Category } from '../types';
+import { ChevronLeft } from '@material-ui/icons';
 
 export const styles = {
     width600: { width: 600 },
@@ -48,6 +51,12 @@ const StaffTitle = (props: FieldProps<Category>) => {
     ) : null;
 };
 
+const EditActions = ({ basePath, data }: any) => (
+    <TopToolbar>
+        <ListButton basePath={basePath} icon={<ChevronLeft />} />
+    </TopToolbar>
+);
+
 const StaffEdit = (props: EditProps) => {
     const classes = useStyles(props);
 
@@ -57,7 +66,13 @@ const StaffEdit = (props: EditProps) => {
     };
 
     return (
-        <Edit title={<StaffTitle />} {...props} transform={transform}>
+        <Edit
+            title={<StaffTitle />}
+            {...props} 
+            transform={transform}
+            undoable={false}
+            actions={<EditActions />}
+        >
             <SimpleForm validate={validatePasswords}>
                 <TextInput source="username" className={classes.width600} disabled={true} validate={[required()]} />
 

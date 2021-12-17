@@ -9,7 +9,9 @@ import {
     ImageInput,
     ImageField,
     DateTimeInput,
-    required
+    required,
+    TopToolbar,
+    ListButton,
 } from 'react-admin';
 import RichTextInput from 'ra-input-rich-text';
 import { makeStyles } from '@material-ui/core/styles';
@@ -17,6 +19,7 @@ import { Category } from '../types';
 import moment from 'moment';
 import DateFnsUtils from '@date-io/date-fns';
 import jaLocale from "date-fns/locale/ja";
+import { ChevronLeft } from '@material-ui/icons';
 
 export const styles = {
     title: { width: 600 },
@@ -35,17 +38,14 @@ const NewsTitle = (props: FieldProps<Category>) => {
     ) : null;
 };
 
+const EditActions = ({ basePath, data }: any) => (
+    <TopToolbar>
+        <ListButton basePath={basePath} icon={<ChevronLeft />} />
+    </TopToolbar>
+);
+
 const NewsEdit = (props: EditProps) => {
     const classes = useStyles(props);
-
-    const tags: any[] = [
-        { id: 'demo', name: 'demo' },
-        { id: 'demo1', name: 'demo1' },
-    ];
-    const keywords: any[] = [
-        { id: 'demo11', name: 'demo11' },
-        { id: 'demo1', name: 'demo1' },
-    ];
 
     const transform = (data: any) => ({
         ...data,
@@ -56,7 +56,13 @@ const NewsEdit = (props: EditProps) => {
     const [changeImage, setChangeImage] = React.useState(false);
 
     return (
-        <Edit title={<NewsTitle />} transform={transform} {...props}>
+        <Edit
+            title={<NewsTitle />}
+            undoable={false}
+            actions={<EditActions />}
+            transform={transform}
+            {...props}
+        >
             <SimpleForm>
                 {!changeImage && (
                     <ImageField source="banner" title="title" />
@@ -81,14 +87,6 @@ const NewsEdit = (props: EditProps) => {
                 <DateTimeInput source="publish_time" provideroptions={{ utils: DateFnsUtils, locale: jaLocale }} />
                 <DateTimeInput source="expired_time" provideroptions={{ utils: DateFnsUtils, locale: jaLocale }} />
                 <RichTextInput source="content" />
-                {/* <AutocompleteArrayInput
-                    source="tags"
-                    choices={tags}
-                />
-                <AutocompleteArrayInput
-                    source="keywords"
-                    choices={keywords}
-                /> */}
             </SimpleForm>
         </Edit>
     );

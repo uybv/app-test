@@ -1,3 +1,4 @@
+import { ChevronLeft } from '@material-ui/icons';
 import * as React from 'react';
 import {
     Edit,
@@ -5,15 +6,40 @@ import {
     SimpleForm,
     ImageInput,
     ImageField,
-    required
+    required,
+    useTranslate,
+    TopToolbar,
+    ListButton
 } from 'react-admin';
+
+const SlideTitle = (props: any) => {
+    const { record } = props;
+    const translate = useTranslate();
+    return record ? (
+        <span>
+            {translate('resources.slide.name', { smart_count: 1 })} &quot;
+            {record.name}&quot;
+        </span>
+    ) : null;
+};
+
+const EditActions = ({ basePath, data }: any) => (
+    <TopToolbar>
+        <ListButton basePath={basePath} icon={<ChevronLeft />} />
+    </TopToolbar>
+);
 
 const SlideEdit = (props: EditProps) => {
 
     const [changeImage, setChangeImage] = React.useState(false);
 
     return (
-        <Edit title={""} {...props}>
+        <Edit
+            {...props}
+            undoable={false}
+            title={<SlideTitle />}
+            actions={<EditActions />}
+        >
             <SimpleForm>
                 {!changeImage && (
                     <ImageField source="image" label={""} />

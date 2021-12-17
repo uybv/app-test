@@ -11,21 +11,24 @@ import {
     TextField,
     Toolbar,
     useTranslate,
+    TopToolbar,
+    ListButton,
+    SaveButton,
+    DeleteButton
 } from 'react-admin';
-import { Link as RouterLink } from 'react-router-dom';
 import {
     Card,
     CardContent,
     Box,
     Grid,
     Typography,
-    Link,
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
 import { Order, Customer } from '../types';
 import Basket from './Basket';
 import Totals from './Totals';
+import { ChevronLeft } from '@material-ui/icons';
 
 interface OrderTitleProps {
     record?: Order;
@@ -64,6 +67,12 @@ const BranchDetails = ({ record }: { record?: any }) => (
 const useEditStyles = makeStyles({
     root: { alignItems: 'flex-start' },
 });
+
+const EditActions = ({ basePath, data }: any) => (
+    <TopToolbar>
+        <ListButton basePath={basePath} icon={<ChevronLeft />} />
+    </TopToolbar>
+);
 
 const Spacer = () => <Box m={1}>&nbsp;</Box>;
 
@@ -180,7 +189,7 @@ const OrderForm = (props: any) => {
                         <Toolbar
                             record={formProps.record}
                             basePath={formProps.basePath}
-                            undoable={true}
+                            undoable={false}
                             invalid={formProps.invalid}
                             handleSubmit={formProps.handleSubmit}
                             saving={formProps.saving}
@@ -200,6 +209,7 @@ const OrderEdit = (props: EditProps) => {
             classes={classes}
             {...props}
             component="div"
+            actions={<EditActions />}
         >
             <OrderForm />
         </Edit>

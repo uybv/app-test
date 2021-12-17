@@ -12,6 +12,8 @@ import {
     required,
     email,
     FieldProps,
+    TopToolbar,
+    ListButton
 } from 'react-admin';
 import { Box, Card, CardContent, Typography } from '@material-ui/core';
 
@@ -19,6 +21,16 @@ import Aside from './Aside';
 import FullNameField from './FullNameField';
 import { validatePasswords } from './VisitorCreate';
 import { Customer } from '../types';
+import { ChevronLeft } from '@material-ui/icons';
+
+const VisitorTitle = ({ record }: FieldProps<Customer>) =>
+    record ? <FullNameField record={record} size="32" /> : null;
+
+const EditActions = ({ basePath, data }: any) => (
+    <TopToolbar>
+        <ListButton basePath={basePath} icon={<ChevronLeft />} />
+    </TopToolbar>
+);
 
 const VisitorEdit = (props: EditProps) => {
     return (
@@ -27,14 +39,14 @@ const VisitorEdit = (props: EditProps) => {
             // aside={<Aside />}
             component="div"
             {...props}
+            undoable={false}
+            actions={<EditActions />}
         >
             <VisitorForm />
         </Edit>
     );
 };
 
-const VisitorTitle = ({ record }: FieldProps<Customer>) =>
-    record ? <FullNameField record={record} size="32" /> : null;
 
 const VisitorForm = (props: any) => {
     const translate = useTranslate();

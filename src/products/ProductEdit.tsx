@@ -13,7 +13,10 @@ import {
     SimpleFormIterator,
     ReferenceArrayInput,
     AutocompleteArrayInput,
-    minValue
+    minValue,
+    useTranslate,
+    TopToolbar,
+    ListButton
 } from 'react-admin';
 import { InputAdornment } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
@@ -22,13 +25,21 @@ import RichTextInput from 'ra-input-rich-text';
 import Poster from './Poster';
 import { styles as createStyles } from './ProductCreate';
 import { Product } from '../types';
+import { ChevronLeft } from '@material-ui/icons';
 
 interface ProductTitleProps {
     record?: Product;
 }
 
-const ProductTitle = ({ record }: ProductTitleProps) =>
-    record ? <span>商品管理 #{record.name}</span> : null;
+const ProductTitle = ({ record }: ProductTitleProps) => {
+    const translate = useTranslate();
+    return record ? (
+        <span>
+            {translate('resources.product.name', { smart_count: 1 })} &quot;
+            {record.name}&quot;
+        </span>
+    ) : null;
+}
 
 const useStyles = makeStyles({
     ...createStyles,
@@ -37,6 +48,12 @@ const useStyles = makeStyles({
         display: 'block',
     },
 });
+
+const EditActions = ({ basePath, data }: any) => (
+    <TopToolbar>
+        <ListButton basePath={basePath} icon={<ChevronLeft />} />
+    </TopToolbar>
+);
 
 const ProductEdit = (props: EditProps) => {
     const classes = useStyles();
@@ -50,7 +67,13 @@ const ProductEdit = (props: EditProps) => {
     };
 
     return (
-        <Edit {...props} title={<ProductTitle />} transform={transform}>
+        <Edit
+            {...props}
+            title={<ProductTitle />}
+            undoable={false}
+            actions={<EditActions />}
+            transform={transform}
+        >
             <TabbedForm>
                 <FormTab
                     label="resources.product.tabs.image"

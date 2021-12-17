@@ -1,20 +1,16 @@
 import * as React from 'react';
 import {
-    Datagrid,
     Edit,
     EditProps,
-    EditButton,
     FieldProps,
-    NumberField,
-    ReferenceManyField,
     SimpleForm,
     TextInput,
     useTranslate,
-    ImageField
+    TopToolbar,
+    ListButton,
 } from 'react-admin';
+import { ChevronLeft } from '@material-ui/icons';
 
-import ThumbnailField from '../products/ThumbnailField';
-import ProductRefField from '../products/ProductRefField';
 import { Category } from '../types';
 
 const CategoryTitle = (props: FieldProps<Category>) => {
@@ -28,8 +24,19 @@ const CategoryTitle = (props: FieldProps<Category>) => {
     ) : null;
 };
 
+const EditActions = ({ basePath, data }: any) => (
+    <TopToolbar>
+        <ListButton basePath={basePath} icon={<ChevronLeft />} />
+    </TopToolbar>
+);
+
 const CategoryEdit = (props: EditProps) => (
-    <Edit title={<CategoryTitle />} {...props}>
+    <Edit
+        {...props}
+        undoable={false}
+        title={<CategoryTitle />}
+        actions={<EditActions />}
+    >
         <SimpleForm>
             <TextInput source="name" />
         </SimpleForm>

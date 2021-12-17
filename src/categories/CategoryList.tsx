@@ -34,7 +34,7 @@ const CategoryList = (props: ListProps) => (
         <MyDatagrid optimized>
             <TextField source="name" />
             <TextField source="description" />
-            <DateField source="created_at" />
+            <DateField source="created_at" showTime/>
             <EditButton />
         </MyDatagrid>
     </List>
