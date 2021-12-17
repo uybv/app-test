@@ -5,26 +5,36 @@ import {
     DateField,
     TextField,
     SearchInput,
+    TopToolbar,
+    CreateButton,
+    FilterButton
 } from 'react-admin';
 import MyDatagrid from '../datagrid/MyDatagrid';
 
-const branchFilters = [
+const filters = [
     <SearchInput source="q" alwaysOn />,
 ];
+
+const ListActions = (props: any) => (
+    <TopToolbar>
+        <FilterButton />
+        <CreateButton />
+    </TopToolbar>
+);
 
 const StaffList = (props: ListProps) => (
     <List
         {...props}
-        sort={{ field: 'username', order: 'ASC' }}
-        perPage={20}
+        perPage={50}
         pagination={false}
         component="div"
-        filters={branchFilters}
+        filters={filters}
+        actions={<ListActions />}
     >
         <MyDatagrid optimized rowClick="edit">
             <TextField source="username" />
             <TextField source="display_name" />
-            <DateField source="created_at" />
+            <DateField source="created_at" showTime />
             <EditButton />
         </MyDatagrid>
     </List>

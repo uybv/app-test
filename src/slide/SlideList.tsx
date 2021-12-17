@@ -4,21 +4,29 @@ import {
     EditButton,
     DateField,
     ImageField,
+    TopToolbar,
+    CreateButton
 } from 'react-admin';
 import MyDatagrid from '../datagrid/MyDatagrid';
+
+const ListActions = (props: any) => (
+    <TopToolbar>
+        <CreateButton/>
+    </TopToolbar>
+);
 
 const SlideList = (props: ListProps) => (
     <List
         {...props}
-        sort={{ field: 'name', order: 'ASC' }}
-        perPage={20}
+        perPage={50}
         pagination={false}
         component="div"
         filters={[]}
+        actions={<ListActions />}
     >
         <MyDatagrid optimized rowClick="edit">
             <ImageField source="image" />
-            <DateField source="created_at" />
+            <DateField source="created_at" showTime />
             <EditButton />
         </MyDatagrid>
     </List>

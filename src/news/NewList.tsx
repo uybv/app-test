@@ -1,15 +1,15 @@
 import * as React from 'react';
 import {
     List, ListProps,
-    Datagrid,
     DateField,
     TextField,
     SearchInput,
-    EditButton
+    EditButton,
+    TopToolbar,
+    FilterButton,
+    CreateButton
 } from 'react-admin';
 import QRCode from 'qrcode.react';
-import KeywordsField from './KeywordsField';
-import TagsField from './TagsField';
 import { Button } from '@material-ui/core';
 import { CloudDownload } from '@material-ui/icons'
 import { apiBaseUrl } from '../config';
@@ -57,23 +57,27 @@ const QrCodeDownloadButton = (props: any) => {
     );
 };
 
+const ListActions = (props: any) => (
+    <TopToolbar>
+        <FilterButton />
+        <CreateButton/>
+    </TopToolbar>
+);
 
 const NewList = (props: ListProps) => (
     <List
         {...props}
-        sort={{ field: 'title', order: 'ASC' }}
-        perPage={20}
+        perPage={50}
         pagination={false}
         component="div"
         filters={filters}
+        actions={<ListActions />}
     >
         <MyDatagrid optimized>
             <TextField source="title" />
             <DateField source="publish_time" showTime />
             <DateField source="expired_time" showTime />
-            {/* <KeywordsField /> */}
-            {/* <TagsField /> */}
-            <DateField source="created_at" />
+            <DateField source="created_at" showTime />
             <QrCodeDownloadButton />
             <EditButton />
         </MyDatagrid>

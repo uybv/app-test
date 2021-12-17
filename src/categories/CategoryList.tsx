@@ -5,6 +5,9 @@ import {
     DateField,
     SearchInput,
     TextField,
+    TopToolbar,
+    FilterButton,
+    CreateButton
 } from 'react-admin';
 import MyDatagrid from '../datagrid/MyDatagrid';
 
@@ -12,14 +15,21 @@ const categoryFilters = [
     <SearchInput source="q" alwaysOn />,
 ];
 
+const ListActions = (props: any) => (
+    <TopToolbar>
+        <FilterButton />
+        <CreateButton/>
+    </TopToolbar>
+);
+
 const CategoryList = (props: ListProps) => (
     <List
         {...props}
-        sort={{ field: 'name', order: 'ASC' }}
-        perPage={20}
+        perPage={50}
         pagination={false}
         component="div"
         filters={categoryFilters}
+        actions={<ListActions />}
     >
         <MyDatagrid optimized>
             <TextField source="name" />

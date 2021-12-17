@@ -2,7 +2,6 @@ import * as React from 'react';
 import { Fragment, useCallback, useEffect, useState } from 'react';
 import {
     AutocompleteInput,
-    Datagrid,
     DatagridProps,
     DateField,
     Identifier,
@@ -13,7 +12,9 @@ import {
     ReferenceInput,
     useGetList,
     useListContext,
-    EditButton
+    EditButton,
+    TopToolbar,
+    FilterButton
 } from 'react-admin';
 import { useMediaQuery, Divider, Tabs, Tab, Theme } from '@material-ui/core';
 
@@ -26,7 +27,6 @@ import CustomerReferenceField from '../visitors/CustomerReferenceField';
 import MyDatagrid from '../datagrid/MyDatagrid';
 
 const orderFilters = [
-    // <SearchInput source="q" alwaysOn />,
     <ReferenceInput source="user_id" reference="customer">
         <AutocompleteInput
             optionText={(choice: Customer) =>
@@ -45,10 +45,6 @@ const orderFilters = [
             }
         />
     </ReferenceInput>,
-    // <DateInput source="date_gte" />,
-    // <DateInput source="date_lte" />,
-    // <TextInput source="total_gte" />,
-    // <NullableBooleanInput source="returned" />,
 ];
 
 const useDatagridStyles = makeStyles({
@@ -309,12 +305,19 @@ const TabbedDatagrid = (props: TabbedDatagridProps) => {
     );
 };
 
+const ListActions = (props: any) => (
+    <TopToolbar>
+        <FilterButton />
+    </TopToolbar>
+);
+
 const OrderList = (props: ListProps) => (
     <List
         {...props}
         filterDefaultValues={{ st: OrderState.PAID }}
-        perPage={25}
+        perPage={50}
         filters={orderFilters}
+        actions={<ListActions />}
     >
         <TabbedDatagrid />
     </List>

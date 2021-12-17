@@ -1,30 +1,34 @@
 import * as React from 'react';
 import {
-    List, ListProps,
+    List, 
+    ListProps,
     EditButton,
     DateField,
     TextField,
-    SearchInput,
+    TopToolbar,
+    CreateButton
 } from 'react-admin';
 import MyDatagrid from '../datagrid/MyDatagrid';
 
-const taxFilters = [
-    <SearchInput source="q" alwaysOn />,
-];
+const ListActions = (props: any) => (
+    <TopToolbar>
+        <CreateButton/>
+    </TopToolbar>
+);
 
 const TaxList = (props: ListProps) => (
     <List
         {...props}
-        perPage={20}
+        perPage={50}
         pagination={false}
         component="div"
-        filters={taxFilters}
+        actions={<ListActions />}
     >
-        <MyDatagrid optimized rowClick="edit">
+        <MyDatagrid optimized>
             <TextField source="name" />
             <TextField source="value" />
             <TextField source="description" />
-            <DateField source="created_at" />
+            <DateField source="created_at" showTime />
             <EditButton />
         </MyDatagrid>
     </List>

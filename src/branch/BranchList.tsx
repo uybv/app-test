@@ -4,6 +4,9 @@ import {
     EditButton,
     TextField,
     SearchInput,
+    TopToolbar,
+    FilterButton,
+    CreateButton
 } from 'react-admin';
 import QRCode from 'qrcode.react';
 import Button from '@material-ui/core/Button';
@@ -53,13 +56,21 @@ const QrCodeDownloadButton = (props: any) => {
     );
 };
 
+const ListActions = (props: any) => (
+    <TopToolbar>
+        <FilterButton />
+        <CreateButton/>
+    </TopToolbar>
+);
+
 const BranchList = (props: ListProps) => (
     <List
         {...props}
-        perPage={20}
+        perPage={50}
         pagination={false}
         component="div"
         filters={branchFilters}
+        actions={<ListActions />}
     >
         <MyDatagrid>
             <TextField source="name" />
