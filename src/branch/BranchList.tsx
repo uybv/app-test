@@ -1,7 +1,6 @@
 import * as React from 'react';
 import {
     List, ListProps,
-    Datagrid,
     EditButton,
     TextField,
     SearchInput,
@@ -10,6 +9,7 @@ import QRCode from 'qrcode.react';
 import Button from '@material-ui/core/Button';
 import { CloudDownload } from '@material-ui/icons'
 import { apiBaseUrl } from '../config';
+import MyDatagrid from '../datagrid/MyDatagrid';
 
 const branchFilters = [
     <SearchInput source="q" alwaysOn />,
@@ -56,18 +56,17 @@ const QrCodeDownloadButton = (props: any) => {
 const BranchList = (props: ListProps) => (
     <List
         {...props}
-        sort={{ field: 'name', order: 'ASC' }}
         perPage={20}
         pagination={false}
         component="div"
         filters={branchFilters}
     >
-        <Datagrid optimized>
+        <MyDatagrid>
             <TextField source="name" />
             <TextField source="address.address" />
             <QrCodeDownloadButton />
             <EditButton />
-        </Datagrid>
+        </MyDatagrid>
     </List>
 );
 

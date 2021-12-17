@@ -1,11 +1,12 @@
 import * as React from 'react';
 import {
     List, ListProps,
-    Datagrid,
+    EditButton,
     DateField,
     TextField,
     SearchInput,
 } from 'react-admin';
+import MyDatagrid from '../datagrid/MyDatagrid';
 
 const branchFilters = [
     <SearchInput source="q" alwaysOn />,
@@ -20,11 +21,12 @@ const StaffList = (props: ListProps) => (
         component="div"
         filters={branchFilters}
     >
-        <Datagrid optimized rowClick="edit">
+        <MyDatagrid optimized rowClick="edit">
             <TextField source="username" />
             <TextField source="display_name" />
             <DateField source="created_at" />
-        </Datagrid>
+            <EditButton />
+        </MyDatagrid>
     </List>
 );
 

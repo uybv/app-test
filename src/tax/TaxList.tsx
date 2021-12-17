@@ -1,11 +1,12 @@
 import * as React from 'react';
 import {
     List, ListProps,
-    Datagrid,
+    EditButton,
     DateField,
     TextField,
     SearchInput,
 } from 'react-admin';
+import MyDatagrid from '../datagrid/MyDatagrid';
 
 const taxFilters = [
     <SearchInput source="q" alwaysOn />,
@@ -14,18 +15,18 @@ const taxFilters = [
 const TaxList = (props: ListProps) => (
     <List
         {...props}
-        sort={{ field: 'name', order: 'ASC' }}
         perPage={20}
         pagination={false}
         component="div"
         filters={taxFilters}
     >
-        <Datagrid optimized rowClick="edit">
+        <MyDatagrid optimized rowClick="edit">
             <TextField source="name" />
             <TextField source="value" />
             <TextField source="description" />
             <DateField source="created_at" />
-        </Datagrid>
+            <EditButton />
+        </MyDatagrid>
     </List>
 );
 

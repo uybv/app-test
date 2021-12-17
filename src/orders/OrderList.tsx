@@ -2,24 +2,18 @@ import * as React from 'react';
 import { Fragment, useCallback, useEffect, useState } from 'react';
 import {
     AutocompleteInput,
-    BooleanField,
     Datagrid,
     DatagridProps,
     DateField,
-    DateInput,
     Identifier,
     List,
     ListContextProvider,
     ListProps,
-    NullableBooleanInput,
     NumberField,
     ReferenceInput,
-    ReferenceField,
-    SearchInput,
-    TextField,
-    TextInput,
     useGetList,
     useListContext,
+    EditButton
 } from 'react-admin';
 import { useMediaQuery, Divider, Tabs, Tab, Theme } from '@material-ui/core';
 
@@ -29,6 +23,7 @@ import NbItemsField from './NbItemsField';
 import MobileGrid from './MobileGrid';
 import { Customer, OrderState } from '../types';
 import CustomerReferenceField from '../visitors/CustomerReferenceField';
+import MyDatagrid from '../datagrid/MyDatagrid';
 
 const orderFilters = [
     // <SearchInput source="q" alwaysOn />,
@@ -230,7 +225,7 @@ const TabbedDatagrid = (props: TabbedDatagridProps) => {
                         <ListContextProvider
                             value={{ ...listContext, ids: ordered }}
                         >
-                            <Datagrid {...props} optimized rowClick="edit">
+                            <MyDatagrid {...props} optimized>
                                 <DateField source="created_time" showTime />
                                 <CustomerReferenceField />
                                 <NbItemsField />
@@ -242,14 +237,15 @@ const TabbedDatagrid = (props: TabbedDatagridProps) => {
                                     }}
                                     className={classes.total}
                                 />
-                            </Datagrid>
+                                <EditButton />
+                            </MyDatagrid>
                         </ListContextProvider>
                     )}
                     {filterValues.st === OrderState.WAITING_RECEIVE && (
                         <ListContextProvider
                             value={{ ...listContext, ids: waitingReceive }}
                         >
-                            <Datagrid {...props} optimized rowClick="edit">
+                            <MyDatagrid {...props} optimized>
                                 <DateField source="created_time" showTime />
                                 <CustomerReferenceField />
                                 <NbItemsField />
@@ -261,14 +257,15 @@ const TabbedDatagrid = (props: TabbedDatagridProps) => {
                                     }}
                                     className={classes.total}
                                 />
-                            </Datagrid>
+                                <EditButton />
+                            </MyDatagrid>
                         </ListContextProvider>
                     )}
                     {filterValues.st === OrderState.COMPLETE && (
                         <ListContextProvider
                             value={{ ...listContext, ids: completed }}
                         >
-                            <Datagrid {...props} rowClick="edit">
+                            <MyDatagrid {...props}>
                                 <DateField source="created_time" showTime />
                                 <CustomerReferenceField />
                                 <NbItemsField />
@@ -281,14 +278,15 @@ const TabbedDatagrid = (props: TabbedDatagridProps) => {
                                     className={classes.total}
                                 />
                                 {/* <BooleanField source="returned" /> */}
-                            </Datagrid>
+                                <EditButton />
+                            </MyDatagrid>
                         </ListContextProvider>
                     )}
                     {filterValues.st === OrderState.CANCEL && (
                         <ListContextProvider
                             value={{ ...listContext, ids: cancelled }}
                         >
-                            <Datagrid {...props} rowClick="edit">
+                            <MyDatagrid {...props}>
                                 <DateField source="created_time" showTime />
                                 <CustomerReferenceField />
                                 <NbItemsField />
@@ -301,7 +299,8 @@ const TabbedDatagrid = (props: TabbedDatagridProps) => {
                                     className={classes.total}
                                 />
                                 {/* <BooleanField source="returned" /> */}
-                            </Datagrid>
+                                <EditButton />
+                            </MyDatagrid>
                         </ListContextProvider>
                     )}
                 </div>
@@ -314,7 +313,6 @@ const OrderList = (props: ListProps) => (
     <List
         {...props}
         filterDefaultValues={{ st: OrderState.PAID }}
-        sort={{ field: 'date', order: 'DESC' }}
         perPage={25}
         filters={orderFilters}
     >

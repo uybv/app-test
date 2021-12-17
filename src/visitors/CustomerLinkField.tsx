@@ -12,7 +12,7 @@ const CustomerLinkField = (props: FieldProps<Customer>) =>
     ) : null;
 
 CustomerLinkField.defaultProps = {
-    source: 'customer_id',
+    source: 'user_id',
     addLabel: true,
 };
 

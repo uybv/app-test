@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {
     BooleanField,
-    Datagrid,
+    EditButton,
     DateField,
     DateInput,
     List,
@@ -19,6 +19,7 @@ import ColoredNumberField from './ColoredNumberField';
 import MobileGrid from './MobileGrid';
 import VisitorListAside from './VisitorListAside';
 import { ReactElement } from 'react';
+import MyDatagrid from '../datagrid/MyDatagrid';
 
 const visitorFilters = [
     <SearchInput source="q" alwaysOn />,
@@ -54,10 +55,10 @@ const VisitorList = (props: ListProps): ReactElement => {
             {isXsmall ? (
                 <MobileGrid />
             ) : (
-                <Datagrid optimized rowClick="edit">
+                <MyDatagrid optimized>
                     <TextField source="email" />
                     <CustomerLinkField />
-                    <DateField source="last_login_at" />
+                    <DateField source="created_at" />
                     {/* <NumberField
                         source="total_order"
                         label="resources.customer.fields.order"
@@ -69,7 +70,8 @@ const VisitorList = (props: ListProps): ReactElement => {
                     />
                     <DateField source="latest_purchase" showTime /> */}
                     {/* <BooleanField source="has_newsletter" label="News." /> */}
-                </Datagrid>
+                    <EditButton />
+                </MyDatagrid>
             )
             }
         </List>

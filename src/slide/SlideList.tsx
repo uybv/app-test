@@ -1,10 +1,11 @@
 import * as React from 'react';
 import {
     List, ListProps,
-    Datagrid,
+    EditButton,
     DateField,
     ImageField,
 } from 'react-admin';
+import MyDatagrid from '../datagrid/MyDatagrid';
 
 const SlideList = (props: ListProps) => (
     <List
@@ -15,10 +16,11 @@ const SlideList = (props: ListProps) => (
         component="div"
         filters={[]}
     >
-        <Datagrid optimized rowClick="edit">
+        <MyDatagrid optimized rowClick="edit">
             <ImageField source="image" />
             <DateField source="created_at" />
-        </Datagrid>
+            <EditButton />
+        </MyDatagrid>
     </List>
 );
 

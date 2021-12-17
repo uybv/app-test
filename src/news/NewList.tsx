@@ -13,6 +13,7 @@ import TagsField from './TagsField';
 import { Button } from '@material-ui/core';
 import { CloudDownload } from '@material-ui/icons'
 import { apiBaseUrl } from '../config';
+import MyDatagrid from '../datagrid/MyDatagrid';
 
 const filters = [
     <SearchInput source="q" alwaysOn />,
@@ -66,7 +67,7 @@ const NewList = (props: ListProps) => (
         component="div"
         filters={filters}
     >
-        <Datagrid optimized>
+        <MyDatagrid optimized>
             <TextField source="title" />
             <DateField source="publish_time" showTime />
             <DateField source="expired_time" showTime />
@@ -75,7 +76,7 @@ const NewList = (props: ListProps) => (
             <DateField source="created_at" />
             <QrCodeDownloadButton />
             <EditButton />
-        </Datagrid>
+        </MyDatagrid>
     </List>
 );
 
