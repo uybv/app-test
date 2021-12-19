@@ -8,7 +8,7 @@ const CustomerReferenceField = (
         source?: string;
     }
 ) => (
-    <ReferenceField source="user_id" reference="customer" {...props}>
+    <ReferenceField source="user_id" reference="customer" link={false} {...props}>
         <FullNameField />
     </ReferenceField>
 );

@@ -12,28 +12,35 @@ const useStyles = makeStyles({
     boldCell: { fontWeight: 'bold' },
 });
 
-const Totals = (props: FieldProps<Order>) => {
+const renderPaymentMethod = (type: any) => {
+    let data = '';
+    switch (type) {
+        case 1:
+            data = 'PayPay';
+            break;
+        case 2:
+            data = 'Credit card';
+            break;
+        case 3:
+            data = 'Apple pay';
+            break;
+        case 4:
+            data = 'Google pay';
+    }
+
+    return data;
+}
+
+const Totals = (props: FieldProps<any>) => {
     const { record } = props;
     const classes = useStyles();
-    const translate = useTranslate();
 
     return (
         <Table className={classes.container}>
             <TableBody>
                 <TableRow>
-                    <TableCell>
-                        {translate('resources.order.fields.basket.sum')}
-                    </TableCell>
-                    <TableCell className={classes.rightAlignedCell}>
-                        {record?.total.toLocaleString(undefined, {
-                            style: 'currency',
-                            currency: 'JPY',
-                        })}
-                    </TableCell>
-                </TableRow>
-                <TableRow>
                     <TableCell className={classes.boldCell}>
-                        {translate('resources.order.fields.basket.total')}
+                        金額
                     </TableCell>
                     <TableCell
                         className={clsx(
@@ -43,7 +50,34 @@ const Totals = (props: FieldProps<Order>) => {
                     >
                         {record?.total.toLocaleString(undefined, {
                             style: 'currency',
-                            currency: 'USD',
+                            currency: 'JPY',
+                        })}
+                    </TableCell>
+                </TableRow>
+                <TableRow>
+                    <TableCell>
+                        支払方法
+                    </TableCell>
+                    <TableCell className={classes.rightAlignedCell}>
+                        {renderPaymentMethod(record?.payment.type)}
+                    </TableCell>
+                </TableRow>
+                <TableRow>
+                    <TableCell>
+                        決済手数料
+                    </TableCell>
+                    <TableCell className={classes.rightAlignedCell}>
+                        ¥0
+                    </TableCell>
+                </TableRow>
+                <TableRow>
+                    <TableCell>
+                        金額 - 決済手数料
+                    </TableCell>
+                    <TableCell className={classes.rightAlignedCell}>
+                        {record?.total.toLocaleString(undefined, {
+                            style: 'currency',
+                            currency: 'JPY',
                         })}
                     </TableCell>
                 </TableRow>

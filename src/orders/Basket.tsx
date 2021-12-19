@@ -46,8 +46,8 @@ const Basket = (props: FieldProps<Order>) => {
                         <TableRow key={item.id}>
                             <TableCell>
                                 {item.name + '\n'}
-                                {item.additions.map((addition: any) => (
-                                    <div>
+                                {item.additions && item.additions.length && item.additions.map((addition: any, idx: any) => (
+                                    <div key={`${addition.name}-${idx}`}>
                                         {addition.name}: {addition.price.toLocaleString(undefined, {
                                             style: 'currency',
                                             currency: 'JPY',
@@ -59,7 +59,7 @@ const Basket = (props: FieldProps<Order>) => {
                                 {item.quantity}
                             </TableCell>
                             <TableCell className={classes.rightAlignedCell}>
-                                {item.price.toLocaleString(undefined, {
+                                {(item.price * item.quantity).toLocaleString(undefined, {
                                     style: 'currency',
                                     currency: 'JPY',
                                 })}

@@ -25,6 +25,10 @@ import MobileGrid from './MobileGrid';
 import { Customer, OrderState } from '../types';
 import CustomerReferenceField from '../visitors/CustomerReferenceField';
 import MyDatagrid from '../datagrid/MyDatagrid';
+import OrderCreatedTimeAndBranchField from './OrderCreatedTimeAndBranchField';
+import OrderDeliveryTimeAndUserField from './OrderDeliveryTimeAndUserField';
+import OrderFoodField from './OrderFoodField';
+import OrderPaymentMethodAndTotalCostField from './OrderPaymentMethodAndTotalCostField';
 
 const orderFilters = [
     <ReferenceInput source="user_id" reference="customer">
@@ -221,18 +225,11 @@ const TabbedDatagrid = (props: TabbedDatagridProps) => {
                         <ListContextProvider
                             value={{ ...listContext, ids: ordered }}
                         >
-                            <MyDatagrid {...props} optimized>
-                                <DateField source="created_time" showTime />
-                                <CustomerReferenceField />
-                                <NbItemsField />
-                                <NumberField
-                                    source="total"
-                                    options={{
-                                        style: 'currency',
-                                        currency: 'JYP',
-                                    }}
-                                    className={classes.total}
-                                />
+                            <MyDatagrid {...props} optimized rowClick='edit'>
+                                <OrderCreatedTimeAndBranchField />
+                                <OrderDeliveryTimeAndUserField />
+                                <OrderFoodField />
+                                <OrderPaymentMethodAndTotalCostField />
                                 <EditButton />
                             </MyDatagrid>
                         </ListContextProvider>
@@ -241,18 +238,11 @@ const TabbedDatagrid = (props: TabbedDatagridProps) => {
                         <ListContextProvider
                             value={{ ...listContext, ids: waitingReceive }}
                         >
-                            <MyDatagrid {...props} optimized>
-                                <DateField source="created_time" showTime />
-                                <CustomerReferenceField />
-                                <NbItemsField />
-                                <NumberField
-                                    source="total"
-                                    options={{
-                                        style: 'currency',
-                                        currency: 'JYP',
-                                    }}
-                                    className={classes.total}
-                                />
+                            <MyDatagrid {...props} optimized rowClick='edit'>
+                                <OrderCreatedTimeAndBranchField />
+                                <OrderDeliveryTimeAndUserField />
+                                <OrderFoodField />
+                                <OrderPaymentMethodAndTotalCostField />
                                 <EditButton />
                             </MyDatagrid>
                         </ListContextProvider>
@@ -261,19 +251,11 @@ const TabbedDatagrid = (props: TabbedDatagridProps) => {
                         <ListContextProvider
                             value={{ ...listContext, ids: completed }}
                         >
-                            <MyDatagrid {...props}>
-                                <DateField source="created_time" showTime />
-                                <CustomerReferenceField />
-                                <NbItemsField />
-                                <NumberField
-                                    source="total"
-                                    options={{
-                                        style: 'currency',
-                                        currency: 'JYP',
-                                    }}
-                                    className={classes.total}
-                                />
-                                {/* <BooleanField source="returned" /> */}
+                            <MyDatagrid {...props} optimized rowClick='edit'>
+                                <OrderCreatedTimeAndBranchField />
+                                <OrderDeliveryTimeAndUserField />
+                                <OrderFoodField />
+                                <OrderPaymentMethodAndTotalCostField />
                                 <EditButton />
                             </MyDatagrid>
                         </ListContextProvider>
@@ -282,19 +264,11 @@ const TabbedDatagrid = (props: TabbedDatagridProps) => {
                         <ListContextProvider
                             value={{ ...listContext, ids: cancelled }}
                         >
-                            <MyDatagrid {...props}>
-                                <DateField source="created_time" showTime />
-                                <CustomerReferenceField />
-                                <NbItemsField />
-                                <NumberField
-                                    source="total"
-                                    options={{
-                                        style: 'currency',
-                                        currency: 'JYP',
-                                    }}
-                                    className={classes.total}
-                                />
-                                {/* <BooleanField source="returned" /> */}
+                            <MyDatagrid {...props} optimized rowClick='edit'>
+                                <OrderCreatedTimeAndBranchField />
+                                <OrderDeliveryTimeAndUserField />
+                                <OrderFoodField />
+                                <OrderPaymentMethodAndTotalCostField />
                                 <EditButton />
                             </MyDatagrid>
                         </ListContextProvider>

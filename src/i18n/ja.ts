@@ -103,8 +103,8 @@ const japaneseDomainMessages = {
                 order: 'オーダー管理',
                 customer: 'ユーザー管理',
                 branch: '店舗',
-                items: 'Items',
-                total: 'Totals',
+                items: '商品情報',
+                total: '合計',
             },
         },
         product: {
