@@ -3,7 +3,7 @@ import {
     DateInput,
     Edit,
     EditProps,
-    NullableBooleanInput,
+    BooleanInput,
     TextInput,
     PasswordInput,
     Toolbar,
@@ -13,7 +13,9 @@ import {
     email,
     FieldProps,
     TopToolbar,
-    ListButton
+    ListButton,
+    SelectInput,
+    Labeled
 } from 'react-admin';
 import { Box, Card, CardContent, Typography } from '@material-ui/core';
 
@@ -59,12 +61,10 @@ const VisitorForm = (props: any) => {
                 <Card>
                     <form>
                         <CardContent>
-                            <Box display={{ md: 'block', lg: 'flex' }}>
+                            <Box maxWidth="50em" display={{ md: 'block', lg: 'flex' }}>
                                 <Box flex={2} mr={{ md: 0, lg: '1em' }}>
                                     <Typography variant="h6" gutterBottom>
-                                        {translate(
-                                            'resources.customer.fieldGroups.identity'
-                                        )}
+                                        会員情報
                                     </Typography>
                                     <Box display={{ xs: 'block', sm: 'flex' }}>
                                         <Box
@@ -132,7 +132,7 @@ const VisitorForm = (props: any) => {
                                         >
                                             <TextInput
                                                 label="resources.customer.fields.phone"
-                                                source="phone"
+                                                source="phone_number"
                                                 fullWidth
                                             />
                                         </Box>
@@ -149,9 +149,29 @@ const VisitorForm = (props: any) => {
                                             />
                                         </Box>
                                         <Box
-                                            flex={2}
+                                            flex={1}
                                             ml={{ xs: 0, sm: '0.5em' }}
-                                        />
+                                        >
+                                            <SelectInput
+                                                label="性別"
+                                                resource="customer"
+                                                source="gender"
+                                                choices={[
+                                                    {
+                                                        id: 1,
+                                                        name: '男性',
+                                                    },
+                                                    {
+                                                        id: 2,
+                                                        name: '女性',
+                                                    },
+                                                    {
+                                                        id: 3,
+                                                        name: 'Other',
+                                                    },
+                                                ]}
+                                            />
+                                        </Box>
                                     </Box>
 
                                     <Box mt="1em" />
@@ -169,6 +189,15 @@ const VisitorForm = (props: any) => {
                                         helperText={false}
                                     />
                                     <Box display={{ xs: 'block', sm: 'flex' }}>
+                                        <Box flex={2}
+                                            mr={{ xs: 0, sm: '0.5em' }}>
+                                            <TextInput
+                                                label="resources.customer.fields.address.postal_code"
+                                                source="address.postal_code"
+                                                fullWidth
+                                                helperText={false}
+                                            />
+                                        </Box>
                                         <Box
                                             flex={2}
                                             mr={{ xs: 0, sm: '0.5em' }}
@@ -193,7 +222,6 @@ const VisitorForm = (props: any) => {
                                         </Box>
                                         <Box
                                             flex={2}
-                                            mr={{ xs: 0, sm: '0.5em' }}
                                         >
                                             <TextInput
                                                 label="resources.customer.fields.address.apartment"
@@ -202,35 +230,61 @@ const VisitorForm = (props: any) => {
                                                 helperText={false}
                                             />
                                         </Box>
-                                        <Box flex={2}>
-                                            <TextInput
-                                                label="resources.customer.fields.address.postal_code"
-                                                source="address.postal_code"
-                                                fullWidth
-                                                helperText={false}
-                                            />
+                                    </Box>
+
+                                    <Box mt="4em" />
+
+                                    <Box display={{ xs: 'block', sm: 'flex' }}>
+                                        <Box
+                                            flex={1}
+                                            mr={{ xs: 0, sm: '0.5em' }}
+                                        >
+                                            <Typography variant="h6" gutterBottom>
+                                                パスワード登録
+                                            </Typography>
+                                            <Box display={{ xs: 'block', sm: 'flex' }}>
+                                                <Box
+                                                    flex={1}
+                                                    mr={{ xs: 0, sm: '0.5em' }}
+                                                >
+                                                    <Labeled
+                                                        label="パスワード登録"
+                                                    >
+                                                        <>{formProps.record.password ? 'あり' : 'なし'}</>
+                                                    </Labeled>
+                                                </Box>
+                                                <Box
+                                                    flex={1}
+                                                    mr={{ xs: 0, sm: '0.5em' }}
+                                                >
+                                                    <Labeled
+                                                        label="SNS連携"
+                                                    >
+                                                        <>{formProps.record.auth_via ? formProps.record.auth_via.join(',') : ''}</>
+                                                    </Labeled>
+                                                </Box>
+                                            </Box>
+
+                                        </Box>
+                                        <Box
+                                            flex={1}
+                                            ml={{ xs: 0, sm: '0.5em' }}
+                                        >
+                                            <Typography variant="h6" gutterBottom>
+                                                メール配信設定
+                                            </Typography>
+                                            <Box display={{ xs: 'block', sm: 'flex' }}>
+                                                <BooleanInput label="お知らせ、キャンペーンなど" source="email_settings.campaign" />
+                                            </Box>
+                                            <Box display={{ xs: 'block', sm: 'flex' }}>
+                                                <BooleanInput label="新商品先行告知" source="email_settings.new_food" />
+                                            </Box>
+
+
                                         </Box>
                                     </Box>
 
-                                    <Box mt="1em" />
                                 </Box>
-                                {/* <Box
-                                    flex={1}
-                                    ml={{ xs: 0, lg: '1em' }}
-                                    mt={{ xs: '1em', lg: 0 }}
-                                >
-                                    <Typography variant="h6" gutterBottom>
-                                        {translate(
-                                            'resources.customer.fieldGroups.stats'
-                                        )}
-                                    </Typography>
-                                    <div>
-                                        <NullableBooleanInput
-                                            source="has_newsletter"
-                                            resource="customer"
-                                        />
-                                    </div>
-                                </Box> */}
                             </Box>
                         </CardContent>
                         <Toolbar
