@@ -168,6 +168,8 @@ const japaneseDomainMessages = {
                 food_ids: '商品一覧（メニュー）',
                 staff_ids: 'スタッフ',
                 delivery_est: '受け取り時間（予定)',
+                working_time_text: '営業時間',
+                holiday_text: '定休日',
                 working_times: {
                     start_at: '開店時間',
                     end_at: '閉店時間'

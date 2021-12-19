@@ -125,6 +125,18 @@ const BranchEdit = (props: EditProps) => {
                         className={classes.width600}
                         validate={[required()]}
                     />
+                    <TextInput
+                        autoFocus
+                        source="working_time_text"
+                        className={classes.width600}
+                        validate={[required()]}
+                    />
+                    <TextInput
+                        autoFocus
+                        source="holiday_text"
+                        className={classes.width600}
+                        validate={[required()]}
+                    />
                     <NumberInput
                         source="address.location.x"
                         validate={[required(), minValue(0)]}
@@ -157,13 +169,7 @@ const BranchEdit = (props: EditProps) => {
                     >
                         <AutocompleteArrayInput optionText="username" />
                     </ReferenceArrayInput>
-                    <TextInput
-                        source="description"
-                        className={classes.width600}
-                    />
-                </FormTab>
-                <FormTab label="resources.branch.tabs.working_times" path="working-times">
-                    <ArrayInput source="working_times" label="">
+                    <ArrayInput source="working_times" label="営業時間">
                         <SimpleFormIterator getItemLabel={(index) => ''}
                             disableRemove disableAdd disableReordering >
                             <FormDataConsumer>

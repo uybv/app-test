@@ -128,6 +128,18 @@ const BranchCreate = (props: CreateProps) => {
                         className={classes.width600}
                         validate={[required()]}
                     />
+                    <TextInput
+                        autoFocus
+                        source="working_time_text"
+                        className={classes.width600}
+                        validate={[required()]}
+                    />
+                    <TextInput
+                        autoFocus
+                        source="holiday_text"
+                        className={classes.width600}
+                        validate={[required()]}
+                    />
                     <NumberInput
                         source="address.location.x"
                         validate={[required(), minValue(0)]}
@@ -160,13 +172,7 @@ const BranchCreate = (props: CreateProps) => {
                     >
                         <AutocompleteArrayInput optionText="username" />
                     </ReferenceArrayInput>
-                    <TextInput
-                        source="description"
-                        className={classes.width600}
-                    />
-                </FormTab>
-                <FormTab label="resources.branch.tabs.working_times" path="working-times">
-                    <ArrayInput source="working_times" label="" defaultValue={workingTimes}>
+                    <ArrayInput source="working_times" label="営業時間" defaultValue={workingTimes}>
                         <SimpleFormIterator getItemLabel={(index) => ''}
                             disableRemove disableAdd disableReordering >
                             <FormDataConsumer {...props}>
@@ -182,7 +188,7 @@ const BranchCreate = (props: CreateProps) => {
                                                 {
                                                     getDayOfWeek((props as any).id.substring(
                                                         (props as any).id.indexOf("[") + 1,
-                                                       (props as any).id.lastIndexOf("]")))
+                                                        (props as any).id.lastIndexOf("]")))
                                                 }
                                             </span>
                                             <BooleanInput
