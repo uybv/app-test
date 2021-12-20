@@ -290,11 +290,11 @@ const VisitorForm = (props: any) => {
                         <Toolbar
                             record={formProps.record}
                             basePath={formProps.basePath}
-                            undoable={true}
+                            undoable={false}
                             invalid={formProps.invalid}
                             handleSubmit={formProps.handleSubmit}
                             saving={formProps.saving}
-                            resource="customers"
+                            resource="customer"
                         />
                     </form>
                 </Card>
