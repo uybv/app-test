@@ -64,13 +64,22 @@ const CustomerDetails = ({ record }: { record?: Customer }) => (
     </Box>
 );
 
-const BranchDetails = ({ record }: { record?: any }) => (
+const BranchDetail = ({ record }: { record?: any }) => (
     <Box display="flex" flexDirection="column">
         <Typography>
             {record?.name}
         </Typography>
     </Box>
 );
+
+const StaffDetail = ({ record }: { record?: any }) => (
+    <Box display="flex" flexDirection="column">
+        <Typography>
+            {record?.display_name}
+        </Typography>
+    </Box>
+);
+
 
 const useEditStyles = makeStyles({
     root: { alignItems: 'flex-start' },
@@ -100,7 +109,7 @@ const OrderForm = (props: any) => {
         <FormWithRedirect
             {...props}
             render={(formProps: any) => (
-                <Box maxWidth="50em">
+                <Box maxWidth="60em">
                     <Card>
                         <CardContent>
                             <Grid container spacing={1}>
@@ -127,7 +136,7 @@ const OrderForm = (props: any) => {
                                         </Grid>
                                         <Grid item xs={12} sm={12} md={6}>
                                             <Labeled
-                                                source="created_time"
+                                                source="branch_id"
                                                 resource="order"
                                             >
                                                 <ReferenceField
@@ -139,7 +148,7 @@ const OrderForm = (props: any) => {
                                                     record={formProps.record}
                                                     link={false}
                                                 >
-                                                    <BranchDetails />
+                                                    <BranchDetail />
                                                 </ReferenceField>
                                             </Labeled>
 
@@ -210,9 +219,50 @@ const OrderForm = (props: any) => {
                                             </Labeled>
 
                                         </Grid>
+                                        {formProps.record.st === OrderState.COMPLETE && (
+                                            <Grid item xs={12} sm={12} md={6}>
+                                                <Labeled
+                                                    label="完了日時"
+                                                    source="complete_time"
+                                                    resource="order"
+                                                >
+                                                    <DateField
+                                                        label="完了日時"
+                                                        source="complete_time"
+                                                        resource="order"
+                                                        record={formProps.record}
+                                                        showTime
+                                                    />
+                                                </Labeled>
+
+                                            </Grid>
+                                        )}
 
                                     </Grid>
+                                    {formProps.record.st === OrderState.COMPLETE && (
+                                        <Grid container>
+                                            <Grid item xs={12} sm={12} md={6}>
+                                                <Labeled
+                                                    label="対応スタッフ"
+                                                    source="staff_id"
+                                                    resource="order"
+                                                >
+                                                    <ReferenceField
+                                                        label="対応スタッフ"
+                                                        source="staff_id"
+                                                        resource="order"
+                                                        reference="staff"
+                                                        basePath="/staff"
+                                                        record={formProps.record}
+                                                        link={false}
+                                                    >
+                                                        <StaffDetail />
+                                                    </ReferenceField>
+                                                </Labeled>
 
+                                            </Grid>
+                                        </Grid>
+                                    )}
                                 </Grid>
                                 <Grid item xs={12} sm={12} md={4}>
                                     <Typography variant="h6" gutterBottom>
@@ -254,10 +304,10 @@ const OrderForm = (props: any) => {
                                     <ReferenceArrayInput
                                         label="スタッフ"
                                         reference="staff"
-                                        source="staff_ids"
+                                        source="staff_id"
                                         validate={[required()]}
                                     >
-                                        <AutocompleteArrayInput optionText="username" />
+                                        <AutocompleteArrayInput optionText="display_name" />
                                     </ReferenceArrayInput>
                                 </Box>
                             )}
@@ -293,7 +343,7 @@ const OrderForm = (props: any) => {
                                         }
                                         icon={<Delete />}
                                         variant="text"
-                                        transform={data => ({ ...data, st: OrderState.CANCEL })}
+                                        transform={data => ({ ...data, st: OrderState.CANCEL, cancel_time: new Date().valueOf() })}
                                     />
                                 </Box>
                             )}
@@ -303,7 +353,7 @@ const OrderForm = (props: any) => {
                                         label="完了する"
                                         saving={formProps.saving}
                                         handleSubmitWithRedirect={formProps.handleSubmitWithRedirect}
-                                        transform={data => ({ ...data, st: OrderState.COMPLETE })}
+                                        transform={data => ({ ...data, st: OrderState.COMPLETE, complete_time: new Date().valueOf() })}
                                     />
                                     <SaveButton
                                         label="注文済みに戻す"
@@ -326,7 +376,7 @@ const OrderForm = (props: any) => {
                                         }
                                         icon={<Delete />}
                                         variant="text"
-                                        transform={data => ({ ...data, st: OrderState.CANCEL })}
+                                        transform={data => ({ ...data, st: OrderState.CANCEL, cancel_time: new Date().valueOf() })}
                                     />
                                 </Box>
                             )}
@@ -353,7 +403,7 @@ const OrderForm = (props: any) => {
                                         }
                                         icon={<Delete />}
                                         variant="text"
-                                        transform={data => ({ ...data, st: OrderState.CANCEL })}
+                                        transform={data => ({ ...data, st: OrderState.CANCEL, cancel_time: new Date().valueOf() })}
                                     />
                                 </Box>
                             )}

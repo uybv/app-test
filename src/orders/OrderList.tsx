@@ -3,12 +3,10 @@ import { Fragment, useCallback, useEffect, useState } from 'react';
 import {
     AutocompleteInput,
     DatagridProps,
-    DateField,
     Identifier,
     List,
     ListContextProvider,
     ListProps,
-    NumberField,
     ReferenceInput,
     useGetList,
     useListContext,
@@ -16,14 +14,9 @@ import {
     TopToolbar,
     FilterButton
 } from 'react-admin';
-import { useMediaQuery, Divider, Tabs, Tab, Theme } from '@material-ui/core';
+import { Divider, Tabs, Tab } from '@material-ui/core';
 
-import { makeStyles } from '@material-ui/core/styles';
-
-import NbItemsField from './NbItemsField';
-import MobileGrid from './MobileGrid';
 import { Customer, OrderState } from '../types';
-import CustomerReferenceField from '../visitors/CustomerReferenceField';
 import MyDatagrid from '../datagrid/MyDatagrid';
 import OrderCreatedTimeAndBranchField from './OrderCreatedTimeAndBranchField';
 import OrderDeliveryTimeAndUserField from './OrderDeliveryTimeAndUserField';
@@ -50,10 +43,6 @@ const orderFilters = [
         />
     </ReferenceInput>,
 ];
-
-const useDatagridStyles = makeStyles({
-    total: { fontWeight: 'bold' },
-});
 
 const tabs = [
     { id: 1, name: '注文済み' },
@@ -100,10 +89,7 @@ const useGetTotals = (filterValues: any) => {
 const TabbedDatagrid = (props: TabbedDatagridProps) => {
     const listContext = useListContext();
     const { ids, filterValues, setFilters, displayedFilters } = listContext;
-    const classes = useDatagridStyles();
-    const isXSmall = useMediaQuery<Theme>(theme =>
-        theme.breakpoints.down('xs')
-    );
+
     const [ordered, setOrdered] = useState<Identifier[]>([] as Identifier[]);
     const [waitingReceive, setWaitingReceive] = useState<Identifier[]>(
         [] as Identifier[]
@@ -182,15 +168,6 @@ const TabbedDatagrid = (props: TabbedDatagridProps) => {
         return index;
     }
 
-    const selectedIds =
-        filterValues.st === OrderState.PAID
-            ? ordered
-            : filterValues.st === OrderState.WAITING_RECEIVE
-                ? waitingReceive
-                : filterValues.st === OrderState.COMPLETE
-                    ? completed
-                    : cancelled;
-
     return (
         <Fragment>
             <Tabs
@@ -213,68 +190,60 @@ const TabbedDatagrid = (props: TabbedDatagridProps) => {
                 ))}
             </Tabs>
             <Divider />
-            {isXSmall ? (
-                <ListContextProvider
-                    value={{ ...listContext, ids: selectedIds }}
-                >
-                    <MobileGrid {...props} ids={selectedIds} />
-                </ListContextProvider>
-            ) : (
-                <div>
-                    {filterValues.st === OrderState.PAID && (
-                        <ListContextProvider
-                            value={{ ...listContext, ids: ordered }}
-                        >
-                            <MyDatagrid {...props} optimized rowClick='edit'>
-                                <OrderCreatedTimeAndBranchField />
-                                <OrderDeliveryTimeAndUserField />
-                                <OrderFoodField />
-                                <OrderPaymentMethodAndTotalCostField />
-                                <EditButton />
-                            </MyDatagrid>
-                        </ListContextProvider>
-                    )}
-                    {filterValues.st === OrderState.WAITING_RECEIVE && (
-                        <ListContextProvider
-                            value={{ ...listContext, ids: waitingReceive }}
-                        >
-                            <MyDatagrid {...props} optimized rowClick='edit'>
-                                <OrderCreatedTimeAndBranchField />
-                                <OrderDeliveryTimeAndUserField />
-                                <OrderFoodField />
-                                <OrderPaymentMethodAndTotalCostField />
-                                <EditButton />
-                            </MyDatagrid>
-                        </ListContextProvider>
-                    )}
-                    {filterValues.st === OrderState.COMPLETE && (
-                        <ListContextProvider
-                            value={{ ...listContext, ids: completed }}
-                        >
-                            <MyDatagrid {...props} optimized rowClick='edit'>
-                                <OrderCreatedTimeAndBranchField />
-                                <OrderDeliveryTimeAndUserField />
-                                <OrderFoodField />
-                                <OrderPaymentMethodAndTotalCostField />
-                                <EditButton />
-                            </MyDatagrid>
-                        </ListContextProvider>
-                    )}
-                    {filterValues.st === OrderState.CANCEL && (
-                        <ListContextProvider
-                            value={{ ...listContext, ids: cancelled }}
-                        >
-                            <MyDatagrid {...props} optimized rowClick='edit'>
-                                <OrderCreatedTimeAndBranchField />
-                                <OrderDeliveryTimeAndUserField />
-                                <OrderFoodField />
-                                <OrderPaymentMethodAndTotalCostField />
-                                <EditButton />
-                            </MyDatagrid>
-                        </ListContextProvider>
-                    )}
-                </div>
-            )}
+            <div>
+                {filterValues.st === OrderState.PAID && (
+                    <ListContextProvider
+                        value={{ ...listContext, ids: ordered }}
+                    >
+                        <MyDatagrid {...props} optimized rowClick='edit'>
+                            <OrderCreatedTimeAndBranchField />
+                            <OrderDeliveryTimeAndUserField />
+                            <OrderFoodField />
+                            <OrderPaymentMethodAndTotalCostField />
+                            <EditButton />
+                        </MyDatagrid>
+                    </ListContextProvider>
+                )}
+                {filterValues.st === OrderState.WAITING_RECEIVE && (
+                    <ListContextProvider
+                        value={{ ...listContext, ids: waitingReceive }}
+                    >
+                        <MyDatagrid {...props} optimized rowClick='edit'>
+                            <OrderCreatedTimeAndBranchField />
+                            <OrderDeliveryTimeAndUserField />
+                            <OrderFoodField />
+                            <OrderPaymentMethodAndTotalCostField />
+                            <EditButton />
+                        </MyDatagrid>
+                    </ListContextProvider>
+                )}
+                {filterValues.st === OrderState.COMPLETE && (
+                    <ListContextProvider
+                        value={{ ...listContext, ids: completed }}
+                    >
+                        <MyDatagrid {...props} optimized rowClick='edit'>
+                            <OrderCreatedTimeAndBranchField />
+                            <OrderDeliveryTimeAndUserField />
+                            <OrderFoodField />
+                            <OrderPaymentMethodAndTotalCostField />
+                            <EditButton />
+                        </MyDatagrid>
+                    </ListContextProvider>
+                )}
+                {filterValues.st === OrderState.CANCEL && (
+                    <ListContextProvider
+                        value={{ ...listContext, ids: cancelled }}
+                    >
+                        <MyDatagrid {...props} optimized rowClick='edit'>
+                            <OrderCreatedTimeAndBranchField />
+                            <OrderDeliveryTimeAndUserField />
+                            <OrderFoodField />
+                            <OrderPaymentMethodAndTotalCostField />
+                            <EditButton />
+                        </MyDatagrid>
+                    </ListContextProvider>
+                )}
+            </div>
         </Fragment>
     );
 };

@@ -8,8 +8,8 @@ const OrderFoodField = (props: any) => {
         <>
             <div style={{ marginBottom: 20 }}>{'受取番号: ' + record?.queuing}</div>
             <div>
-                {record.foods.map((food: any) => (
-                    <>
+                {record.foods.map((food: any, index: any) => (
+                    <div key={`${food.id}-${index}`}>
                         <div>{`${food.name}   ${food.quantity}点`}</div>
                         {food.additions &&
                             food.additions.map((opt: any, optIdx: any) => (
@@ -20,7 +20,7 @@ const OrderFoodField = (props: any) => {
                                     }}>{`${opt.name}: ${opt.option_name}(+${opt.price}円)`}</div>
                             ))
                         }
-                    </>
+                    </div>
                 ))}
             </div>
         </>
