@@ -5,11 +5,9 @@ import {
     EditProps,
     BooleanInput,
     TextInput,
-    PasswordInput,
     Toolbar,
     useTranslate,
     FormWithRedirect,
-    required,
     email,
     FieldProps,
     TopToolbar,
@@ -49,6 +47,26 @@ const VisitorEdit = (props: EditProps) => {
     );
 };
 
+function renderAuthSNS(data: string[]): string {
+    let string = '';
+    data.forEach(v => {
+        if (v === 'email') {
+            string += 'Gmail,'
+        }
+        if (v === 'google') {
+            string += 'Google,'
+        }
+        if (v === 'facebook') {
+            string += 'Facebook,'
+        }
+        if (v === 'apple') {
+            string += 'Apple,'
+        }
+        
+    });
+    return string;
+}
+
 
 const VisitorForm = (props: any) => {
     const translate = useTranslate();
@@ -74,7 +92,6 @@ const VisitorForm = (props: any) => {
                                             <TextInput
                                                 label="resources.customer.fields.display_name.first_name"
                                                 source="display_name.first_name"
-                                                validate={requiredValidate}
                                                 fullWidth
                                             />
                                         </Box>
@@ -85,7 +102,6 @@ const VisitorForm = (props: any) => {
                                             <TextInput
                                                 label="resources.customer.fields.display_name.last_name"
                                                 source="display_name.last_name"
-                                                validate={requiredValidate}
                                                 fullWidth
                                             />
                                         </Box>
@@ -98,7 +114,6 @@ const VisitorForm = (props: any) => {
                                             <TextInput
                                                 label="resources.customer.fields.display_name.first_name_kata"
                                                 source="display_name.first_name_kata"
-                                                validate={requiredValidate}
                                                 fullWidth
                                             />
                                         </Box>
@@ -109,7 +124,6 @@ const VisitorForm = (props: any) => {
                                             <TextInput
                                                 label="resources.customer.fields.display_name.last_name_kata"
                                                 source="display_name.last_name_kata"
-                                                validate={requiredValidate}
                                                 fullWidth
                                             />
                                         </Box>
@@ -122,7 +136,7 @@ const VisitorForm = (props: any) => {
                                             <TextInput
                                                 label="resources.customer.fields.email"
                                                 source="email"
-                                                validate={[email(), required()]}
+                                                validate={[email()]}
                                                 fullWidth
                                             />
                                         </Box>
@@ -260,7 +274,7 @@ const VisitorForm = (props: any) => {
                                                     <Labeled
                                                         label="SNS連携"
                                                     >
-                                                        <>{formProps.record.auth_via ? formProps.record.auth_via.join(',') : ''}</>
+                                                        <>{renderAuthSNS(formProps.record.auth_via)}</>
                                                     </Labeled>
                                                 </Box>
                                             </Box>
@@ -302,7 +316,5 @@ const VisitorForm = (props: any) => {
         />
     );
 };
-
-const requiredValidate = [required()];
 
 export default VisitorEdit;
