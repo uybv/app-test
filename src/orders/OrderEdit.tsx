@@ -17,6 +17,7 @@ import {
     SaveButton,
     DeleteButton,
     useCreate,
+    useUpdate,
     useRedirect,
     useNotify,
     useRefresh,
@@ -30,6 +31,7 @@ import {
     Box,
     Grid,
     Typography,
+    Button
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -103,9 +105,17 @@ const Spacer = () => <Box m={1}>&nbsp;</Box>;
 const OrderForm = (props: any) => {
     const translate = useTranslate();
     const classes = useButtonStyles();
-
+    const [update] = useUpdate();
     const notify = useNotify();
+    const refresh = useRefresh();
     const redirect = useRedirect();
+
+    const handleUpdateStatus = (record: any, st: OrderState) => {
+        update('order', record.id, { st: st }, record);
+        notify(`更新しました`);
+        redirect('list', '/order?displayedFilters=%7B%7D&filter=%7B"st"%3A' + st + '%7D&order=ASC&page=1&perPage=50&sort=id');
+        refresh();
+    }
 
     return (
         <FormWithRedirect
@@ -330,22 +340,20 @@ const OrderForm = (props: any) => {
                                         handleSubmitWithRedirect={formProps.handleSubmitWithRedirect}
                                         transform={data => ({ ...data, st: OrderState.WAITING_RECEIVE })}
                                     />
-                                    <SaveButton
-                                        label="キャンセル"
-                                        undoable={false}
+                                    <Button
                                         className={classes.label}
-                                        saving={formProps.saving}
-                                        handleSubmitWithRedirect={
-                                            () => {
-                                                if (!window.confirm('本当にキャンセルしますか?'))
-                                                    return false;
-                                                return formProps.handleSubmitWithRedirect();
-                                            }
-                                        }
-                                        icon={<Delete />}
-                                        variant="text"
-                                        transform={data => ({ ...data, st: OrderState.CANCEL })}
-                                    />
+                                        variant={'text'}
+                                        type={'button'}
+                                        color={'default'}
+                                        startIcon={<Delete />}
+                                        onClick={() => {
+                                            if (!window.confirm('本当にキャンセルしますか?'))
+                                                return false;
+                                            handleUpdateStatus(formProps.record, OrderState.CANCEL);
+                                        }}
+                                    >
+                                        キャンセル
+                                    </Button>
                                 </Box>
                             )}
                             {formProps.record.st === OrderState.WAITING_RECEIVE && (
@@ -353,35 +361,33 @@ const OrderForm = (props: any) => {
                                     <SaveButton
                                         label="完了する"
                                         undoable={false}
+                                        invalid={true}
                                         saving={formProps.saving}
                                         handleSubmitWithRedirect={formProps.handleSubmitWithRedirect}
                                         transform={data => ({ ...data, st: OrderState.COMPLETE })}
                                     />
-                                    <SaveButton
-                                        label="注文済みに戻す"
-                                        undoable={false}
-                                        saving={formProps.saving}
-                                        variant="outlined"
-                                        icon={<></>}
-                                        handleSubmitWithRedirect={formProps.handleSubmitWithRedirect}
-                                        transform={data => ({ ...data, st: OrderState.PAID })}
-                                    />
-                                    <SaveButton
-                                        label="キャンセル"
-                                        undoable={false}
+                                    <Button
+                                        variant={'outlined'}
+                                        type={'button'}
+                                        color={'default'}
+                                        onClick={() => { handleUpdateStatus(formProps.record, OrderState.PAID); }}
+                                    >
+                                        注文済みに戻す
+                                    </Button>
+                                    <Button
                                         className={classes.label}
-                                        saving={formProps.saving}
-                                        handleSubmitWithRedirect={
-                                            () => {
-                                                if (!window.confirm('本当にキャンセルしますか?'))
-                                                    return false;
-                                                return formProps.handleSubmitWithRedirect();
-                                            }
-                                        }
-                                        icon={<Delete />}
-                                        variant="text"
-                                        transform={data => ({ ...data, st: OrderState.CANCEL })}
-                                    />
+                                        variant={'text'}
+                                        type={'button'}
+                                        color={'default'}
+                                        startIcon={<Delete />}
+                                        onClick={() => {
+                                            if (!window.confirm('本当にキャンセルしますか?'))
+                                                return false;
+                                            handleUpdateStatus(formProps.record, OrderState.CANCEL);
+                                        }}
+                                    >
+                                        キャンセル
+                                    </Button>
                                 </Box>
                             )}
                             {formProps.record.st === OrderState.COMPLETE && (
@@ -395,22 +401,20 @@ const OrderForm = (props: any) => {
                                         handleSubmitWithRedirect={formProps.handleSubmitWithRedirect}
                                         transform={data => ({ ...data, st: OrderState.WAITING_RECEIVE })}
                                     />
-                                    <SaveButton
-                                        label="キャンセル"
-                                        undoable={false}
+                                    <Button
                                         className={classes.label}
-                                        saving={formProps.saving}
-                                        handleSubmitWithRedirect={
-                                            () => {
-                                                if (!window.confirm('本当にキャンセルしますか?'))
-                                                    return false;
-                                                return formProps.handleSubmitWithRedirect();
-                                            }
-                                        }
-                                        icon={<Delete />}
-                                        variant="text"
-                                        transform={data => ({ ...data, st: OrderState.CANCEL })}
-                                    />
+                                        variant={'text'}
+                                        type={'button'}
+                                        color={'default'}
+                                        startIcon={<Delete />}
+                                        onClick={() => {
+                                            if (!window.confirm('本当にキャンセルしますか?'))
+                                                return false;
+                                            handleUpdateStatus(formProps.record, OrderState.CANCEL);
+                                        }}
+                                    >
+                                        キャンセル
+                                    </Button>
                                 </Box>
                             )}
                         </Toolbar>
@@ -429,9 +433,8 @@ const OrderEdit = (props: EditProps) => {
     const redirect = useRedirect();
 
     const onSuccess = ({ data }: any) => {
-        console.log(data);
         notify(`更新しました`);
-        redirect('list', '/order?displayedFilters=%7B%7D&filter=%7B"st"%3A' + data.st +'%7D&order=ASC&page=1&perPage=50&sort=id');
+        redirect('list', '/order?displayedFilters=%7B%7D&filter=%7B"st"%3A' + data.st + '%7D&order=ASC&page=1&perPage=50&sort=id');
         refresh();
     };
     return (

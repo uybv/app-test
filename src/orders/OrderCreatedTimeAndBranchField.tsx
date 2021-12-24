@@ -27,7 +27,7 @@ const OrderCreatedTimeAndBranchField = (props: Omit<ReferenceFieldProps, 'refere
 }
 
 OrderCreatedTimeAndBranchField.defaultProps = {
-    source: 'branch_id',
+    source: 'created_time',
     addLabel: true,
     label: '注文日時/店舗'
 };
