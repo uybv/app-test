@@ -1,18 +1,15 @@
 import * as React from 'react';
-import { Fragment, useCallback, useEffect, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import {
     AutocompleteInput,
-    DatagridProps,
     Identifier,
     List,
     ListContextProvider,
     ListProps,
     ReferenceInput,
-    useGetList,
     useListContext,
-    EditButton,
     TopToolbar,
-    FilterButton
+    FilterButton,
 } from 'react-admin';
 import { Divider, Tabs, Tab } from '@material-ui/core';
 
@@ -51,44 +48,9 @@ const tabs = [
     { id: 4, name: 'キャンセル済み' },
 ];
 
-interface TabbedDatagridProps extends DatagridProps { }
-
-const useGetTotals = (filterValues: any) => {
-    const { total: totalOrdered } = useGetList(
-        'order',
-        { perPage: 1, page: 1 },
-        { field: 'id', order: 'ASC' },
-        { ...filterValues, st: [OrderState.CART, OrderState.PAID] }
-    );
-    const { total: totalWaitingReceive } = useGetList(
-        'order',
-        { perPage: 1, page: 1 },
-        { field: 'id', order: 'ASC' },
-        { ...filterValues, st: OrderState.WAITING_RECEIVE }
-    );
-    const { total: totalCompleted } = useGetList(
-        'order',
-        { perPage: 1, page: 1 },
-        { field: 'id', order: 'ASC' },
-        { ...filterValues, st: OrderState.COMPLETE }
-    );
-    const { total: totalCancelled } = useGetList(
-        'order',
-        { perPage: 1, page: 1 },
-        { field: 'id', order: 'ASC' },
-        { ...filterValues, st: OrderState.CANCEL }
-    );
-    return {
-        ordered: totalOrdered,
-        waitingReceive: totalWaitingReceive,
-        completed: totalCompleted,
-        cancelled: totalCancelled,
-    };
-};
-
-const TabbedDatagrid = (props: TabbedDatagridProps) => {
+const TabbedDatagrid = (props: any) => {
     const listContext = useListContext();
-    const { ids, filterValues, setFilters, displayedFilters } = listContext;
+    const { ids, filterValues, setFilters, displayedFilters, refetch } = listContext;
 
     const [ordered, setOrdered] = useState<Identifier[]>([] as Identifier[]);
     const [waitingReceive, setWaitingReceive] = useState<Identifier[]>(
@@ -100,53 +62,54 @@ const TabbedDatagrid = (props: TabbedDatagridProps) => {
     const [cancelled, setCancelled] = useState<Identifier[]>(
         [] as Identifier[]
     );
-    const totals = useGetTotals(filterValues) as any;
 
     useEffect(() => {
-        if (ids && ids !== filterValues.st) {
-            switch (filterValues.st) {
-                case OrderState.CART:
-                case OrderState.PAID:
-                    setOrdered(ids);
-                    break;
-                case OrderState.WAITING_RECEIVE:
-                    setWaitingReceive(ids);
-                    break;
-                case OrderState.COMPLETE:
-                    setCompleted(ids);
-                    break;
-                case OrderState.CANCEL:
-                    setCancelled(ids);
-                    break;
-            }
+        const interval = setInterval(() => {
+            refetch();
+        }, 1000 * 60);
+        switch (filterValues.st) {
+            case OrderState.CART:
+            case OrderState.PAID:
+                setOrdered(ids);
+                break;
+            case OrderState.WAITING_RECEIVE:
+                setWaitingReceive(ids);
+                break;
+            case OrderState.COMPLETE:
+                setCompleted(ids);
+                break;
+            case OrderState.CANCEL:
+                setCancelled(ids);
+                break;
         }
-    }, [ids, filterValues.st]);
+        return () => {
+            clearInterval(interval)
+          }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [ids, filterValues]);
 
-    const handleChange = useCallback(
-        (event: React.ChangeEvent<{}>, value: any) => {
-            let st = OrderState.PAID;
-            switch (value) {
-                case 1:
-                    st = OrderState.PAID;
-                    break;
-                case 2:
-                    st = OrderState.WAITING_RECEIVE;
-                    break;
-                case 3:
-                    st = OrderState.COMPLETE;
-                    break;
-                case 4:
-                    st = OrderState.CANCEL;
-                    break;
-            }
-            setFilters &&
-                setFilters(
-                    { ...filterValues, st: st },
-                    displayedFilters
-                );
-        },
-        [displayedFilters, filterValues, setFilters]
-    );
+    const handleChange = (event: React.ChangeEvent<{}>, value: any) => {
+        let st = OrderState.PAID;
+        switch (value) {
+            case 1:
+                st = OrderState.PAID;
+                break;
+            case 2:
+                st = OrderState.WAITING_RECEIVE;
+                break;
+            case 3:
+                st = OrderState.COMPLETE;
+                break;
+            case 4:
+                st = OrderState.CANCEL;
+                break;
+        }
+        setFilters &&
+            setFilters(
+                { ...filterValues, st: st },
+                displayedFilters
+            );
+    }
 
     const convertTabIndex = (st: any) => {
         let index = 1;
@@ -180,11 +143,7 @@ const TabbedDatagrid = (props: TabbedDatagridProps) => {
                 {tabs.map(choice => (
                     <Tab
                         key={choice.id}
-                        label={
-                            totals[choice.name]
-                                ? `${choice.name} (${totals[choice.name]})`
-                                : choice.name
-                        }
+                        label={choice.name}
                         value={choice.id}
                     />
                 ))}
@@ -197,10 +156,9 @@ const TabbedDatagrid = (props: TabbedDatagridProps) => {
                     >
                         <MyDatagrid {...props} optimized rowClick='edit'>
                             <OrderCreatedTimeAndBranchField />
-                            <OrderDeliveryTimeAndUserField />
-                            <OrderFoodField />
-                            <OrderPaymentMethodAndTotalCostField />
-                            <EditButton />
+                            <OrderDeliveryTimeAndUserField sortable={false} />
+                            <OrderFoodField sortable={false} />
+                            <OrderPaymentMethodAndTotalCostField sortable={false} />
                         </MyDatagrid>
                     </ListContextProvider>
                 )}
@@ -210,10 +168,9 @@ const TabbedDatagrid = (props: TabbedDatagridProps) => {
                     >
                         <MyDatagrid {...props} optimized rowClick='edit'>
                             <OrderCreatedTimeAndBranchField />
-                            <OrderDeliveryTimeAndUserField />
-                            <OrderFoodField />
-                            <OrderPaymentMethodAndTotalCostField />
-                            <EditButton />
+                            <OrderDeliveryTimeAndUserField sortable={false} />
+                            <OrderFoodField sortable={false} />
+                            <OrderPaymentMethodAndTotalCostField sortable={false} />
                         </MyDatagrid>
                     </ListContextProvider>
                 )}
@@ -223,10 +180,9 @@ const TabbedDatagrid = (props: TabbedDatagridProps) => {
                     >
                         <MyDatagrid {...props} optimized rowClick='edit'>
                             <OrderCreatedTimeAndBranchField />
-                            <OrderDeliveryTimeAndUserField />
-                            <OrderFoodField />
-                            <OrderPaymentMethodAndTotalCostField />
-                            <EditButton />
+                            <OrderDeliveryTimeAndUserField sortable={false} />
+                            <OrderFoodField sortable={false} />
+                            <OrderPaymentMethodAndTotalCostField sortable={false} />
                         </MyDatagrid>
                     </ListContextProvider>
                 )}
@@ -236,10 +192,9 @@ const TabbedDatagrid = (props: TabbedDatagridProps) => {
                     >
                         <MyDatagrid {...props} optimized rowClick='edit'>
                             <OrderCreatedTimeAndBranchField />
-                            <OrderDeliveryTimeAndUserField />
-                            <OrderFoodField />
-                            <OrderPaymentMethodAndTotalCostField />
-                            <EditButton />
+                            <OrderDeliveryTimeAndUserField sortable={false} />
+                            <OrderFoodField sortable={false} />
+                            <OrderPaymentMethodAndTotalCostField sortable={false} />
                         </MyDatagrid>
                     </ListContextProvider>
                 )}

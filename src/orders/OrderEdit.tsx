@@ -19,6 +19,7 @@ import {
     useCreate,
     useRedirect,
     useNotify,
+    useRefresh,
     ReferenceArrayInput,
     AutocompleteArrayInput,
     required
@@ -83,13 +84,10 @@ const StaffDetail = ({ record }: { record?: any }) => (
 
 const useEditStyles = makeStyles({
     root: { alignItems: 'flex-start' },
-    delete: {
-        color: 'red'
-    }
 });
 
 const useButtonStyles = makeStyles({
-    delete: {
+    label: {
         color: 'red'
     }
 });
@@ -105,6 +103,10 @@ const Spacer = () => <Box m={1}>&nbsp;</Box>;
 const OrderForm = (props: any) => {
     const translate = useTranslate();
     const classes = useButtonStyles();
+
+    const notify = useNotify();
+    const redirect = useRedirect();
+
     return (
         <FormWithRedirect
             {...props}
@@ -316,7 +318,6 @@ const OrderForm = (props: any) => {
                         <Toolbar
                             record={formProps.record}
                             basePath={formProps.basePath}
-                            undoable={false}
                             invalid={formProps.invalid}
                             handleSubmit={formProps.handleSubmit}
                             saving={formProps.saving}
@@ -326,13 +327,13 @@ const OrderForm = (props: any) => {
                                 <Box display="flex" justifyContent="space-between" width="100%">
                                     <SaveButton
                                         label="来店待ちに変更する"
-                                        saving={formProps.saving}
                                         handleSubmitWithRedirect={formProps.handleSubmitWithRedirect}
                                         transform={data => ({ ...data, st: OrderState.WAITING_RECEIVE })}
                                     />
                                     <SaveButton
                                         label="キャンセル"
-                                        className={classes.delete}
+                                        undoable={false}
+                                        className={classes.label}
                                         saving={formProps.saving}
                                         handleSubmitWithRedirect={
                                             () => {
@@ -343,7 +344,7 @@ const OrderForm = (props: any) => {
                                         }
                                         icon={<Delete />}
                                         variant="text"
-                                        transform={data => ({ ...data, st: OrderState.CANCEL, cancel_time: new Date().valueOf() })}
+                                        transform={data => ({ ...data, st: OrderState.CANCEL })}
                                     />
                                 </Box>
                             )}
@@ -351,12 +352,14 @@ const OrderForm = (props: any) => {
                                 <Box display="flex" justifyContent="space-between" width="100%">
                                     <SaveButton
                                         label="完了する"
+                                        undoable={false}
                                         saving={formProps.saving}
                                         handleSubmitWithRedirect={formProps.handleSubmitWithRedirect}
-                                        transform={data => ({ ...data, st: OrderState.COMPLETE, complete_time: new Date().valueOf() })}
+                                        transform={data => ({ ...data, st: OrderState.COMPLETE })}
                                     />
                                     <SaveButton
                                         label="注文済みに戻す"
+                                        undoable={false}
                                         saving={formProps.saving}
                                         variant="outlined"
                                         icon={<></>}
@@ -365,7 +368,8 @@ const OrderForm = (props: any) => {
                                     />
                                     <SaveButton
                                         label="キャンセル"
-                                        className={classes.delete}
+                                        undoable={false}
+                                        className={classes.label}
                                         saving={formProps.saving}
                                         handleSubmitWithRedirect={
                                             () => {
@@ -376,7 +380,7 @@ const OrderForm = (props: any) => {
                                         }
                                         icon={<Delete />}
                                         variant="text"
-                                        transform={data => ({ ...data, st: OrderState.CANCEL, cancel_time: new Date().valueOf() })}
+                                        transform={data => ({ ...data, st: OrderState.CANCEL })}
                                     />
                                 </Box>
                             )}
@@ -384,6 +388,7 @@ const OrderForm = (props: any) => {
                                 <Box display="flex" justifyContent="space-between" width="100%">
                                     <SaveButton
                                         label="来店待ちに変更する"
+                                        undoable={false}
                                         variant="outlined"
                                         icon={<></>}
                                         saving={formProps.saving}
@@ -392,7 +397,8 @@ const OrderForm = (props: any) => {
                                     />
                                     <SaveButton
                                         label="キャンセル"
-                                        className={classes.delete}
+                                        undoable={false}
+                                        className={classes.label}
                                         saving={formProps.saving}
                                         handleSubmitWithRedirect={
                                             () => {
@@ -403,7 +409,7 @@ const OrderForm = (props: any) => {
                                         }
                                         icon={<Delete />}
                                         variant="text"
-                                        transform={data => ({ ...data, st: OrderState.CANCEL, cancel_time: new Date().valueOf() })}
+                                        transform={data => ({ ...data, st: OrderState.CANCEL })}
                                     />
                                 </Box>
                             )}
@@ -414,15 +420,30 @@ const OrderForm = (props: any) => {
         />
     );
 };
+
+
 const OrderEdit = (props: EditProps) => {
     const classes = useEditStyles();
+    const notify = useNotify();
+    const refresh = useRefresh();
+    const redirect = useRedirect();
+
+    const onSuccess = ({ data }: any) => {
+        console.log(data);
+        notify(`更新しました`);
+        redirect('list', '/order?displayedFilters=%7B%7D&filter=%7B"st"%3A' + data.st +'%7D&order=ASC&page=1&perPage=50&sort=id');
+        refresh();
+    };
     return (
         <Edit
+            onSuccess={onSuccess}
             title={<OrderTitle />}
             classes={classes}
-            {...props}
             component="div"
+            undoable={false}
+            mutationMode="pessimistic"
             actions={<EditActions />}
+            {...props}
         >
             <OrderForm />
         </Edit>

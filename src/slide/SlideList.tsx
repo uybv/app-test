@@ -24,9 +24,9 @@ const SlideList = (props: ListProps) => (
         filters={[]}
         actions={<ListActions />}
     >
-        <MyDatagrid optimized rowClick="edit">
-            <ImageField source="image" />
-            <DateField source="created_at" showTime />
+        <MyDatagrid optimized>
+            <ImageField source="image" sortable={false}/>
+            <DateField source="created_at" showTime sortable={false}/>
             <EditButton />
         </MyDatagrid>
     </List>

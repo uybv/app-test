@@ -6,7 +6,8 @@ import {
     SearchInput,
     TopToolbar,
     FilterButton,
-    CreateButton
+    CreateButton,
+    Datagrid
 } from 'react-admin';
 import QRCode from 'qrcode.react';
 import Button from '@material-ui/core/Button';
@@ -72,10 +73,10 @@ const BranchList = (props: ListProps) => (
         filters={branchFilters}
         actions={<ListActions />}
     >
-        <MyDatagrid>
-            <TextField source="name" />
-            <TextField source="address.address" />
-            <QrCodeDownloadButton />
+        <MyDatagrid optimized>
+            <TextField source="name" sortable={false} />
+            <TextField source="address.address" sortable={false} />
+            <QrCodeDownloadButton sortable={false} />
             <EditButton />
         </MyDatagrid>
     </List>

@@ -74,10 +74,10 @@ const NewList = (props: ListProps) => (
         actions={<ListActions />}
     >
         <MyDatagrid optimized>
-            <TextField source="title" />
-            <DateField source="publish_time" showTime />
-            <DateField source="expired_time" showTime />
-            <DateField source="created_at" showTime />
+            <TextField source="title" sortable={false}/>
+            <DateField source="publish_time" showTime sortable={false}/>
+            <DateField source="expired_time" showTime sortable={false}/>
+            <DateField source="created_at" showTime sortable={false}/>
             <QrCodeDownloadButton />
             <EditButton />
         </MyDatagrid>

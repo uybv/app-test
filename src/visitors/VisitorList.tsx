@@ -33,9 +33,9 @@ const VisitorList = (props: ListProps) => {
             actions={<ListActions />}
         >
             <MyDatagrid optimized>
-                <TextField source="email" />
-                <CustomerLinkField />
-                <DateField source="created_at" showTime />
+                <TextField source="email" sortable={false}/>
+                <CustomerLinkField sortable={false} />
+                <DateField source="created_at" showTime sortable={false}/>
                 <EditButton />
             </MyDatagrid>
 

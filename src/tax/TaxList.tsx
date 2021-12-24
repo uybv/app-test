@@ -25,10 +25,10 @@ const TaxList = (props: ListProps) => (
         actions={<ListActions />}
     >
         <MyDatagrid optimized>
-            <TextField source="name" />
-            <TextField source="value" />
-            <TextField source="description" />
-            <DateField source="created_at" showTime />
+            <TextField source="name" sortable={false} />
+            <TextField source="value" sortable={false} />
+            <TextField source="description" sortable={false} />
+            <DateField source="created_at" showTime sortable={false} />
             <EditButton />
         </MyDatagrid>
     </List>

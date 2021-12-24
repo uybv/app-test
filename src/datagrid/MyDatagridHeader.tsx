@@ -1,25 +1,10 @@
 import * as React from "react";
-import { TableHead, TableRow, TableCell } from '@material-ui/core';
-import { FieldTitle, useResourceContext } from 'ra-core';
+import { DatagridHeader } from 'react-admin';
 
-const MyDatagridHeader = (props: any) => {
-    const resource = useResourceContext(props);
-
+export const MyDatagridHeader = (props: any) => {
     return (
-        <TableHead>
-            <TableRow>
-                {React.Children.map(props.children, child => (
-                    <TableCell key={child.props.source}>
-                        <FieldTitle
-                            label={child.props.label}
-                            source={child.props.source}
-                            resource={resource}
-                        />
-                    </TableCell>
-                ))}
-            </TableRow>
-        </TableHead>
+        <DatagridHeader {...props} hasBulkActions={false} isRowSelectable={() => { return false; }} />
     );
-}
+};
 
 export default MyDatagridHeader;

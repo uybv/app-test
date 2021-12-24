@@ -31,10 +31,10 @@ const StaffList = (props: ListProps) => (
         filters={filters}
         actions={<ListActions />}
     >
-        <MyDatagrid optimized rowClick="edit">
-            <TextField source="username" />
-            <TextField source="display_name" />
-            <DateField source="created_at" showTime />
+        <MyDatagrid optimized>
+            <TextField source="username" sortable={false} />
+            <TextField source="display_name" sortable={false} />
+            <DateField source="created_at" showTime sortable={false} />
             <EditButton />
         </MyDatagrid>
     </List>
