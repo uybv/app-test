@@ -25,16 +25,17 @@ const getTotal = (headers: Headers): number => {
 
 export const dataProvider = {
     getList: (resource: string, params: any) => {
-        const { page, perPage } = params.pagination;
+        const { perPage } = params.pagination;
         const { field, order } = params.sort;
         const query = {
             sort: JSON.stringify([field, order]),
-            range: JSON.stringify([(page - 1) * perPage, page * perPage - 1]),
+            pagination: JSON.stringify({ limit: perPage }),
             filter: JSON.stringify(params.filter),
         };
         const url = `${apiUrl}/${resource}?${stringify(query)}`;
         return httpClient(url).then(({ headers, json }) => ({
-            data: json ? json : [],
+            data: json.items ? json.items : [],
+            nextToken: json.nextToken ? json.nextToken : '',
             total: getTotal(headers),
         }));
     },

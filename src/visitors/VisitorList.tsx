@@ -11,7 +11,7 @@ import {
     CreateButton
 } from 'react-admin';
 import CustomerLinkField from './CustomerLinkField';
-import MyDatagrid from '../datagrid/MyDatagrid';
+import MyDatagrid from '../base/datagrid/MyDatagrid';
 
 const visitorFilters = [
     <SearchInput source="q" alwaysOn />,

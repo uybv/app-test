@@ -8,7 +8,7 @@ import {
     TopToolbar,
     CreateButton
 } from 'react-admin';
-import MyDatagrid from '../datagrid/MyDatagrid';
+import MyDatagrid from '../base/datagrid/MyDatagrid';
 
 const ListActions = (props: any) => (
     <TopToolbar>

@@ -14,7 +14,7 @@ import {
 import { Divider, Tabs, Tab } from '@material-ui/core';
 
 import { Customer, OrderState } from '../types';
-import MyDatagrid from '../datagrid/MyDatagrid';
+import MyDatagrid from '../base/datagrid/MyDatagrid';
 import OrderCreatedTimeAndBranchField from './OrderCreatedTimeAndBranchField';
 import OrderDeliveryTimeAndUserField from './OrderDeliveryTimeAndUserField';
 import OrderFoodField from './OrderFoodField';

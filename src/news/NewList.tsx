@@ -13,7 +13,7 @@ import QRCode from 'qrcode.react';
 import { Button } from '@material-ui/core';
 import { CloudDownload } from '@material-ui/icons'
 import { apiBaseUrl } from '../config';
-import MyDatagrid from '../datagrid/MyDatagrid';
+import MyDatagrid from '../base/datagrid/MyDatagrid';
 
 const filters = [
     <SearchInput source="q" alwaysOn />,

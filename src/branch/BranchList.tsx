@@ -13,7 +13,8 @@ import QRCode from 'qrcode.react';
 import Button from '@material-ui/core/Button';
 import { CloudDownload } from '@material-ui/icons'
 import { apiBaseUrl } from '../config';
-import MyDatagrid from '../datagrid/MyDatagrid';
+import MyDatagrid from '../base/datagrid/MyDatagrid';
+import MyList from '../base/list/MyList';
 
 const branchFilters = [
     <SearchInput source="q" alwaysOn />,
@@ -65,10 +66,10 @@ const ListActions = (props: any) => (
 );
 
 const BranchList = (props: ListProps) => (
-    <List
+    <MyList
         {...props}
-        perPage={50}
-        pagination={false}
+        perPage={1}
+        // pagination={false}
         component="div"
         filters={branchFilters}
         actions={<ListActions />}
@@ -79,7 +80,7 @@ const BranchList = (props: ListProps) => (
             <QrCodeDownloadButton sortable={false} />
             <EditButton />
         </MyDatagrid>
-    </List>
+    </MyList>
 );
 
 export default BranchList;

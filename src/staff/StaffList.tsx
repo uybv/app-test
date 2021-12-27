@@ -9,7 +9,7 @@ import {
     CreateButton,
     FilterButton
 } from 'react-admin';
-import MyDatagrid from '../datagrid/MyDatagrid';
+import MyDatagrid from '../base/datagrid/MyDatagrid';
 
 const filters = [
     <SearchInput source="q" alwaysOn />,

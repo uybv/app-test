@@ -9,7 +9,7 @@ import {
     FilterButton,
     CreateButton
 } from 'react-admin';
-import MyDatagrid from '../datagrid/MyDatagrid';
+import MyDatagrid from '../base/datagrid/MyDatagrid';
 
 const categoryFilters = [
     <SearchInput source="q" alwaysOn />,
@@ -25,8 +25,8 @@ const ListActions = (props: any) => (
 const CategoryList = (props: ListProps) => (
     <List
         {...props}
-        perPage={50}
-        pagination={false}
+        perPage={1}
+        // pagination={false}
         component="div"
         filters={categoryFilters}
         actions={<ListActions />}
