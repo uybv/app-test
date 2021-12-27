@@ -68,8 +68,8 @@ const ListActions = (props: any) => (
 const BranchList = (props: ListProps) => (
     <MyList
         {...props}
-        perPage={1}
-        // pagination={false}
+        perPage={50}
+        pagination={false}
         component="div"
         filters={branchFilters}
         actions={<ListActions />}

@@ -25,8 +25,8 @@ const ListActions = (props: any) => (
 const CategoryList = (props: ListProps) => (
     <List
         {...props}
-        perPage={1}
-        // pagination={false}
+        perPage={50}
+        pagination={false}
         component="div"
         filters={categoryFilters}
         actions={<ListActions />}
