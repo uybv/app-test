@@ -54,7 +54,6 @@ const ProductList = (props: ListProps) => {
     return (
         <ListBase
             perPage={50}
-            sort={{ field: 'reference', order: 'ASC' }}
             {...props}
         >
             <ListToolbar

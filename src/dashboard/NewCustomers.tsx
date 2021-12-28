@@ -36,7 +36,6 @@ const NewCustomers = () => {
                 has_ordered: true,
                 first_seen_gte: aMonthAgo.toISOString(),
             },
-            sort: { field: 'first_seen', order: 'DESC' },
             pagination: { page: 1, perPage: 100 },
         },
     });

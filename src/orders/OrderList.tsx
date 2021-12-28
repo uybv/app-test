@@ -214,6 +214,7 @@ const OrderList = (props: ListProps) => (
         {...props}
         filterDefaultValues={{ st: OrderState.PAID }}
         perPage={50}
+        sort={{ field: 'created_time', order: 'DESC' }}
         filters={orderFilters}
         actions={<ListActions />}
     >

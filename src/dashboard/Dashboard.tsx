@@ -38,18 +38,11 @@ const styles = {
 };
 
 const Spacer = () => <span style={{ width: '1em' }} />;
-const VerticalSpacer = () => <span style={{ height: '1em' }} />;
 
 const Dashboard = () => {
     const [state, setState] = useState<State>({});
     const version = useVersion();
     const dataProvider = useDataProvider();
-    const isXSmall = useMediaQuery((theme: Theme) =>
-        theme.breakpoints.down('xs')
-    );
-    const isSmall = useMediaQuery((theme: Theme) =>
-        theme.breakpoints.down('md')
-    );
 
     const fetchOrders = useCallback(async () => {
         const aMonthAgo = subDays(new Date(), 30);
@@ -57,7 +50,7 @@ const Dashboard = () => {
             'order',
             {
                 filter: { date_gte: aMonthAgo.toISOString(), st: OrderState.PAID },
-                sort: { field: 'date', order: 'DESC' },
+                sort: { field: 'created_time', order: 'DESC' },
                 pagination: { page: 1, perPage: 50 },
             }
         );
@@ -89,24 +82,6 @@ const Dashboard = () => {
             nbNewOrders: aggregations.nbNewOrders,
             pendingOrders: aggregations.pendingOrders,
         }));
-        const { data: customers } = await dataProvider.getMany<Customer>(
-            'customer',
-            {
-                ids: aggregations.pendingOrders.map(
-                    (order: Order) => order.customer_id
-                ),
-            }
-        );
-        setState(state => ({
-            ...state,
-            pendingOrdersCustomers: customers.reduce(
-                (prev: CustomerData, customer) => {
-                    prev[customer.id] = customer; // eslint-disable-line no-param-reassign
-                    return prev;
-                },
-                {}
-            ),
-        }));
     }, [dataProvider]);
 
     useEffect(() => {
@@ -115,42 +90,10 @@ const Dashboard = () => {
 
     const {
         nbNewOrders,
-        pendingOrders,
-        pendingOrdersCustomers,
         revenue,
         recentOrders,
     } = state;
-    return isXSmall ? (
-        <div>
-            <div style={styles.flexColumn as CSSProperties}>
-                <MonthlyRevenue value={revenue} />
-                <VerticalSpacer />
-                <NbNewOrders value={nbNewOrders} />
-                <VerticalSpacer />
-                {/* <PendingOrders
-                    orders={pendingOrders}
-                    customers={pendingOrdersCustomers}
-                /> */}
-            </div>
-        </div>
-    ) : isSmall ? (
-        <div style={styles.flexColumn as CSSProperties}>
-            <div style={styles.flex}>
-                <MonthlyRevenue value={revenue} />
-                <Spacer />
-                <NbNewOrders value={nbNewOrders} />
-            </div>
-            <div style={styles.singleCol}>
-                <OrderChart orders={recentOrders} />
-            </div>
-            <div style={styles.singleCol}>
-                {/* <PendingOrders
-                    orders={pendingOrders}
-                    customers={pendingOrdersCustomers}
-                /> */}
-            </div>
-        </div>
-    ) : (
+    return (
         <>
             <div style={styles.flex}>
                 <div style={styles.leftCol}>

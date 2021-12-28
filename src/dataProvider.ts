@@ -26,9 +26,14 @@ const getTotal = (headers: Headers): number => {
 export const dataProvider = {
     getList: (resource: string, params: any) => {
         const { perPage } = params.pagination;
-        const { field, order } = params.sort;
+        const sort = {} as any;
+        if (params.sort) {
+            const { field, order } = params.sort;
+            sort[field] = order;
+        }
+        
         const query = {
-            sort: JSON.stringify([field, order]),
+            sort: JSON.stringify(sort),
             pagination: JSON.stringify({ limit: perPage }),
             filter: JSON.stringify(params.filter),
         };
@@ -50,15 +55,19 @@ export const dataProvider = {
             filter: JSON.stringify({ ids: params.ids }),
         };
         const url = `${apiUrl}/${resource}?${stringify(query)}`;
-        return httpClient(url).then(({ json }) => ({ data: json ? json : [] }));
+        return httpClient(url).then(({ json }) => ({ data: json.items ? json.items : [] }));
     },
 
     getManyReference: (resource: string, params: any) => {
-        const { page, perPage } = params.pagination;
-        const { field, order } = params.sort;
+        const { perPage } = params.pagination;
+        const sort = {} as any;
+        if (params.sort) {
+            const { field, order } = params.sort;
+            sort[field] = order;
+        }
         const query = {
-            sort: JSON.stringify([field, order]),
-            range: JSON.stringify([(page - 1) * perPage, page * perPage - 1]),
+            sort: JSON.stringify(sort),
+            pagination: JSON.stringify({ limit: perPage }),
             filter: JSON.stringify({
                 ...params.filter,
                 [params.target]: params.id,
@@ -67,7 +76,7 @@ export const dataProvider = {
         const url = `${apiUrl}/${resource}?${stringify(query)}`;
 
         return httpClient(url).then(({ headers, json }) => ({
-            data: json ? json : [],
+            data: json.items ? json.items : [],
             total: getTotal(headers),
         }));
     },
