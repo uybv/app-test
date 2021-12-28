@@ -66,7 +66,7 @@ const ListActions = (props: any) => (
 );
 
 const BranchList = (props: ListProps) => (
-    <MyList
+    <List
         {...props}
         perPage={50}
         pagination={false}
@@ -80,7 +80,7 @@ const BranchList = (props: ListProps) => (
             <QrCodeDownloadButton sortable={false} />
             <EditButton />
         </MyDatagrid>
-    </MyList>
+    </List>
 );
 
 export default BranchList;
