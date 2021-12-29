@@ -101,6 +101,10 @@ export const transform = (data: any) => {
     }
 };
 
+export const minWorkingTime = () =>  (value: any, allValues: any, props: any) => {
+    return value === '00:00' ? { message: 'ra.validation.minValue', args: {min: '00:00'} as any } : undefined;
+}
+
 const useStyles = makeStyles(styles);
 
 const BranchCreate = (props: CreateProps) => {
@@ -213,7 +217,7 @@ const BranchCreate = (props: CreateProps) => {
                                                         source={getSource('end_at')} // Will translate to "working_times[0].end_at"
                                                         type='time'
                                                         defaultValue={'18:00'}
-                                                        validate={[required(), minValue(0)]}
+                                                        validate={[required(), minWorkingTime()]}
                                                         className={classes.inputTime}
                                                     />
                                                 </>

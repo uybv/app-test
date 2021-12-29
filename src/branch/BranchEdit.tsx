@@ -31,7 +31,7 @@ import { ChevronLeft, CloudDownload } from '@material-ui/icons'
 import ProductRefField from '../products/ProductRefField';
 import ThumbnailField from '../products/ThumbnailField';
 import _ from 'lodash';
-import { getDayOfWeek, styles, transform } from './BranchCreate';
+import { getDayOfWeek, minWorkingTime, styles, transform } from './BranchCreate';
 
 let branchId = '';
 
@@ -210,7 +210,7 @@ const BranchEdit = (props: EditProps) => {
                                                         source={getSource('end_at')} // Will translate to "working_times[0].end_at"
                                                         type='time'
                                                         defaultValue={'18:00'}
-                                                        validate={[required(), minValue(0)]}
+                                                        validate={[required(), minWorkingTime()]}
                                                         className={classes.inputTime}
                                                     />
                                                 </>
