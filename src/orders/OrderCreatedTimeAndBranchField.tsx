@@ -18,7 +18,7 @@ const OrderCreatedTimeAndBranchField = (props: Omit<ReferenceFieldProps, 'refere
     const { record } = props;
     return (
         <>
-            <div>{moment(new Date(record?.created_time)).format('YYYY-MM-DD HH:MM')}</div>
+            <div>{moment(record?.created_time).format('YYYY-MM-DD HH:mm')}</div>
             <ReferenceField source="branch_id" reference="branch" link={false} {...props}>
                 <BranchNameField />
             </ReferenceField>

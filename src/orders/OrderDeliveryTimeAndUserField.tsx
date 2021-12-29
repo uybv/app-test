@@ -18,7 +18,7 @@ const OrderDeliveryTimeAndUserField = (props: Omit<ReferenceFieldProps, 'referen
     const { record } = props;
     return (
         <>
-            <div style={{ marginBottom: 10 }}>{moment(new Date(record?.delivery_est)).format('YYYY-MM-DD HH:MM')}</div>
+            <div style={{ marginBottom: 10 }}>{moment(record?.delivery_est).format('YYYY-MM-DD HH:mm')}</div>
             <ReferenceField source="user_id" reference="customer" link={false} {...props}>
                 <FullNameField />
             </ReferenceField>
