@@ -21,7 +21,7 @@ import OrderFoodField from './OrderFoodField';
 import OrderPaymentMethodAndTotalCostField from './OrderPaymentMethodAndTotalCostField';
 
 const orderFilters = [
-    <ReferenceInput source="branch_id" reference="branch">
+    <ReferenceInput source="branch_id" reference="branch" alwaysOn>
         <AutocompleteInput
             optionText={(choice: any) =>
                 choice && choice.id // the empty choice is { id: '' }
@@ -30,7 +30,7 @@ const orderFilters = [
             }
         />
     </ReferenceInput>,
-    <ReferenceInput source="user_id" reference="customer">
+    <ReferenceInput source="user_id" reference="customer" alwaysOn>
         <AutocompleteInput
             optionText={(choice: Customer) =>
                 choice && choice.id // the empty choice is { id: '' }
