@@ -113,7 +113,7 @@ const OrderForm = (props: any) => {
     const handleUpdateStatus = (record: any, st: OrderState) => {
         update('order', record.id, { st: st }, record);
         notify(`更新しました`);
-        redirect('list', '/order?displayedFilters=%7B%7D&filter=%7B"st"%3A' + st + '%7D&order=ASC&page=1&perPage=50&sort=id');
+        redirect('list', '/order?displayedFilters=%7B%7D&filter=%7B"st"%3A' + st + '%7D&order=DESC&page=1&perPage=50&sort=created_time');
         refresh();
     }
 
@@ -434,7 +434,7 @@ const OrderEdit = (props: EditProps) => {
 
     const onSuccess = ({ data }: any) => {
         notify(`更新しました`);
-        redirect('list', '/order?displayedFilters=%7B%7D&filter=%7B"st"%3A' + data.st + '%7D&order=ASC&page=1&perPage=50&sort=id');
+        redirect('list', '/order?displayedFilters=%7B%7D&filter=%7B"st"%3A' + data.st + '%7D&order=DESC&page=1&perPage=50&sort=created_time');
         refresh();
     };
     return (
