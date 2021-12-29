@@ -336,6 +336,7 @@ const OrderForm = (props: any) => {
                             {formProps.record.st === OrderState.PAID && (
                                 <Box display="flex" justifyContent="space-between" width="100%">
                                     <SaveButton
+                                        undoable={false}
                                         label="来店待ちに変更する"
                                         handleSubmitWithRedirect={formProps.handleSubmitWithRedirect}
                                         transform={data => ({ ...data, st: OrderState.WAITING_RECEIVE })}
@@ -361,7 +362,6 @@ const OrderForm = (props: any) => {
                                     <SaveButton
                                         label="完了する"
                                         undoable={false}
-                                        invalid={true}
                                         saving={formProps.saving}
                                         handleSubmitWithRedirect={formProps.handleSubmitWithRedirect}
                                         transform={data => ({ ...data, st: OrderState.COMPLETE })}
