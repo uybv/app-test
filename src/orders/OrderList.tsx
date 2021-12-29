@@ -21,20 +21,20 @@ import OrderFoodField from './OrderFoodField';
 import OrderPaymentMethodAndTotalCostField from './OrderPaymentMethodAndTotalCostField';
 
 const orderFilters = [
-    <ReferenceInput source="user_id" reference="customer">
-        <AutocompleteInput
-            optionText={(choice: Customer) =>
-                choice && choice.id // the empty choice is { id: '' }
-                    ? `${choice.display_name.first_name} ${choice.display_name.last_name}`
-                    : ''
-            }
-        />
-    </ReferenceInput>,
     <ReferenceInput source="branch_id" reference="branch">
         <AutocompleteInput
             optionText={(choice: any) =>
                 choice && choice.id // the empty choice is { id: '' }
                     ? `${choice.name}`
+                    : ''
+            }
+        />
+    </ReferenceInput>,
+    <ReferenceInput source="user_id" reference="customer">
+        <AutocompleteInput
+            optionText={(choice: Customer) =>
+                choice && choice.id // the empty choice is { id: '' }
+                    ? `${choice.display_name.first_name} ${choice.display_name.last_name}`
                     : ''
             }
         />
