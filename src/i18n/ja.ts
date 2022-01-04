@@ -49,7 +49,7 @@ const japaneseDomainMessages = {
                 password: 'パスワード',
                 confirm_password: 'パスワード確認',
                 last_seen: 'Last seen',
-                created_at: '登録日',
+                created_at: '登録日時',
             },
             filters: {
                 last_visited: 'Last visited',
@@ -98,7 +98,7 @@ const japaneseDomainMessages = {
                 total_gte: 'Min amount',
                 st: '状態',
                 returned: 'Returned',
-                created_time: '登録日',
+                created_time: '登録日時',
             },
             section: {
                 order: 'オーダー管理',
@@ -128,7 +128,7 @@ const japaneseDomainMessages = {
                     item_price: '項目価格'
                 },
                 description: '内容',
-                created_at: '登録日',
+                created_at: '登録日時',
             },
             tabs: {
                 image: '画像',
@@ -153,7 +153,7 @@ const japaneseDomainMessages = {
                 name: '氏名',
                 description: '内容',
                 products: '商品一覧（メニュー）',
-                created_at: '登録日',
+                created_at: '登録日時',
             },
         },
         branch: {
@@ -188,16 +188,16 @@ const japaneseDomainMessages = {
                     }
                 },
                 description: '内容',
-                created_at: '登録日',
+                created_at: '登録日時',
             },
         },
         tax: {
-            name: '消費税設定',
+            name: 'タイトル',
             fields: {
                 name: '氏名',
                 value: '消費税(%)',
                 description: '内容',
-                created_at: '登録日',
+                created_at: '登録日時',
             }
         },
         news: {
@@ -209,14 +209,14 @@ const japaneseDomainMessages = {
                 description: '内容',
                 publish_time: '公開日',
                 expired_time: '期限設定',
-                created_at: '登録日',
+                created_at: '登録日時',
             }
         },
         slide: {
             name: 'スライド',
             fields: {
                 image: '画像',
-                created_at: '登録日',
+                created_at: '登録日時',
             }
         },
         staff: {
@@ -225,7 +225,7 @@ const japaneseDomainMessages = {
                 username: 'ユーザーID',
                 display_name: 'ユーザー名',
                 type: 'スタッフ役割',
-                created_at: '登録日',
+                created_at: '登録日時',
                 password: 'パスワード',
                 confirm_password: 'パスワード確認',
             },

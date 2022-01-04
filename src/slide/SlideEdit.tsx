@@ -48,7 +48,6 @@ const SlideEdit = (props: EditProps) => {
                     label="resources.slide.fields.image"
                     accept="image/*"
                     maxSize={1000000}
-                    validate={required()}
                     onChange={() => {
                         setChangeImage(true);
                     }}

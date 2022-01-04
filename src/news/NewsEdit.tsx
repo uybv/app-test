@@ -71,7 +71,6 @@ const NewsEdit = (props: EditProps) => {
                     label="resources.news.fields.banner"
                     accept="image/*"
                     maxSize={1000000}
-                    validate={required()}
                     onChange={() => {
                         setChangeImage(true);
                     }}

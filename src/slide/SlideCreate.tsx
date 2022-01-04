@@ -17,7 +17,6 @@ const SlideCreate = (props: CreateProps) => {
                     label="resources.slide.fields.image"
                     accept="image/*"
                     maxSize={1000000}
-                    validate={required()}
                 >
                     <ImageField source="src"/>
                 </ImageInput>

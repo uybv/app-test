@@ -1,11 +1,10 @@
 import * as React from 'react';
 import {
     Create,
-    FormTab,
     NumberInput,
     minValue,
     SelectInput,
-    TabbedForm,
+    SimpleForm,
     TextInput,
     required,
     CreateProps,
@@ -13,7 +12,6 @@ import {
     ImageField,
     ArrayInput,
     ReferenceArrayInput,
-    AutocompleteArrayInput,
     SimpleFormIterator
 } from 'react-admin';
 import { InputAdornment } from '@material-ui/core';
@@ -36,116 +34,105 @@ const ProductCreate = (props: CreateProps) => {
         return {
             ...data,
             delivery_est: data.delivery_est * 60 * 1000,
+            cat_ids: [data.cat_ids],
+            tax_ids: [data.tax_ids],
         }
     };
 
     return (
         <Create {...props} transform={transform}>
-            <TabbedForm>
-                <FormTab label="resources.product.tabs.image">
-                    <ImageInput
-                        source="images"
-                        label="resources.product.fields.image"
-                        accept="image/*"
-                        maxSize={1000000}
-                        validate={required()}
-                    >
-                        <ImageField source="src" title="title" />
-                    </ImageInput>
-                </FormTab>
-                <FormTab label="resources.product.tabs.details" path="details">
-                    <TextInput source="name" validate={required()} />
-                    <NumberInput
-                        source="price"
-                        validate={required()}
-                        className={classes.price}
-                        InputProps={{
-                            startAdornment: (
-                                <InputAdornment position="start">
-                                    ¥
-                                </InputAdornment>
-                            ),
-                        }}
-                    />
-                    <NumberInput
-                        source="delivery_est"
-                        step="10"
-                        validate={[required(), minValue(0)]}
-                        className={classes.width200}
-                        InputProps={{
-                            startAdornment: (
-                                <InputAdornment position="start">
-                                    分
-                                </InputAdornment>
-                            ),
-                        }}
-                    />
-                    <ReferenceArrayInput
-                        reference="category"
-                        source="cat_ids"
-                        validate={required()}
-                    >
-                        <AutocompleteArrayInput />
-                    </ReferenceArrayInput>
-                    <ReferenceArrayInput
-                        reference="tax"
-                        source="tax_ids"
-                        validate={required()}
-                    >
-                        <AutocompleteArrayInput />
-                    </ReferenceArrayInput>
-                    <RichTextInput source="description" />
-                </FormTab>
-                <FormTab
-                    label="resources.product.tabs.options"
-                    path="options"
+            <SimpleForm>
+                <ImageInput
+                    source="images"
+                    label="resources.product.fields.image"
+                    accept="image/*"
+                    maxSize={1000000}
                 >
-                    <ArrayInput source="addition_prices" label="" defaultValue={[{ name: '', prices: [{ name: '', price: 0 }, { name: '', price: 0 }, { name: '', price: 0 }] }]}>
-                        <SimpleFormIterator >
-                            <TextInput source="name" validate={required()} />
-                            <ArrayInput label="resources.product.fields.price" source="prices">
-                                <SimpleFormIterator >
-                                    <TextInput
-                                        source="name"
-                                        validate={required()}
-                                        className={classes.price}
-                                        formClassName={classes.leftFormGroup}
-                                    />
-                                    <NumberInput
-                                        source="price"
-                                        validate={required()}
-                                        className={classes.price}
-                                        formClassName={classes.rightFormGroup}
-                                        InputProps={{
-                                            startAdornment: (
-                                                <InputAdornment position="start">
-                                                    ¥
-                                                </InputAdornment>
-                                            ),
-                                        }}
-                                    />
-                                </SimpleFormIterator>
-                            </ArrayInput>
-                        </SimpleFormIterator>
-                    </ArrayInput>
-                </FormTab>
-                <FormTab
-                    label="resources.product.tabs.information"
-                    path="information"
+                    <ImageField source="src" title="title" />
+                </ImageInput>
+                <TextInput source="name" validate={required()} />
+                <NumberInput
+                    source="price"
+                    validate={required()}
+                    className={classes.price}
+                    InputProps={{
+                        startAdornment: (
+                            <InputAdornment position="start">
+                                ¥
+                            </InputAdornment>
+                        ),
+                    }}
+                />
+                <NumberInput
+                    source="delivery_est"
+                    step="10"
+                    defaultValue={0}
+                    validate={[required(), minValue(0)]}
+                    className={classes.width200}
+                    InputProps={{
+                        startAdornment: (
+                            <InputAdornment position="start">
+                                分
+                            </InputAdornment>
+                        ),
+                    }}
+                />
+                <ReferenceArrayInput
+                    reference="category"
+                    source="cat_ids"
+                    validate={required()}
                 >
-                    <ArrayInput source="information" label="" defaultValue={[{ title: '', content: '' }]}>
-                        <SimpleFormIterator >
-                            <TextInput
-                                label="resources.product.fields.information.item_title"
-                                source="title" validate={required()}
-                            />
-                            <RichTextInput
-                                label="resources.product.fields.information.item_content"
-                                source="content" validate={required()} />
-                        </SimpleFormIterator>
-                    </ArrayInput>
-                </FormTab>
-            </TabbedForm>
+                    <SelectInput optionText="name" />
+                </ReferenceArrayInput>
+                <ReferenceArrayInput
+                    reference="tax"
+                    source="tax_ids"
+                    validate={required()}
+                >
+                    <SelectInput optionText="name" />
+                </ReferenceArrayInput>
+                <RichTextInput source="description" />
+                <ArrayInput source="information" label="商品情報">
+                    <SimpleFormIterator >
+                        <TextInput
+                            label="resources.product.fields.information.item_title"
+                            source="title" validate={required()}
+                        />
+                        <RichTextInput
+                            label="resources.product.fields.information.item_content"
+                            source="content" validate={required()} />
+                    </SimpleFormIterator>
+                </ArrayInput>
+                <ArrayInput source="addition_prices" label="オプション">
+                    <SimpleFormIterator >
+                        <TextInput source="name" validate={required()} />
+                        <ArrayInput label="resources.product.fields.price" source="prices">
+                            <SimpleFormIterator >
+                                <TextInput
+                                    source="name"
+                                    validate={required()}
+                                    className={classes.price}
+                                    formClassName={classes.leftFormGroup}
+                                />
+                                <NumberInput
+                                    source="price"
+                                    defaultValue={0}
+                                    validate={required()}
+                                    className={classes.price}
+                                    formClassName={classes.rightFormGroup}
+                                    InputProps={{
+                                        startAdornment: (
+                                            <InputAdornment position="start">
+                                                ¥
+                                            </InputAdornment>
+                                        ),
+                                    }}
+                                />
+                            </SimpleFormIterator>
+                        </ArrayInput>
+                    </SimpleFormIterator>
+                </ArrayInput>
+            </SimpleForm>
         </Create>
     );
 };

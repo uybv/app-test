@@ -50,7 +50,6 @@ const NewsCreate = (props: CreateProps) => {
                     label="resources.news.fields.banner"
                     accept="image/*"
                     maxSize={1000000}
-                    validate={required()}
                 >
                     <ImageField source="src" title="title" />
                 </ImageInput>

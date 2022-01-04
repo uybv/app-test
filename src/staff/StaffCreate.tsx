@@ -56,6 +56,7 @@ const StaffCreate = (props: CreateProps) => {
                     resource="staff"
                     className={classes.width300}
                     formClassName={classes.leftFormGroup}
+                    validate={[required()]}
                 />
                 <PasswordInput
                     source="confirm_password"
