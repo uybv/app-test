@@ -277,6 +277,7 @@ const BranchEdit = (props: EditProps) => {
                                 className={classes.width600}
                                 reference="product"
                                 source="food_ids"
+                                label="商品一覧（メニュー）"
                             >
                                 <AutocompleteArrayInput />
                             </ReferenceArrayInput>
@@ -299,7 +300,7 @@ const BranchEdit = (props: EditProps) => {
                                 filter={{}}
                                 reference="product"
                                 source="food_ids"
-                                label=""
+                                label="商品一覧（メニュー）"
                                 perPage={100}
                                 fullWidth
                             >
