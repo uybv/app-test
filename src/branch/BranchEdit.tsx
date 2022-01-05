@@ -21,15 +21,21 @@ import {
     BooleanInput,
     TopToolbar,
     ListButton,
+    Toolbar,
+    SaveButton,
+    DeleteButton,
+    TextField
 } from 'react-admin';
+import {
+    Button,
+    InputAdornment,
+} from '@material-ui/core';
 import QRCode from 'qrcode.react';
 import { apiBaseUrl } from '../config';
-
 import { makeStyles } from '@material-ui/core/styles';
-import { InputAdornment, Button } from '@material-ui/core';
-import { ChevronLeft, CloudDownload } from '@material-ui/icons'
-import ProductRefField from '../products/ProductRefField';
+import { ChevronLeft, CloudDownload } from '@material-ui/icons';
 import ThumbnailField from '../products/ThumbnailField';
+import ContentCreate from '@material-ui/icons/Create';
 import _ from 'lodash';
 import { getDayOfWeek, minWorkingTime, styles, transform } from './BranchCreate';
 
@@ -95,8 +101,38 @@ const EditActions = ({ basePath, data }: any) => (
     </TopToolbar>
 );
 
+const EditToolbar = (props: any) => {
+    const { isTabMenuFood, isEditMenuFood } = props;
+    const useToolbarStyles = makeStyles({
+        defaultToolbar: {
+            flex: 1,
+            display: 'flex',
+            justifyContent: 'space-between',
+        },
+    });
+    const classes = useToolbarStyles();
+    return (isEditMenuFood || !isTabMenuFood) ? (
+        <Toolbar {...props} className={classes.defaultToolbar}>
+            <SaveButton />
+            <DeleteButton />
+        </Toolbar>
+    ) : null;
+};
+
 const BranchEdit = (props: EditProps) => {
     const classes = useStyles(props);
+
+    const url = window.location.href;
+    const [isEditMenuFood, setIsEditMenuFood] = React.useState<boolean>(false);
+    const [isTabMenuFood, setIsTabMenuFood] = React.useState<boolean>(false);
+
+    React.useEffect(() => {
+        if (url) {
+            const urlParse = window.location.href.split('/');
+            setIsTabMenuFood(urlParse[urlParse.length - 1] === 'menu-food');
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [url]);
 
     return (
         <Edit
@@ -105,7 +141,7 @@ const BranchEdit = (props: EditProps) => {
             undoable={false}
             actions={<EditActions />}
             transform={transform}>
-            <TabbedForm>
+            <TabbedForm toolbar={<EditToolbar {...props} isEditMenuFood={isEditMenuFood} isTabMenuFood={isTabMenuFood} />}>
                 <FormTab label="resources.branch.tabs.info">
                     <TextInput
                         autoFocus
@@ -224,31 +260,62 @@ const BranchEdit = (props: EditProps) => {
                     </ArrayInput>
                 </FormTab>
                 <FormTab label="resources.branch.tabs.menu" path="menu-food">
-                    <ReferenceArrayInput
-                        className={classes.width600}
-                        reference="product"
-                        source="food_ids"
-                    >
-                        <AutocompleteArrayInput />
-                    </ReferenceArrayInput>
-                    <ReferenceArrayField
-                        filter={{}}
-                        reference="product"
-                        source="food_ids"
-                        label=""
-                        perPage={20}
-                        fullWidth
-                    >
-                        <Datagrid>
-                            <ThumbnailField />
-                            <ProductRefField source="name" />
-                            <NumberField
-                                source="price"
-                                options={{ style: 'currency', currency: 'JPY' }}
-                            />
-                            <QrCodeDownloadButton />
-                        </Datagrid>
-                    </ReferenceArrayField>
+                    {isEditMenuFood ? (
+                        <>
+                            <>
+                                <Button
+                                    variant={'outlined'}
+                                    type={'button'}
+                                    color={'default'}
+                                    startIcon={<ChevronLeft />}
+                                    onClick={() => { setIsEditMenuFood(false) }}
+                                >
+                                    戻る
+                                </Button>
+                            </>
+                            <ReferenceArrayInput
+                                className={classes.width600}
+                                reference="product"
+                                source="food_ids"
+                            >
+                                <AutocompleteArrayInput />
+                            </ReferenceArrayInput>
+                        </>
+                    ) : (
+                        <>
+                            <>
+                                <Button
+                                    variant={'text'}
+                                    type={'button'}
+                                    color={'primary'}
+                                    startIcon={<ContentCreate />}
+                                    onClick={() => { setIsEditMenuFood(true) }}
+                                >
+                                    編集
+                                </Button>
+                            </>
+
+                            <ReferenceArrayField
+                                filter={{}}
+                                reference="product"
+                                source="food_ids"
+                                label=""
+                                perPage={100}
+                                fullWidth
+                            >
+                                <Datagrid>
+                                    <ThumbnailField />
+                                    <TextField source="name" />
+                                    <NumberField
+                                        source="price"
+                                        options={{ style: 'currency', currency: 'JPY' }}
+                                    />
+                                    <QrCodeDownloadButton />
+                                </Datagrid>
+                            </ReferenceArrayField>
+
+                        </>
+                    )}
                 </FormTab>
             </TabbedForm>
         </Edit>
