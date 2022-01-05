@@ -43,7 +43,7 @@ const StaffCreate = (props: CreateProps) => {
 
     return (
         <Create {...props} transform={transform}>
-            <SimpleForm validate={validatePasswords}>
+            <SimpleForm validate={validatePasswords} redirect="list">
                 <TextInput source="username" className={classes.width600} validate={[required()]} />
 
                 <TextInput

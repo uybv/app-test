@@ -41,7 +41,7 @@ const ProductCreate = (props: CreateProps) => {
 
     return (
         <Create {...props} transform={transform}>
-            <SimpleForm>
+            <SimpleForm redirect="list">
                 <ImageInput
                     source="images"
                     label="resources.product.fields.image"

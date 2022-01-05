@@ -45,7 +45,7 @@ const NewsCreate = (props: CreateProps) => {
 
     return (
         <Create {...props} transform={transform}>
-            <SimpleForm>
+            <SimpleForm redirect="list">
                 <ImageInput source="images"
                     label="resources.news.fields.banner"
                     accept="image/*"

@@ -27,7 +27,7 @@ const TaxCreate = (props: CreateProps) => {
 
     return (
         <Create {...props}>
-            <SimpleForm>
+            <SimpleForm redirect="list">
                 <SectionTitle label="" />
                 <TextInput
                     autoFocus

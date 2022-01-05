@@ -12,7 +12,7 @@ const SlideCreate = (props: CreateProps) => {
 
     return (
         <Create {...props}>
-            <SimpleForm>
+            <SimpleForm redirect="list">
                 <ImageInput source="images"
                     label="resources.slide.fields.image"
                     accept="image/*"

@@ -112,7 +112,7 @@ const BranchCreate = (props: CreateProps) => {
 
     return (
         <Create {...props} transform={transform}>
-            <TabbedForm >
+            <TabbedForm redirect="list">
                 <FormTab label="resources.branch.tabs.info">
                     <TextInput
                         autoFocus

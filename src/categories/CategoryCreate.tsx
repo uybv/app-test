@@ -26,7 +26,7 @@ const CategoryCreate = (props: CreateProps) => {
 
     return (
         <Create {...props}>
-            <SimpleForm>
+            <SimpleForm redirect="list">
                 <TextInput
                     autoFocus
                     source="name"
