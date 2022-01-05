@@ -11,7 +11,10 @@ import {
     minValue,
     maxValue,
     TopToolbar,
-    ListButton
+    ListButton,
+    Toolbar,
+    SaveButton,
+    DeleteButton
 } from 'react-admin';
 import { InputAdornment } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
@@ -42,6 +45,26 @@ const EditActions = ({ basePath, data }: any) => (
     </TopToolbar>
 );
 
+const EditToolbar = (props: any) => {
+    const { record } = props;
+    const useToolbarStyles = makeStyles({
+        defaultToolbar: {
+            flex: 1,
+            display: 'flex',
+            justifyContent: 'space-between',
+        },
+    });
+    const classes = useToolbarStyles();
+    return (
+        <Toolbar {...props} className={classes.defaultToolbar}>
+            <SaveButton />
+            <DeleteButton
+                confirmTitle={`消費税設定 "${record?.name}"を削除`}
+            />
+        </Toolbar>
+    );
+};
+
 const TaxEdit = (props: EditProps) => {
     const classes = useStyles(props);
 
@@ -52,7 +75,7 @@ const TaxEdit = (props: EditProps) => {
             undoable={false}
             actions={<EditActions />}
         >
-            <SimpleForm>
+            <SimpleForm toolbar={<EditToolbar />}>
                 <TextInput
                     source="name"
                     className={classes.name}

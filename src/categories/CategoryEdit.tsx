@@ -8,10 +8,14 @@ import {
     useTranslate,
     TopToolbar,
     ListButton,
+    Toolbar,
+    SaveButton,
+    DeleteButton
 } from 'react-admin';
 import { ChevronLeft } from '@material-ui/icons';
 
 import { Category } from '../types';
+import { makeStyles } from '@material-ui/core';
 
 const CategoryTitle = (props: FieldProps<Category>) => {
     const { record } = props;
@@ -30,6 +34,26 @@ const EditActions = ({ basePath, data }: any) => (
     </TopToolbar>
 );
 
+const EditToolbar = (props: any) => {
+    const { record } = props;
+    const useToolbarStyles = makeStyles({
+        defaultToolbar: {
+            flex: 1,
+            display: 'flex',
+            justifyContent: 'space-between',
+        },
+    });
+    const classes = useToolbarStyles();
+    return (
+        <Toolbar {...props} className={classes.defaultToolbar}>
+            <SaveButton />
+            <DeleteButton
+                confirmTitle={`商品管理 "${record?.name}"を削除`}
+            />
+        </Toolbar>
+    );
+};
+
 const CategoryEdit = (props: EditProps) => (
     <Edit
         {...props}
@@ -37,7 +61,7 @@ const CategoryEdit = (props: EditProps) => (
         title={<CategoryTitle />}
         actions={<EditActions />}
     >
-        <SimpleForm>
+        <SimpleForm toolbar={<EditToolbar />}>
             <TextInput source="name" />
         </SimpleForm>
     </Edit>
