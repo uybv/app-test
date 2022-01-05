@@ -192,7 +192,7 @@ const japaneseDomainMessages = {
             },
         },
         tax: {
-            name: 'タイトル',
+            name: '消費税設定',
             fields: {
                 name: '氏名',
                 value: '消費税(%)',
