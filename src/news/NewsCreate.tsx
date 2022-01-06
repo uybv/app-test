@@ -8,13 +8,10 @@ import {
     DateTimeInput,
     ImageInput,
     ImageField,
-    AutocompleteArrayInput,
-    ReferenceArrayInput
+    BooleanInput
 } from 'react-admin';
 import { makeStyles } from '@material-ui/core/styles';
 import RichTextInput from 'ra-input-rich-text';
-import CreateTag from './CreateTag';
-import CreateKeyword from './CreateKeyword';
 import moment from 'moment';
 import DateFnsUtils from '@date-io/date-fns';
 import jaLocale from "date-fns/locale/ja";
@@ -25,15 +22,6 @@ const useStyles = makeStyles({
 
 const NewsCreate = (props: CreateProps) => {
     const classes = useStyles(props);
-
-    const tags: any[] = [
-        { id: 'demo', name: 'demo' },
-        { id: 'demo1', name: 'demo1' },
-    ];
-    const keywords: any[] = [
-        { id: 'demo11', name: 'demo11' },
-        { id: 'demo1', name: 'demo1' },
-    ];
 
     const transform = (data: any) => ({
         ...data,
@@ -60,14 +48,7 @@ const NewsCreate = (props: CreateProps) => {
                 <DateTimeInput source="publish_time" provideroptions={{ utils: DateFnsUtils, locale: jaLocale }} />
                 <DateTimeInput source="expired_time" provideroptions={{ utils: DateFnsUtils, locale: jaLocale }} />
                 <RichTextInput source="content" />
-                {/* <AutocompleteArrayInput
-                    source="tags"
-                    choices={tags}
-                />
-                <AutocompleteArrayInput
-                    source="keywords"
-                    choices={keywords}
-                /> */}
+                <BooleanInput label="有効" source="is_public" defaultValue={true} />
             </SimpleForm>
         </Create>
     );

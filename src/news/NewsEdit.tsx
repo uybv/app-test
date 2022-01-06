@@ -10,6 +10,7 @@ import {
     required,
     TopToolbar,
     ListButton,
+    BooleanInput
 } from 'react-admin';
 import RichTextInput from 'ra-input-rich-text';
 import { makeStyles } from '@material-ui/core/styles';
@@ -71,6 +72,7 @@ const NewsEdit = (props: EditProps) => {
                 <DateTimeInput source="publish_time" provideroptions={{ utils: DateFnsUtils, locale: jaLocale }} />
                 <DateTimeInput source="expired_time" provideroptions={{ utils: DateFnsUtils, locale: jaLocale }} />
                 <RichTextInput source="content" />
+                <BooleanInput label="有効" source="is_public" defaultValue={true} />
             </SimpleForm>
         </Edit>
     );
