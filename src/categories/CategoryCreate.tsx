@@ -33,10 +33,6 @@ const CategoryCreate = (props: CreateProps) => {
                     formClassName={classes.name}
                     validate={requiredValidate}
                 />
-                <TextInput
-                    source="description"
-                    formClassName={classes.description}
-                />
             </SimpleForm>
         </Create>
     );

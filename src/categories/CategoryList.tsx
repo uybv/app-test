@@ -33,7 +33,6 @@ const CategoryList = (props: ListProps) => (
     >
         <MyDatagrid optimized>
             <TextField source="name" sortable={false} />
-            <TextField source="description" sortable={false}/>
             <DateField source="created_at" sortable={false} showTime/>
             <EditButton />
         </MyDatagrid>

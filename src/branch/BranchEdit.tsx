@@ -114,7 +114,7 @@ const EditToolbar = (props: any) => {
     return (isEditMenuFood || !isTabMenuFood) ? (
         <Toolbar {...props} className={classes.defaultToolbar}>
             <SaveButton />
-            <DeleteButton />
+            {!isTabMenuFood && (<DeleteButton />)}
         </Toolbar>
     ) : null;
 };
