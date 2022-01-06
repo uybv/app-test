@@ -6,8 +6,6 @@ import {
     SimpleForm,
     TextInput,
     useTranslate,
-    ImageInput,
-    ImageField,
     DateTimeInput,
     required,
     TopToolbar,
@@ -20,6 +18,7 @@ import moment from 'moment';
 import DateFnsUtils from '@date-io/date-fns';
 import jaLocale from "date-fns/locale/ja";
 import { ChevronLeft } from '@material-ui/icons';
+import MyImageField from '../base/form/MyImageField';
 
 export const styles = {
     title: { width: 600 },
@@ -53,8 +52,6 @@ const NewsEdit = (props: EditProps) => {
         expired_time: moment(data.expired_time).valueOf(),
     });
 
-    const [changeImage, setChangeImage] = React.useState(false);
-
     return (
         <Edit
             title={<NewsTitle />}
@@ -64,19 +61,7 @@ const NewsEdit = (props: EditProps) => {
             {...props}
         >
             <SimpleForm>
-                {!changeImage && (
-                    <ImageField source="banner" title="title" />
-                )}
-                <ImageInput source="images"
-                    label="resources.news.fields.banner"
-                    accept="image/*"
-                    maxSize={1000000}
-                    onChange={() => {
-                        setChangeImage(true);
-                    }}
-                >
-                    <ImageField source="src" title="title" />
-                </ImageInput>
+                <MyImageField {...props} source="banner" />
                 <TextInput
                     autoFocus
                     source="title"

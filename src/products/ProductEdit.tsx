@@ -4,8 +4,6 @@ import {
     EditProps,
     SimpleForm,
     NumberInput,
-    ImageInput,
-    ImageField,
     required,
     TextInput,
     ArrayInput,
@@ -21,10 +19,10 @@ import { InputAdornment } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import RichTextInput from 'ra-input-rich-text';
 
-import Poster from './Poster';
 import { styles as createStyles } from './ProductCreate';
 import { Product } from '../types';
 import { ChevronLeft } from '@material-ui/icons';
+import MyImageField from '../base/form/MyImageField';
 
 interface ProductTitleProps {
     record?: Product;
@@ -56,7 +54,6 @@ const EditActions = ({ basePath, data }: any) => (
 
 const ProductEdit = (props: EditProps) => {
     const classes = useStyles();
-    const [changeImage, setChangeImage] = React.useState(false);
 
     const transform = (data: any) => {
         return {
@@ -76,20 +73,7 @@ const ProductEdit = (props: EditProps) => {
             transform={transform}
         >
             <SimpleForm>
-                {!changeImage && (
-                    <Poster />
-                )}
-                <ImageInput
-                    source="images"
-                    label="resources.product.fields.image"
-                    accept="image/*"
-                    maxSize={1000000}
-                    onChange={() => {
-                        setChangeImage(true)
-                    }}
-                >
-                    <ImageField source="src" title="title" />
-                </ImageInput>
+                <MyImageField {...props} source="image" />
 
                 <TextInput source="name" validate={requiredValidate} />
                 <NumberInput

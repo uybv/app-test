@@ -114,9 +114,9 @@ const LoadedGridList = (props: any) => {
                         <Link
                             key={id}
                             to={linkToRecord(basePath, data[id].id)}
-                            style={{ display: 'block', textDecoration: 'none', color: '#fff', height: '100%', width: '100%' }}
+                            style={{ display: 'block', textDecoration: 'none', color: '#fff', height: '100%', width: '100%', overflowY: 'hidden' }}
                         >
-                            <img style={{ width: 'auto', height: '100%', alignSelf: 'center' }} src={data[id].image} alt="" />
+                            <img style={{ width: 'auto', height: '100%', margin: 'auto', display: 'flex', alignSelf: 'center' }} src={data[id].image} alt="" />
                         </Link>
                         <div style={{ position: 'absolute', bottom: 0, width: '100%' }}>
                             <div style={{

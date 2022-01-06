@@ -1,6 +1,7 @@
 import { fetchUtils } from 'react-admin';
 import { stringify } from 'query-string';
 import { apiBaseUrl } from './config';
+import _ from 'lodash';
 
 const apiUrl = `${apiBaseUrl}/admin`;
 
@@ -31,7 +32,7 @@ export const dataProvider = {
             const { field, order } = params.sort;
             sort[field] = order;
         }
-        
+
         const query = {
             sort: JSON.stringify(sort),
             pagination: JSON.stringify({ limit: perPage }),
@@ -128,7 +129,13 @@ export const dataProvider = {
 };
 
 const processDataWithImage = async (resource: string, params: any) => {
-    if (params.data.images) {
+    if (params.data.images || params.data.change_image) {
+        if (!params.data.images) {
+            delete params.data.change_image;
+            params.data.images = [{ src: '' }];
+
+            return params.data;
+        }
         let images = params.data.images;
         if (!images.length) {
             images = [images];

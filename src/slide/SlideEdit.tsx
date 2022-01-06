@@ -4,8 +4,6 @@ import {
     Edit,
     EditProps,
     SimpleForm,
-    ImageInput,
-    ImageField,
     required,
     useTranslate,
     TopToolbar,
@@ -14,7 +12,7 @@ import {
     BooleanInput,
 } from 'react-admin';
 import { makeStyles } from '@material-ui/core';
-import PreviewImageField from '../base/form/PreviewImageField';
+import MyImageField from '../base/form/MyImageField';
 
 const useStyles = makeStyles({
     width600: { width: 600 },
@@ -40,12 +38,6 @@ const EditActions = ({ basePath, data }: any) => (
 const SlideEdit = (props: EditProps) => {
     const classes = useStyles(props);
 
-    const [changeImage, setChangeImage] = React.useState(false);
-
-    const onChangeImage = () => {
-        setChangeImage(true);
-    }
-
     const transform = (data: any) => {
         return {
             ...data,
@@ -63,20 +55,7 @@ const SlideEdit = (props: EditProps) => {
         >
             <SimpleForm>
 
-                {changeImage ? (
-                    <ImageInput source="images"
-                        label="resources.slide.fields.image"
-                        accept="image/*"
-                        maxSize={1000000}
-                        onChange={() => {
-                            setChangeImage(true);
-                        }}
-                    >
-                        <ImageField source="src" />
-                    </ImageInput>
-                ) : (
-                    <PreviewImageField {...props} source="image" onChange={onChangeImage} />
-                )}
+                <MyImageField {...props} source="image" />
                 <TextInput
                     source="title"
                     label="タイトル"

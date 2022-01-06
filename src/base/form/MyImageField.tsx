@@ -1,4 +1,9 @@
 import * as React from 'react';
+import {
+    TextInput,
+    ImageInput,
+    ImageField,
+} from 'react-admin';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import { makeStyles } from '@material-ui/core/styles';
@@ -16,15 +21,14 @@ const useStyles = makeStyles({
     },
 });
 
-const PreviewImageField = (props: any) => {
-    const { record, source, onChange } = props;
+const MyImageField = (props: any) => {
+    const { record, source } = props;
     const classes = useStyles();
 
-    if (!record || _.isUndefined(record[source])) return null;
+    const [sourceUrl, setSourceUrl] = React.useState(record[source]);
 
-    return (
+    return sourceUrl ? (
         <Card className={classes.root}>
-
             <CardContent className={classes.content}>
                 <img src={record[source]} alt="" className={classes.img} />
             </CardContent>
@@ -41,9 +45,23 @@ const PreviewImageField = (props: any) => {
                 borderBottomLeftRadius: 10,
                 cursor: 'pointer'
             }}
-                onClick={onChange}><Delete /></span>
+                onClick={() => {
+                    setSourceUrl('');
+                }}><Delete /></span>
         </Card>
+    ) : (
+        <>
+            <ImageInput source="images"
+                label="resources.slide.fields.image"
+                accept="image/*"
+                maxSize={1000000}
+            >
+                <ImageField source="src" />
+            </ImageInput>
+            <TextInput source="change_image" style={{ display: 'none' }} defaultValue={true} />
+        </>
+
     );
 };
 
-export default PreviewImageField;
+export default MyImageField;
