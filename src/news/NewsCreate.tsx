@@ -19,11 +19,9 @@ import moment from 'moment';
 import DateFnsUtils from '@date-io/date-fns';
 import jaLocale from "date-fns/locale/ja";
 
-export const styles = {
+const useStyles = makeStyles({
     title: { width: 600 },
-};
-
-const useStyles = makeStyles(styles);
+});
 
 const NewsCreate = (props: CreateProps) => {
     const classes = useStyles(props);
