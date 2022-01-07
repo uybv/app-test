@@ -224,7 +224,7 @@ const japaneseDomainMessages = {
             fields: {
                 username: 'ユーザーID',
                 display_name: 'ユーザー名',
-                type: 'スタッフ役割',
+                type: '種別',
                 created_at: '登録日時',
                 password: 'パスワード',
                 confirm_password: 'パスワード確認',

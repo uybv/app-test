@@ -6,10 +6,11 @@ import {
     SimpleForm,
     TextInput,
     PasswordInput,
+    RadioButtonGroupInput,
     required,
     useRedirect,
     useNotify,
-    usePermissions
+    usePermissions,
 } from 'react-admin';
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -65,6 +66,14 @@ const StaffCreate = (props: CreateProps) => {
                     source="display_name"
                     validate={[required()]}
                     className={classes.width600}
+                />
+                <RadioButtonGroupInput
+                    source="type"
+                    validate={[required()]}
+                    choices={[
+                        { id: 1, name: '管理' },
+                        { id: 2, name: '無効' },
+                    ]}
                 />
                 <PasswordInput
                     source="password"

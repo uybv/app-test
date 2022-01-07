@@ -29,7 +29,7 @@ export const authProvider: AuthProvider = {
         localStorage.getItem('username') ? Promise.resolve() : Promise.reject(),
     getPermissions: () => {
         const role = localStorage.getItem('roleType') as any;
-        return role ? Promise.resolve(parseInt(role) !== 1 ? 'staff' : 'admin') : Promise.reject();
+        return role ? Promise.resolve(parseInt(role) === 1 ? 'admin' : 'staff') : Promise.reject();
     },
     getIdentity: () => {
         const fullName = localStorage.getItem('username');

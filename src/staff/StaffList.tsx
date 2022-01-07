@@ -14,6 +14,7 @@ import {
     usePermissions
 } from 'react-admin';
 import MyDatagrid from '../base/datagrid/MyDatagrid';
+import StaffTypeField from './StaffTypeField';
 
 const filters = [
     <SearchInput source="q" alwaysOn />,
@@ -49,6 +50,7 @@ const StaffList = (props: ListProps) => {
             actions={<ListActions />}
         >
             <MyDatagrid optimized>
+                <StaffTypeField />
                 <TextField source="username" sortable={false} />
                 <TextField source="display_name" sortable={false} />
                 <DateField source="created_at" showTime sortable={false} />

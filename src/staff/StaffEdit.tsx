@@ -4,6 +4,7 @@ import {
     Edit,
     EditProps,
     FieldProps,
+    RadioButtonGroupInput,
     SimpleForm,
     TextInput,
     PasswordInput,
@@ -95,6 +96,14 @@ const StaffEdit = (props: EditProps) => {
                     source="display_name"
                     validate={[required()]}
                     className={classes.width600}
+                />
+                <RadioButtonGroupInput
+                    source="type"
+                    validate={[required()]}
+                    choices={[
+                        { id: 1, name: '管理' },
+                        { id: 2, name: '無効' },
+                    ]}
                 />
                 <PasswordInput
                     source="password"
