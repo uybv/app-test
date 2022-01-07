@@ -27,7 +27,10 @@ export const authProvider: AuthProvider = {
     checkError: () => Promise.resolve(),
     checkAuth: () =>
         localStorage.getItem('username') ? Promise.resolve() : Promise.reject(),
-    getPermissions: () => Promise.reject('Unknown method'),
+    getPermissions: () => {
+        const role = localStorage.getItem('roleType') as any;
+        return role ? Promise.resolve(parseInt(role) !== 1 ? 'staff' : 'admin') : Promise.reject();
+    },
     getIdentity: () => {
         const fullName = localStorage.getItem('username');
         return new Promise<any>((resolve, reject) => {

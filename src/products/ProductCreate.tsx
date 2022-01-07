@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useEffect } from 'react';
 import {
     Create,
     NumberInput,
@@ -12,7 +13,10 @@ import {
     ImageField,
     ArrayInput,
     ReferenceArrayInput,
-    SimpleFormIterator
+    SimpleFormIterator,
+    useRedirect,
+    useNotify,
+    usePermissions
 } from 'react-admin';
 import { InputAdornment } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
@@ -29,6 +33,17 @@ const useStyles = makeStyles(styles);
 
 const ProductCreate = (props: CreateProps) => {
     const classes = useStyles();
+    const redirect = useRedirect();
+    const notify = useNotify();
+    const { permissions } = usePermissions();
+
+    useEffect(() => {
+        if (permissions && permissions !== 'admin') {
+            notify(`Permission Denied`);
+            redirect('list');
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [permissions]);
 
     const transform = (data: any) => {
         return {

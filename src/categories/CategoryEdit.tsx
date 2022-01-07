@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useEffect } from 'react';
 import {
     Edit,
     EditProps,
@@ -10,7 +11,10 @@ import {
     ListButton,
     Toolbar,
     SaveButton,
-    DeleteButton
+    DeleteButton,
+    useRedirect,
+    useNotify,
+    usePermissions
 } from 'react-admin';
 import { ChevronLeft } from '@material-ui/icons';
 
@@ -54,17 +58,31 @@ const EditToolbar = (props: any) => {
     );
 };
 
-const CategoryEdit = (props: EditProps) => (
-    <Edit
-        {...props}
-        undoable={false}
-        title={<CategoryTitle />}
-        actions={<EditActions />}
-    >
-        <SimpleForm toolbar={<EditToolbar />}>
-            <TextInput source="name" />
-        </SimpleForm>
-    </Edit>
-);
+const CategoryEdit = (props: EditProps) => {
+    const redirect = useRedirect();
+    const notify = useNotify();
+    const { permissions } = usePermissions();
+
+    useEffect(() => {
+        if (permissions && permissions !== 'admin') {
+            notify(`Permission Denied`);
+            redirect('list');
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [permissions]);
+
+    return (
+        <Edit
+            {...props}
+            undoable={false}
+            title={<CategoryTitle />}
+            actions={<EditActions />}
+        >
+            <SimpleForm toolbar={<EditToolbar />}>
+                <TextInput source="name" />
+            </SimpleForm>
+        </Edit>
+    )
+};
 
 export default CategoryEdit;

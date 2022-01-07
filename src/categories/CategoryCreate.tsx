@@ -1,15 +1,15 @@
 import * as React from 'react';
+import { useEffect } from 'react';
 import {
     Create,
     CreateProps,
     SimpleForm,
     TextInput,
-    useTranslate,
     required,
-    ImageInput,
-    ImageField
+    useRedirect,
+    useNotify,
+    usePermissions
 } from 'react-admin';
-import { Typography, Box } from '@material-ui/core';
 import { makeStyles, Theme } from '@material-ui/core/styles';
 import { Styles } from '@material-ui/styles/withStyles';
 
@@ -23,6 +23,17 @@ const useStyles = makeStyles(styles);
 
 const CategoryCreate = (props: CreateProps) => {
     const classes = useStyles(props);
+    const redirect = useRedirect();
+    const notify = useNotify();
+    const { permissions } = usePermissions();
+
+    useEffect(() => {
+        if (permissions && permissions !== 'admin') {
+            notify(`Permission Denied`);
+            redirect('list');
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [permissions]);
 
     return (
         <Create {...props}>
@@ -31,22 +42,10 @@ const CategoryCreate = (props: CreateProps) => {
                     autoFocus
                     source="name"
                     formClassName={classes.name}
-                    validate={requiredValidate}
+                    validate={required()}
                 />
             </SimpleForm>
         </Create>
-    );
-};
-
-const requiredValidate = [required()];
-
-const SectionTitle = ({ label }: { label: string }) => {
-    const translate = useTranslate();
-
-    return (
-        <Typography variant="h6" gutterBottom>
-            {translate(label)}
-        </Typography>
     );
 };
 

@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useEffect } from 'react';
 import {
     Create,
     CreateProps,
@@ -8,7 +9,10 @@ import {
     NumberInput,
     required,
     minValue,
-    maxValue
+    maxValue,
+    useRedirect,
+    useNotify,
+    usePermissions
 } from 'react-admin';
 import { InputAdornment } from '@material-ui/core';
 import { Typography } from '@material-ui/core';
@@ -24,6 +28,17 @@ const useStyles = makeStyles(styles);
 
 const TaxCreate = (props: CreateProps) => {
     const classes = useStyles(props);
+    const redirect = useRedirect();
+    const notify = useNotify();
+    const { permissions } = usePermissions();
+
+    useEffect(() => {
+        if (permissions && permissions !== 'admin') {
+            notify(`Permission Denied`);
+            redirect('list');
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [permissions]);
 
     return (
         <Create {...props}>

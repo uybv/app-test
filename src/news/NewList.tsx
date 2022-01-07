@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useEffect } from 'react';
 import {
     List, ListProps,
     DateField,
@@ -7,7 +8,10 @@ import {
     EditButton,
     TopToolbar,
     FilterButton,
-    CreateButton
+    CreateButton,
+    useRedirect,
+    useNotify,
+    usePermissions
 } from 'react-admin';
 import QRCode from 'qrcode.react';
 import { Button } from '@material-ui/core';
@@ -60,28 +64,42 @@ const QrCodeDownloadButton = (props: any) => {
 const ListActions = (props: any) => (
     <TopToolbar>
         <FilterButton />
-        <CreateButton/>
+        <CreateButton />
     </TopToolbar>
 );
 
-const NewList = (props: ListProps) => (
-    <List
-        {...props}
-        perPage={50}
-        pagination={false}
-        component="div"
-        filters={filters}
-        actions={<ListActions />}
-    >
-        <MyDatagrid optimized>
-            <TextField source="title" sortable={false}/>
-            <DateField source="publish_time" showTime sortable={false}/>
-            <DateField source="expired_time" showTime sortable={false}/>
-            <DateField source="created_at" showTime sortable={false}/>
-            <QrCodeDownloadButton />
-            <EditButton />
-        </MyDatagrid>
-    </List>
-);
+const NewList = (props: ListProps) => {
+    const redirect = useRedirect();
+    const notify = useNotify();
+    const { permissions } = usePermissions();
+
+    useEffect(() => {
+        if (permissions && permissions !== 'admin') {
+            notify(`Permission Denied`);
+            redirect('list');
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [permissions]);
+    
+    return (
+        <List
+            {...props}
+            perPage={50}
+            pagination={false}
+            component="div"
+            filters={filters}
+            actions={<ListActions />}
+        >
+            <MyDatagrid optimized>
+                <TextField source="title" sortable={false} />
+                <DateField source="publish_time" showTime sortable={false} />
+                <DateField source="expired_time" showTime sortable={false} />
+                <DateField source="created_at" showTime sortable={false} />
+                <QrCodeDownloadButton />
+                <EditButton />
+            </MyDatagrid>
+        </List>
+    )
+};
 
 export default NewList;

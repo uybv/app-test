@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useEffect } from 'react';
 import {
     Edit,
     EditProps,
@@ -14,7 +15,10 @@ import {
     ListButton,
     Toolbar,
     SaveButton,
-    DeleteButton
+    DeleteButton,
+    useRedirect,
+    useNotify,
+    usePermissions
 } from 'react-admin';
 import { InputAdornment } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
@@ -67,6 +71,17 @@ const EditToolbar = (props: any) => {
 
 const TaxEdit = (props: EditProps) => {
     const classes = useStyles(props);
+    const redirect = useRedirect();
+    const notify = useNotify();
+    const { permissions } = usePermissions();
+
+    useEffect(() => {
+        if (permissions && permissions !== 'admin') {
+            notify(`Permission Denied`);
+            redirect('list');
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [permissions]);
 
     return (
         <Edit

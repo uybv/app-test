@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useEffect } from 'react';
 import {
     List, ListProps,
     EditButton,
@@ -7,7 +8,10 @@ import {
     SearchInput,
     TopToolbar,
     CreateButton,
-    FilterButton
+    FilterButton,
+    useRedirect,
+    useNotify,
+    usePermissions
 } from 'react-admin';
 import MyDatagrid from '../base/datagrid/MyDatagrid';
 
@@ -22,22 +26,36 @@ const ListActions = (props: any) => (
     </TopToolbar>
 );
 
-const StaffList = (props: ListProps) => (
-    <List
-        {...props}
-        perPage={50}
-        pagination={false}
-        component="div"
-        filters={filters}
-        actions={<ListActions />}
-    >
-        <MyDatagrid optimized>
-            <TextField source="username" sortable={false} />
-            <TextField source="display_name" sortable={false} />
-            <DateField source="created_at" showTime sortable={false} />
-            <EditButton />
-        </MyDatagrid>
-    </List>
-);
+const StaffList = (props: ListProps) => {
+    const redirect = useRedirect();
+    const notify = useNotify();
+    const { permissions } = usePermissions();
+
+    useEffect(() => {
+        if (permissions && permissions !== 'admin') {
+            notify(`Permission Denied`);
+            redirect('list');
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [permissions]);
+
+    return (
+        <List
+            {...props}
+            perPage={50}
+            pagination={false}
+            component="div"
+            filters={filters}
+            actions={<ListActions />}
+        >
+            <MyDatagrid optimized>
+                <TextField source="username" sortable={false} />
+                <TextField source="display_name" sortable={false} />
+                <DateField source="created_at" showTime sortable={false} />
+                <EditButton />
+            </MyDatagrid>
+        </List>
+    )
+};
 
 export default StaffList;

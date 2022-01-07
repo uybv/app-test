@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import * as React from 'react';
 import {
     Edit,
@@ -24,7 +25,10 @@ import {
     Toolbar,
     SaveButton,
     DeleteButton,
-    TextField
+    TextField,
+    useRedirect,
+    useNotify,
+    usePermissions
 } from 'react-admin';
 import {
     Button,
@@ -121,18 +125,25 @@ const EditToolbar = (props: any) => {
 
 const BranchEdit = (props: EditProps) => {
     const classes = useStyles(props);
+    const redirect = useRedirect();
+    const notify = useNotify();
+    const { permissions } = usePermissions();
 
     const url = window.location.href;
     const [isEditMenuFood, setIsEditMenuFood] = React.useState<boolean>(false);
     const [isTabMenuFood, setIsTabMenuFood] = React.useState<boolean>(false);
 
     React.useEffect(() => {
+        if (permissions && permissions !== 'admin') {
+            notify(`Permission Denied`);
+            redirect('list');
+        }
         if (url) {
             const urlParse = window.location.href.split('/');
             setIsTabMenuFood(urlParse[urlParse.length - 1] === 'menu-food');
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [url]);
+    }, [url, permissions]);
 
     return (
         <Edit

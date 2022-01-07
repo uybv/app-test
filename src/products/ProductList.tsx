@@ -1,26 +1,23 @@
 import * as React from 'react';
+import { useEffect } from 'react';
 import { Box, Chip, useMediaQuery, Theme } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import {
     CreateButton,
-    ExportButton,
     FilterButton,
-    FilterForm,
-    FilterContext,
     InputProps,
     ListBase,
     ListProps,
-    NumberInput,
     Pagination,
-    ReferenceInput,
     SearchInput,
-    SelectInput,
-    SortButton,
     Title,
     TopToolbar,
     useListContext,
     useTranslate,
-    ListToolbar
+    ListToolbar,
+    useRedirect,
+    useNotify,
+    usePermissions
 } from 'react-admin';
 
 import GridList from './GridList';
@@ -51,6 +48,18 @@ const ListActions = ({ isSmall }: any) => (
 
 const ProductList = (props: ListProps) => {
     const isSmall = useMediaQuery<Theme>(theme => theme.breakpoints.down('sm'));
+    const redirect = useRedirect();
+    const notify = useNotify();
+    const { permissions } = usePermissions();
+
+    useEffect(() => {
+        if (permissions && permissions !== 'admin') {
+            notify(`Permission Denied`);
+            redirect('list');
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [permissions]);
+
     return (
         <ListBase
             perPage={50}

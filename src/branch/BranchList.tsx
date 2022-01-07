@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useEffect } from 'react';
 import {
     List, ListProps,
     EditButton,
@@ -7,7 +8,9 @@ import {
     TopToolbar,
     FilterButton,
     CreateButton,
-    Datagrid
+    useRedirect,
+    useNotify,
+    usePermissions
 } from 'react-admin';
 import QRCode from 'qrcode.react';
 import Button from '@material-ui/core/Button';
@@ -65,22 +68,36 @@ const ListActions = (props: any) => (
     </TopToolbar>
 );
 
-const BranchList = (props: ListProps) => (
-    <List
-        {...props}
-        perPage={50}
-        pagination={false}
-        component="div"
-        filters={branchFilters}
-        actions={<ListActions />}
-    >
-        <MyDatagrid optimized>
-            <TextField source="name" sortable={false} />
-            <TextField source="address.address" sortable={false} />
-            <QrCodeDownloadButton sortable={false} />
-            <EditButton />
-        </MyDatagrid>
-    </List>
-);
+const BranchList = (props: ListProps) => { 
+    const redirect = useRedirect();
+    const notify = useNotify();
+    const { permissions } = usePermissions();
+
+    useEffect(() => {
+        if (permissions && permissions !== 'admin') {
+            notify(`Permission Denied`);
+            redirect('list');
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [permissions]);
+
+    return (
+        <List
+            {...props}
+            perPage={50}
+            pagination={false}
+            component="div"
+            filters={branchFilters}
+            actions={<ListActions />}
+        >
+            <MyDatagrid optimized>
+                <TextField source="name" sortable={false} />
+                <TextField source="address.address" sortable={false} />
+                <QrCodeDownloadButton sortable={false} />
+                <EditButton />
+            </MyDatagrid>
+        </List>
+    );
+}
 
 export default BranchList;

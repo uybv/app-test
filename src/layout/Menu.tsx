@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
@@ -9,6 +9,7 @@ import {
     MenuItemLink,
     MenuProps,
     ReduxState,
+    usePermissions
 } from 'react-admin';
 import { AppState } from '../types';
 import orders from '../orders';
@@ -34,12 +35,11 @@ const Menu = ({ dense = false }: MenuProps) => {
     const open = useSelector((state: ReduxState) => state.admin.ui.sidebarOpen);
     useSelector((state: AppState) => state.theme); // force rerender on theme change
     const classes = useStyles();
+    const { permissions } = usePermissions();
 
     const handleToggle = (menu: MenuName) => {
         setState(state => ({ ...state, [menu]: !state[menu] }));
     };
-
-    const [roleType, setRoleType] = useState(localStorage.getItem('roleType'));
 
     return (
         <div
@@ -72,87 +72,90 @@ const Menu = ({ dense = false }: MenuProps) => {
                 leftIcon={<visitors.icon />}
                 dense={dense}
             />
-            <MenuItemLink
-                to={{
-                    pathname: '/news',
-                    state: { _scrollToTop: true },
-                }}
-                primaryText={translate(`resources.news.name`, {
-                    smart_count: 2,
-                })}
-                leftIcon={<news.icon />}
-                dense={dense}
-            />
-            <MenuItemLink
-                to={{
-                    pathname: '/slide',
-                    state: { _scrollToTop: true },
-                }}
-                primaryText={translate(`resources.slide.name`, {
-                    smart_count: 2,
-                })}
-                leftIcon={<slide.icon />}
-                dense={dense}
-            />
-            <MenuItemLink
-                to={{
-                    pathname: '/category',
-                    state: { _scrollToTop: true },
-                }}
-                primaryText={translate(`resources.category.name`, {
-                    smart_count: 2,
-                })}
-                leftIcon={<categories.icon />}
-                dense={dense}
-            />
+            {permissions === 'admin' && (
+                <>
+                    <MenuItemLink
+                        to={{
+                            pathname: '/news',
+                            state: { _scrollToTop: true },
+                        }}
+                        primaryText={translate(`resources.news.name`, {
+                            smart_count: 2,
+                        })}
+                        leftIcon={<news.icon />}
+                        dense={dense}
+                    />
+                    <MenuItemLink
+                        to={{
+                            pathname: '/slide',
+                            state: { _scrollToTop: true },
+                        }}
+                        primaryText={translate(`resources.slide.name`, {
+                            smart_count: 2,
+                        })}
+                        leftIcon={<slide.icon />}
+                        dense={dense}
+                    />
+                    <MenuItemLink
+                        to={{
+                            pathname: '/category',
+                            state: { _scrollToTop: true },
+                        }}
+                        primaryText={translate(`resources.category.name`, {
+                            smart_count: 2,
+                        })}
+                        leftIcon={<categories.icon />}
+                        dense={dense}
+                    />
 
-            <MenuItemLink
-                to={{
-                    pathname: '/product',
-                    state: { _scrollToTop: true },
-                }}
-                primaryText={translate(`resources.product.name`, {
-                    smart_count: 2,
-                })}
-                leftIcon={<products.icon />}
-                dense={dense}
-            />
+                    <MenuItemLink
+                        to={{
+                            pathname: '/product',
+                            state: { _scrollToTop: true },
+                        }}
+                        primaryText={translate(`resources.product.name`, {
+                            smart_count: 2,
+                        })}
+                        leftIcon={<products.icon />}
+                        dense={dense}
+                    />
 
-            <MenuItemLink
-                to={{
-                    pathname: '/branch',
-                    state: { _scrollToTop: true },
-                }}
-                primaryText={translate(`resources.branch.name`, {
-                    smart_count: 2,
-                })}
-                leftIcon={<branch.icon />}
-                dense={dense}
-            />
-            <MenuItemLink
-                to={{
-                    pathname: '/tax',
-                    state: { _scrollToTop: true },
-                }}
-                primaryText={translate(`resources.tax.name`, {
-                    smart_count: 2,
-                })}
-                leftIcon={<tax.icon />}
-                dense={dense}
-            />
-            <MenuItemLink
-                to={{
-                    pathname: '/staff',
-                    state: { _scrollToTop: true },
-                }}
-                primaryText={translate(`resources.staff.name`, {
-                    smart_count: 2,
-                })}
-                leftIcon={<staff.icon />}
-                dense={dense}
-            />
+                    <MenuItemLink
+                        to={{
+                            pathname: '/branch',
+                            state: { _scrollToTop: true },
+                        }}
+                        primaryText={translate(`resources.branch.name`, {
+                            smart_count: 2,
+                        })}
+                        leftIcon={<branch.icon />}
+                        dense={dense}
+                    />
+                    <MenuItemLink
+                        to={{
+                            pathname: '/tax',
+                            state: { _scrollToTop: true },
+                        }}
+                        primaryText={translate(`resources.tax.name`, {
+                            smart_count: 2,
+                        })}
+                        leftIcon={<tax.icon />}
+                        dense={dense}
+                    />
+                    <MenuItemLink
+                        to={{
+                            pathname: '/staff',
+                            state: { _scrollToTop: true },
+                        }}
+                        primaryText={translate(`resources.staff.name`, {
+                            smart_count: 2,
+                        })}
+                        leftIcon={<staff.icon />}
+                        dense={dense}
+                    />
+                </>
+            )}
         </div>
-
     );
 };
 

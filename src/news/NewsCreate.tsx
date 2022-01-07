@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useEffect } from 'react';
 import {
     Create,
     CreateProps,
@@ -8,7 +9,10 @@ import {
     DateTimeInput,
     ImageInput,
     ImageField,
-    BooleanInput
+    BooleanInput,
+    useRedirect,
+    useNotify,
+    usePermissions
 } from 'react-admin';
 import { makeStyles } from '@material-ui/core/styles';
 import RichTextInput from 'ra-input-rich-text';
@@ -22,6 +26,17 @@ const useStyles = makeStyles({
 
 const NewsCreate = (props: CreateProps) => {
     const classes = useStyles(props);
+    const redirect = useRedirect();
+    const notify = useNotify();
+    const { permissions } = usePermissions();
+
+    useEffect(() => {
+        if (permissions && permissions !== 'admin') {
+            notify(`Permission Denied`);
+            redirect('list');
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [permissions]);
 
     const transform = (data: any) => ({
         ...data,

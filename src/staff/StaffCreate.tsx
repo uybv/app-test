@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useEffect } from 'react';
 import {
     Create,
     CreateProps,
@@ -6,6 +7,9 @@ import {
     TextInput,
     PasswordInput,
     required,
+    useRedirect,
+    useNotify,
+    usePermissions
 } from 'react-admin';
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -35,6 +39,17 @@ const useStyles = makeStyles(styles);
 
 const StaffCreate = (props: CreateProps) => {
     const classes = useStyles(props);
+    const redirect = useRedirect();
+    const notify = useNotify();
+    const { permissions } = usePermissions();
+
+    useEffect(() => {
+        if (permissions && permissions !== 'admin') {
+            notify(`Permission Denied`);
+            redirect('list');
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [permissions]);
 
     const transform = (data: any) => {
         delete data.confirm_password;

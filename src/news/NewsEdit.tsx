@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useEffect } from 'react';
 import {
     Edit,
     EditProps,
@@ -10,7 +11,10 @@ import {
     required,
     TopToolbar,
     ListButton,
-    BooleanInput
+    BooleanInput,
+    useRedirect,
+    useNotify,
+    usePermissions
 } from 'react-admin';
 import RichTextInput from 'ra-input-rich-text';
 import { makeStyles } from '@material-ui/core/styles';
@@ -46,6 +50,17 @@ const EditActions = ({ basePath, data }: any) => (
 
 const NewsEdit = (props: EditProps) => {
     const classes = useStyles(props);
+    const redirect = useRedirect();
+    const notify = useNotify();
+    const { permissions } = usePermissions();
+
+    useEffect(() => {
+        if (permissions && permissions !== 'admin') {
+            notify(`Permission Denied`);
+            redirect('list');
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [permissions]);
 
     const transform = (data: any) => ({
         ...data,

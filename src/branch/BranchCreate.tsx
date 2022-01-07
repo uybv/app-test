@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useEffect } from 'react';
 import {
     Create,
     CreateProps,
@@ -13,7 +14,10 @@ import {
     ArrayInput,
     SimpleFormIterator,
     FormDataConsumer,
-    BooleanInput
+    BooleanInput,
+    useRedirect,
+    useNotify,
+    usePermissions
 } from 'react-admin';
 import { makeStyles } from '@material-ui/core/styles';
 import { InputAdornment } from '@material-ui/core';
@@ -101,14 +105,25 @@ export const transform = (data: any) => {
     }
 };
 
-export const minWorkingTime = () =>  (value: any, allValues: any, props: any) => {
-    return value === '00:00' ? { message: 'ra.validation.minValue', args: {min: '00:00'} as any } : undefined;
+export const minWorkingTime = () => (value: any, allValues: any, props: any) => {
+    return value === '00:00' ? { message: 'ra.validation.minValue', args: { min: '00:00' } as any } : undefined;
 }
 
 const useStyles = makeStyles(styles);
 
 const BranchCreate = (props: CreateProps) => {
     const classes = useStyles(props);
+    const redirect = useRedirect();
+    const notify = useNotify();
+    const { permissions } = usePermissions();
+
+    useEffect(() => {
+        if (permissions && permissions !== 'admin') {
+            notify(`Permission Denied`);
+            redirect('list');
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [permissions]);
 
     return (
         <Create {...props} transform={transform}>

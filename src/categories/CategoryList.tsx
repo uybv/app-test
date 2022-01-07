@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useEffect } from 'react';
 import {
     List, ListProps,
     EditButton,
@@ -11,7 +12,8 @@ import {
     useUpdate,
     useNotify,
     useRefresh,
-    useRedirect
+    useRedirect,
+    usePermissions
 } from 'react-admin';
 import MyDatagrid from '../base/datagrid/MyDatagrid';
 import PositionField from '../base/list/PositionField';
@@ -33,6 +35,15 @@ const CategoryList = (props: ListProps) => {
     const notify = useNotify();
     const refresh = useRefresh();
     const redirect = useRedirect();
+    const { permissions } = usePermissions();
+
+    useEffect(() => {
+        if (permissions && permissions !== 'admin') {
+            notify(`Permission Denied`);
+            redirect('list');
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [permissions]);
 
     const handleUpdatePosition = (record: any, data: any) => {
         update('category', record.id, data, record);
