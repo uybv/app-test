@@ -23,7 +23,7 @@ import moment from 'moment';
 import DateFnsUtils from '@date-io/date-fns';
 import jaLocale from "date-fns/locale/ja";
 import { ChevronLeft } from '@material-ui/icons';
-import MyImageField from '../base/form/MyImageField';
+import FormControlImageField from '../base/form/FormControlImageField';
 
 export const styles = {
     title: { width: 600 },
@@ -77,7 +77,7 @@ const NewsEdit = (props: EditProps) => {
             {...props}
         >
             <SimpleForm>
-                <MyImageField {...props} source="banner" />
+                <FormControlImageField {...props} source="banner" />
                 <TextInput
                     autoFocus
                     source="title"

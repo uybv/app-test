@@ -14,6 +14,7 @@ import {
     usePermissions
 } from 'react-admin';
 import MyDatagrid from '../base/datagrid/MyDatagrid';
+import CustomImageField from '../base/list/CustomImageField';
 import PositionField from '../base/list/PositionField';
 import SlideIsPublicField from './SlideIsPublicField';
 
@@ -59,8 +60,8 @@ const SlideList = (props: ListProps) => {
         >
             <MyDatagrid optimized>
                 <PositionField {...props} onUp={handleUpdatePosition} onDown={handleUpdatePosition} sortable={false}/>
-                <SlideIsPublicField />
-                <ImageField source="image" sortable={false} />
+                <SlideIsPublicField sortable={false}/>
+                <CustomImageField source="image" sortable={false} />
                 <DateField source="created_at" showTime sortable={false} />
                 <EditButton />
             </MyDatagrid>

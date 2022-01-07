@@ -26,7 +26,7 @@ import RichTextInput from 'ra-input-rich-text';
 import { styles as createStyles } from './ProductCreate';
 import { Product } from '../types';
 import { ChevronLeft } from '@material-ui/icons';
-import MyImageField from '../base/form/MyImageField';
+import FormControlImageField from '../base/form/FormControlImageField';
 
 interface ProductTitleProps {
     record?: Product;
@@ -89,7 +89,7 @@ const ProductEdit = (props: EditProps) => {
             transform={transform}
         >
             <SimpleForm>
-                <MyImageField {...props} source="image" />
+                <FormControlImageField {...props} source="image" noimage="food" />
 
                 <TextInput source="name" validate={requiredValidate} />
                 <NumberInput

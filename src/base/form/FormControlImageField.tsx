@@ -21,7 +21,7 @@ const useStyles = makeStyles({
     },
 });
 
-const MyImageField = (props: any) => {
+const FormControlImageField = (props: any) => {
     const { record, source } = props;
     const classes = useStyles();
 
@@ -48,7 +48,7 @@ const MyImageField = (props: any) => {
                 onClick={() => {
                     setSourceUrl('');
                 }}><Delete /></span>
-        </Card>
+        </Card >
     ) : (
         <>
             <ImageInput source="images"
@@ -64,4 +64,4 @@ const MyImageField = (props: any) => {
     );
 };
 
-export default MyImageField;
+export default FormControlImageField;

@@ -16,7 +16,7 @@ import {
     usePermissions
 } from 'react-admin';
 import { makeStyles } from '@material-ui/core';
-import MyImageField from '../base/form/MyImageField';
+import FormControlImageField from '../base/form/FormControlImageField';
 
 const useStyles = makeStyles({
     width600: { width: 600 },
@@ -70,7 +70,7 @@ const SlideEdit = (props: EditProps) => {
         >
             <SimpleForm>
 
-                <MyImageField {...props} source="image" />
+                <FormControlImageField {...props} source="image" />
                 <TextInput
                     source="title"
                     label="タイトル"
