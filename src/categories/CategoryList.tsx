@@ -18,9 +18,9 @@ import {
 import MyDatagrid from '../base/datagrid/MyDatagrid';
 import PositionField from '../base/list/PositionField';
 
-const categoryFilters = [
-    <SearchInput source="q" alwaysOn />,
-];
+// const categoryFilters = [
+//     <SearchInput source="q" alwaysOn />,
+// ];
 
 const ListActions = (props: any) => (
     <TopToolbar>
@@ -60,7 +60,7 @@ const CategoryList = (props: ListProps) => {
             perPage={50}
             pagination={false}
             component="div"
-            filters={categoryFilters}
+            filters={[]}
             actions={<ListActions />}
         >
             <MyDatagrid optimized>

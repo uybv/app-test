@@ -72,7 +72,7 @@ const StaffCreate = (props: CreateProps) => {
                     validate={[required()]}
                     choices={[
                         { id: 1, name: '管理' },
-                        { id: 2, name: '無効' },
+                        { id: 2, name: '店舗' },
                     ]}
                 />
                 <PasswordInput

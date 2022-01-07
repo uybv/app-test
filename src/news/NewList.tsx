@@ -18,6 +18,7 @@ import { Button } from '@material-ui/core';
 import { CloudDownload } from '@material-ui/icons'
 import { apiBaseUrl } from '../config';
 import MyDatagrid from '../base/datagrid/MyDatagrid';
+import NewsStatusField from './NewsStatusField';
 
 const filters = [
     <SearchInput source="q" alwaysOn />,
@@ -91,10 +92,11 @@ const NewList = (props: ListProps) => {
             actions={<ListActions />}
         >
             <MyDatagrid optimized>
+                <NewsStatusField sortable={false} />
                 <TextField source="title" sortable={false} />
                 <DateField source="publish_time" showTime sortable={false} />
                 <DateField source="expired_time" showTime sortable={false} />
-                <DateField source="created_at" showTime sortable={false} />
+                {/* <DateField source="created_at" showTime sortable={false} /> */}
                 <QrCodeDownloadButton />
                 <EditButton />
             </MyDatagrid>

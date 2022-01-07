@@ -14,7 +14,10 @@ import {
     ListButton,
     useRedirect,
     useNotify,
-    usePermissions
+    usePermissions,
+    Toolbar,
+    SaveButton,
+    DeleteButton
 } from 'react-admin';
 
 import { makeStyles } from '@material-ui/core/styles';
@@ -62,6 +65,26 @@ const EditActions = ({ basePath, data }: any) => (
     </TopToolbar>
 );
 
+const EditToolbar = (props: any) => {
+    const { record } = props;
+    const useToolbarStyles = makeStyles({
+        defaultToolbar: {
+            flex: 1,
+            display: 'flex',
+            justifyContent: 'space-between',
+        },
+    });
+    const classes = useToolbarStyles();
+    return (
+        <Toolbar {...props} className={classes.defaultToolbar}>
+            <SaveButton />
+            <DeleteButton
+                confirmTitle={`ユーザー名 "${record?.display_name}"を削除`}
+            />
+        </Toolbar>
+    );
+};
+
 const StaffEdit = (props: EditProps) => {
     const classes = useStyles(props);
     const redirect = useRedirect();
@@ -89,7 +112,7 @@ const StaffEdit = (props: EditProps) => {
             undoable={false}
             actions={<EditActions />}
         >
-            <SimpleForm validate={validatePasswords}>
+            <SimpleForm validate={validatePasswords} toolbar={<EditToolbar />}>
                 <TextInput source="username" className={classes.width600} disabled={true} validate={[required()]} />
 
                 <TextInput
@@ -102,7 +125,7 @@ const StaffEdit = (props: EditProps) => {
                     validate={[required()]}
                     choices={[
                         { id: 1, name: '管理' },
-                        { id: 2, name: '無効' },
+                        { id: 2, name: '店舗' },
                     ]}
                 />
                 <PasswordInput

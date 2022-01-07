@@ -13,7 +13,10 @@ import {
     BooleanInput,
     useRedirect,
     useNotify,
-    usePermissions
+    usePermissions,
+    Toolbar,
+    SaveButton,
+    DeleteButton
 } from 'react-admin';
 import { makeStyles } from '@material-ui/core';
 import FormControlImageField from '../base/form/FormControlImageField';
@@ -31,6 +34,26 @@ const SlideTitle = (props: any) => {
             {record.name}&quot;
         </span>
     ) : null;
+};
+
+const EditToolbar = (props: any) => {
+    const { record } = props;
+    const useToolbarStyles = makeStyles({
+        defaultToolbar: {
+            flex: 1,
+            display: 'flex',
+            justifyContent: 'space-between',
+        },
+    });
+    const classes = useToolbarStyles();
+    return (
+        <Toolbar {...props} className={classes.defaultToolbar}>
+            <SaveButton />
+            <DeleteButton
+                confirmTitle={`スライド "${record?.title}"を削除`}
+            />
+        </Toolbar>
+    );
 };
 
 const EditActions = ({ basePath, data }: any) => (
@@ -68,8 +91,7 @@ const SlideEdit = (props: EditProps) => {
             actions={<EditActions />}
             transform={transform}
         >
-            <SimpleForm>
-
+            <SimpleForm toolbar={<EditToolbar />}>
                 <FormControlImageField {...props} source="image" />
                 <TextInput
                     source="title"

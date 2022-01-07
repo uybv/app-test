@@ -97,12 +97,13 @@ export const processWorkingTime = (data: any) => {
 }
 
 export const transform = (data: any) => {
-
-    return {
-        ...data,
-        working_times: data.working_times.map((v: any) => { return processWorkingTime(v); }),
-        delivery_est: data.delivery_est * 60 * 1000,
+    if (data.working_times) {
+        data.working_times = data.working_times.map((v: any) => { return processWorkingTime(v); });
     }
+    if (!_.isUndefined(data.delivery_est)) {
+        data.delivery_est = data.delivery_est * 60 * 1000;
+    }
+    return data;
 };
 
 export const minWorkingTime = () => (value: any, allValues: any, props: any) => {

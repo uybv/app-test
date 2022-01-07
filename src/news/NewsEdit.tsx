@@ -12,6 +12,9 @@ import {
     TopToolbar,
     ListButton,
     BooleanInput,
+    Toolbar,
+    SaveButton,
+    DeleteButton,
     useRedirect,
     useNotify,
     usePermissions
@@ -36,7 +39,7 @@ const NewsTitle = (props: FieldProps<Category>) => {
     const translate = useTranslate();
     return record ? (
         <span>
-            {translate('resources.tax.name', { smart_count: 1 })} &quot;
+            {translate('resources.news.name', { smart_count: 1 })} &quot;
             {record.title}&quot;
         </span>
     ) : null;
@@ -47,6 +50,27 @@ const EditActions = ({ basePath, data }: any) => (
         <ListButton basePath={basePath} icon={<ChevronLeft />} />
     </TopToolbar>
 );
+
+const EditToolbar = (props: any) => {
+    const { record } = props;
+    const useToolbarStyles = makeStyles({
+        defaultToolbar: {
+            flex: 1,
+            display: 'flex',
+            justifyContent: 'space-between',
+        },
+    });
+    const classes = useToolbarStyles();
+    return (
+        <Toolbar {...props} className={classes.defaultToolbar}>
+            <SaveButton />
+            <DeleteButton
+                confirmTitle={`ニュース "${record?.title}"を削除`}
+            />
+        </Toolbar>
+    );
+};
+
 
 const NewsEdit = (props: EditProps) => {
     const classes = useStyles(props);
@@ -76,7 +100,7 @@ const NewsEdit = (props: EditProps) => {
             transform={transform}
             {...props}
         >
-            <SimpleForm>
+            <SimpleForm toolbar={<EditToolbar />}>
                 <FormControlImageField {...props} source="banner" />
                 <TextInput
                     autoFocus

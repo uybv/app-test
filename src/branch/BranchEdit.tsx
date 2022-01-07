@@ -38,10 +38,10 @@ import QRCode from 'qrcode.react';
 import { apiBaseUrl } from '../config';
 import { makeStyles } from '@material-ui/core/styles';
 import { ChevronLeft, CloudDownload } from '@material-ui/icons';
-import ThumbnailField from '../products/ThumbnailField';
 import ContentCreate from '@material-ui/icons/Create';
 import _ from 'lodash';
 import { getDayOfWeek, minWorkingTime, styles, transform } from './BranchCreate';
+import CustomImageField from '../base/list/CustomImageField';
 
 let branchId = '';
 
@@ -106,7 +106,7 @@ const EditActions = ({ basePath, data }: any) => (
 );
 
 const EditToolbar = (props: any) => {
-    const { isTabMenuFood, isEditMenuFood } = props;
+    const { isTabMenuFood, isEditMenuFood, record } = props;
     const useToolbarStyles = makeStyles({
         defaultToolbar: {
             flex: 1,
@@ -115,10 +115,21 @@ const EditToolbar = (props: any) => {
         },
     });
     const classes = useToolbarStyles();
-    return (isEditMenuFood || !isTabMenuFood) ? (
+    return !isTabMenuFood ? (
         <Toolbar {...props} className={classes.defaultToolbar}>
-            <SaveButton />
-            {!isTabMenuFood && (<DeleteButton />)}
+            <SaveButton
+                // transform={(data) => {
+                //     delete data.food_ids;
+                //     return { ...data, st: 1 };
+                // }}
+            />
+            <DeleteButton confirmTitle={`店舗管理 "${record?.name}"を削除`} />)
+        </Toolbar>
+    ) : isEditMenuFood ? (
+        <Toolbar {...props} className={classes.defaultToolbar}>
+            <SaveButton
+                transform={data => ({ food_ids: data.food_ids })}
+            />
         </Toolbar>
     ) : null;
 };
@@ -316,7 +327,7 @@ const BranchEdit = (props: EditProps) => {
                                 fullWidth
                             >
                                 <Datagrid>
-                                    <ThumbnailField />
+                                    <CustomImageField source="image" noimage="food" />
                                     <TextField source="name" />
                                     <NumberField
                                         source="price"

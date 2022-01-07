@@ -7,7 +7,7 @@ const StaffTypeField = (props: Omit<ReferenceFieldProps, 'reference' | 'children
     const { record } = props;
     return record ? (
         <div>
-            {record.type === 1 ? '管理' : '無効'}
+            {record.type === 1 ? '管理' : '店舗'}
         </div>
     ) : null;
 }
