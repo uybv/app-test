@@ -83,7 +83,10 @@ const Totals = (props: any) => {
                         決済手数料
                     </TableCell>
                     <TableCell className={classes.rightAlignedCell}>
-                        ¥0
+                        ¥{(record?.payment?.fee_amount ?? 0).toLocaleString(undefined, {
+                            style: 'currency',
+                            currency: 'JPY',
+                        })}
                     </TableCell>
                 </TableRow>
                 <TableRow>
@@ -91,7 +94,7 @@ const Totals = (props: any) => {
                         金額 - 決済手数料
                     </TableCell>
                     <TableCell className={classes.rightAlignedCell}>
-                        {(record?.total ?? 0).toLocaleString(undefined, {
+                        {((record?.total ?? 0) - (record?.payment?.fee_amount ?? 0)).toLocaleString(undefined, {
                             style: 'currency',
                             currency: 'JPY',
                         })}
