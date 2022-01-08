@@ -1,10 +1,10 @@
 import * as React from 'react';
 import clsx from 'clsx';
-import { Table, TableBody, TableCell, TableRow } from '@material-ui/core';
+import { Table, TableBody, TableCell, TableRow, Button } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import { FieldProps, useTranslate } from 'react-admin';
+import ContentSave from '@material-ui/icons/Save';
 
-import { Order } from '../types';
+import { OrderState } from '../types';
 
 const useStyles = makeStyles({
     container: { minWidth: '35em' },
@@ -31,8 +31,8 @@ const renderPaymentMethod = (type: any) => {
     return data;
 }
 
-const Totals = (props: FieldProps<any>) => {
-    const { record } = props;
+const Totals = (props: any) => {
+    const { record, handleUpdate } = props;
     const classes = useStyles();
 
     return (
@@ -48,6 +48,22 @@ const Totals = (props: FieldProps<any>) => {
                             classes.rightAlignedCell
                         )}
                     >
+                        {record.st === OrderState.CANCEL && (
+                            <Button
+                            style={{ backgroundColor: 'red', marginRight: 15 }}
+                            variant={'contained'}
+                            type={'button'}
+                            color={'secondary'}
+                            startIcon={<ContentSave />}
+                            onClick={() => {
+                                if (!window.confirm('本当に払い戻ししますか?'))
+                                    return false;
+                                handleUpdate(record, { refund_total: record?.total, st: 0 });
+                            }}
+                        >
+                            払い戻しする
+                        </Button>
+                        )}
                         {record?.total.toLocaleString(undefined, {
                             style: 'currency',
                             currency: 'JPY',
@@ -86,7 +102,7 @@ const Totals = (props: FieldProps<any>) => {
                         消費税
                     </TableCell>
                     <TableCell className={classes.rightAlignedCell}>
-                        {(record?.taxTotal ?? 0).toLocaleString(undefined, {
+                        {(record?.tax_total ?? 0).toLocaleString(undefined, {
                             style: 'currency',
                             currency: 'JPY',
                         })}

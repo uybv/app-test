@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useCallback } from 'react';
 import {
-    BooleanInput,
+    TextInput,
     DateField,
     Edit,
     EditProps,
@@ -15,8 +15,6 @@ import {
     TopToolbar,
     ListButton,
     SaveButton,
-    DeleteButton,
-    useCreate,
     useUpdate,
     useRedirect,
     useNotify,
@@ -45,7 +43,6 @@ interface OrderTitleProps {
 }
 
 const OrderTitle = ({ record }: OrderTitleProps) => {
-    // const translate = useTranslate();
     return record ? (
         <span>
             Order
@@ -110,10 +107,10 @@ const OrderForm = (props: any) => {
     const refresh = useRefresh();
     const redirect = useRedirect();
 
-    const handleUpdateStatus = (record: any, st: OrderState) => {
-        update('order', record.id, { st: st }, record);
+    const handleUpdate = (record: any, data: any) => {
+        update('order', record.id, data, {});
         notify(`更新しました`);
-        redirect('list', '/order?displayedFilters=%7B%7D&filter=%7B"st"%3A' + st + '%7D&order=DESC&page=1&perPage=50&sort=created_time');
+        redirect('list', '/order?displayedFilters=%7B%7D&filter=%7B"st"%3A' + (data.st ? data.st : OrderState.PAID) + '%7D&order=DESC&page=1&perPage=50&sort=created_time');
         refresh();
     }
 
@@ -249,9 +246,27 @@ const OrderForm = (props: any) => {
 
                                             </Grid>
                                         )}
+                                        {formProps.record.st === OrderState.CANCEL && (
+                                            <Grid item xs={12} sm={12} md={6}>
+                                                <Labeled
+                                                    label="完了日時"
+                                                    source="cancel_time"
+                                                    resource="order"
+                                                >
+                                                    <DateField
+                                                        label="完了日時"
+                                                        source="cancel_time"
+                                                        resource="order"
+                                                        record={formProps.record}
+                                                        showTime
+                                                    />
+                                                </Labeled>
+
+                                            </Grid>
+                                        )}
 
                                     </Grid>
-                                    {formProps.record.st === OrderState.COMPLETE && (
+                                    {(formProps.record.st === OrderState.COMPLETE || formProps.record.st === OrderState.CANCEL) && (
                                         <Grid container>
                                             <Grid item xs={12} sm={12} md={6}>
                                                 <Labeled
@@ -309,7 +324,7 @@ const OrderForm = (props: any) => {
                                 {translate('resources.order.section.total')}
                             </Typography>
                             <Box>
-                                <Totals record={formProps.record} />
+                                <Totals record={formProps.record} handleUpdate={handleUpdate} />
                             </Box>
                             {formProps.record.st === OrderState.WAITING_RECEIVE && (
                                 <Box style={{ marginTop: 35 }}>
@@ -321,6 +336,11 @@ const OrderForm = (props: any) => {
                                     >
                                         <AutocompleteArrayInput optionText="display_name" />
                                     </ReferenceArrayInput>
+                                </Box>
+                            )}
+                            {formProps.record.st === OrderState.CANCEL && (
+                                <Box style={{ marginTop: 35 }}>
+                                    <TextInput fullWidth source="cancel_reason" label="キャンセル理由" />
                                 </Box>
                             )}
 
@@ -350,7 +370,7 @@ const OrderForm = (props: any) => {
                                         onClick={() => {
                                             if (!window.confirm('本当にキャンセルしますか?'))
                                                 return false;
-                                            handleUpdateStatus(formProps.record, OrderState.CANCEL);
+                                            handleUpdate(formProps.record, { st: OrderState.CANCEL });
                                         }}
                                     >
                                         キャンセル
@@ -370,7 +390,7 @@ const OrderForm = (props: any) => {
                                         variant={'outlined'}
                                         type={'button'}
                                         color={'default'}
-                                        onClick={() => { handleUpdateStatus(formProps.record, OrderState.PAID); }}
+                                        onClick={() => { handleUpdate(formProps.record, { st: OrderState.PAID }); }}
                                     >
                                         注文済みに戻す
                                     </Button>
@@ -383,7 +403,7 @@ const OrderForm = (props: any) => {
                                         onClick={() => {
                                             if (!window.confirm('本当にキャンセルしますか?'))
                                                 return false;
-                                            handleUpdateStatus(formProps.record, OrderState.CANCEL);
+                                            handleUpdate(formProps.record, { st: OrderState.CANCEL });
                                         }}
                                     >
                                         キャンセル
@@ -410,10 +430,45 @@ const OrderForm = (props: any) => {
                                         onClick={() => {
                                             if (!window.confirm('本当にキャンセルしますか?'))
                                                 return false;
-                                            handleUpdateStatus(formProps.record, OrderState.CANCEL);
+                                            handleUpdate(formProps.record, { st: OrderState.CANCEL });
                                         }}
                                     >
                                         キャンセル
+                                    </Button>
+                                </Box>
+                            )}
+                            {formProps.record.st === OrderState.CANCEL && (
+                                <Box display="flex" justifyContent="space-between" width="100%">
+                                    <SaveButton
+                                        label="保存"
+                                        undoable={false}
+                                        saving={formProps.saving}
+                                        handleSubmitWithRedirect={formProps.handleSubmitWithRedirect}
+                                        transform={data => {
+                                            return { cancel_reason: data?.cancel_reason }
+                                        }}
+                                    />
+                                    <Button
+                                        variant={'outlined'}
+                                        type={'button'}
+                                        color={'default'}
+                                        onClick={() => { handleUpdate(formProps.record, { st: OrderState.PAID }); }}
+                                    >
+                                        注文済みに戻す
+                                    </Button>
+                                    <Button
+                                        className={classes.label}
+                                        variant={'text'}
+                                        type={'button'}
+                                        color={'default'}
+                                        startIcon={<Delete />}
+                                        onClick={() => {
+                                            if (!window.confirm('本当に削除しますか?'))
+                                                return false;
+                                            handleUpdate(formProps.record, { st: 0 });
+                                        }}
+                                    >
+                                        削除
                                     </Button>
                                 </Box>
                             )}
