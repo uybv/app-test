@@ -9,7 +9,7 @@ import {
     TextInput,
     ArrayInput,
     SimpleFormIterator,
-    ReferenceArrayInput,
+    ReferenceInput,
     SelectInput,
     minValue,
     useTranslate,
@@ -17,7 +17,10 @@ import {
     ListButton,
     useRedirect,
     useNotify,
-    usePermissions
+    usePermissions,
+    Toolbar,
+    SaveButton,
+    DeleteButton
 } from 'react-admin';
 import { InputAdornment } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
@@ -56,6 +59,26 @@ const EditActions = ({ basePath, data }: any) => (
     </TopToolbar>
 );
 
+const EditToolbar = (props: any) => {
+    const { record } = props;
+    const useToolbarStyles = makeStyles({
+        defaultToolbar: {
+            flex: 1,
+            display: 'flex',
+            justifyContent: 'space-between',
+        },
+    });
+    const classes = useToolbarStyles();
+    return (
+        <Toolbar {...props} className={classes.defaultToolbar}>
+            <SaveButton />
+            <DeleteButton
+                confirmTitle={`商品管理 "${record?.name}"を削除`}
+            />
+        </Toolbar>
+    );
+};
+
 const ProductEdit = (props: EditProps) => {
     const classes = useStyles();
     const redirect = useRedirect();
@@ -88,7 +111,7 @@ const ProductEdit = (props: EditProps) => {
             actions={<EditActions />}
             transform={transform}
         >
-            <SimpleForm>
+            <SimpleForm toolbar={<EditToolbar />}>
                 <FormControlImageField {...props} source="image" noimage="food" />
 
                 <TextInput source="name" validate={requiredValidate} />
@@ -117,20 +140,20 @@ const ProductEdit = (props: EditProps) => {
                         ),
                     }}
                 />
-                <ReferenceArrayInput
+                <ReferenceInput
                     reference="category"
                     source="cat_ids"
                     validate={required()}
                 >
                     <SelectInput optionText="name" />
-                </ReferenceArrayInput>
-                <ReferenceArrayInput
+                </ReferenceInput>
+                <ReferenceInput
                     reference="tax"
                     source="tax_ids"
                     validate={required()}
                 >
                     <SelectInput optionText="name" />
-                </ReferenceArrayInput>
+                </ReferenceInput>
                 <RichTextInput source="description" />
                 <ArrayInput source="information" label="商品情報">
                     <SimpleFormIterator >

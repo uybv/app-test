@@ -54,7 +54,7 @@ const StaffTitle = (props: FieldProps<Category>) => {
     return record ? (
         <span>
             {translate('resources.staff.name', { smart_count: 1 })} &quot;
-            {record.name}&quot;
+            {record.display_name}&quot;
         </span>
     ) : null;
 };

@@ -12,7 +12,7 @@ import {
     ImageInput,
     ImageField,
     ArrayInput,
-    ReferenceArrayInput,
+    ReferenceInput,
     SimpleFormIterator,
     useRedirect,
     useNotify,
@@ -92,20 +92,20 @@ const ProductCreate = (props: CreateProps) => {
                         ),
                     }}
                 />
-                <ReferenceArrayInput
+                <ReferenceInput
                     reference="category"
                     source="cat_ids"
                     validate={required()}
                 >
                     <SelectInput optionText="name" />
-                </ReferenceArrayInput>
-                <ReferenceArrayInput
+                </ReferenceInput>
+                <ReferenceInput
                     reference="tax"
                     source="tax_ids"
                     validate={required()}
                 >
                     <SelectInput optionText="name" />
-                </ReferenceArrayInput>
+                </ReferenceInput>
                 <RichTextInput source="description" />
                 <ArrayInput source="information" label="商品情報">
                     <SimpleFormIterator >
