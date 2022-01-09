@@ -31,7 +31,7 @@ const SlideTitle = (props: any) => {
     return record ? (
         <span>
             {translate('resources.slide.name', { smart_count: 1 })} &quot;
-            {record.name}&quot;
+            {record.title}&quot;
         </span>
     ) : null;
 };
