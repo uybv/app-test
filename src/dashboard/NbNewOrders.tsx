@@ -15,7 +15,7 @@ const NbNewOrders = (props: Props) => {
         <CardWithIcon
             to="/order"
             icon={ShoppingCartIcon}
-            title={translate('pos.dashboard.new_orders')}
+            title={"本日の注文数"}
             subtitle={value}
         />
     );
