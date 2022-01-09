@@ -50,6 +50,7 @@ const japaneseDomainMessages = {
                 confirm_password: 'パスワード確認',
                 last_seen: 'Last seen',
                 created_at: '登録日時',
+                last_updated_at: '更新日時'
             },
             filters: {
                 last_visited: 'Last visited',

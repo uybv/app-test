@@ -30,12 +30,13 @@ const VisitorList = (props: ListProps) => {
             {...props}
             filters={visitorFilters}
             perPage={50}
+            sort={{ field: 'last_updated_at', order: 'DESC' }}
             actions={<ListActions />}
         >
             <MyDatagrid optimized>
                 <TextField source="email" sortable={false}/>
                 <CustomerLinkField sortable={false} />
-                <DateField source="created_at" showTime sortable={false}/>
+                <DateField source="last_updated_at" showTime />
                 <EditButton />
             </MyDatagrid>
 
