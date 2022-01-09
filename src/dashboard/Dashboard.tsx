@@ -121,7 +121,7 @@ const Dashboard = () => {
                 minimumFractionDigits: 0,
                 maximumFractionDigits: 0,
             }),
-            monthCarPayTotalOrder: month.totalcardPay,
+            monthCarPayTotalOrder: month.totalCardPay,
             revenueGooglePayMonth: month.revenueGooglePay.toLocaleString(undefined, {
                 style: 'currency',
                 currency: 'JPY',
