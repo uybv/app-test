@@ -10,7 +10,7 @@ const NewsStatusField = (props: Omit<ReferenceFieldProps, 'reference' | 'childre
     }
     const currentTime = new Date().valueOf();
 
-    if (record.is_public && record.publish_time > currentTime && record.expired_time > currentTime) {
+    if (record.is_public && record.publish_time <= currentTime && record.expired_time > currentTime) {
         return (<>公開中</>);
     }
     if (record.is_public && record.publish_time > currentTime) {
