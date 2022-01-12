@@ -34,63 +34,19 @@ import {
     Button,
     InputAdornment,
 } from '@material-ui/core';
-import QRCode from 'qrcode.react';
-import { apiBaseUrl } from '../config';
 import { makeStyles } from '@material-ui/core/styles';
-import { ChevronLeft, CloudDownload } from '@material-ui/icons';
+import { ChevronLeft } from '@material-ui/icons';
 import ContentCreate from '@material-ui/icons/Create';
 import _ from 'lodash';
 import { getDayOfWeek, minWorkingTime, styles, transform } from './BranchCreate';
-import CustomImageField from '../base/list/CustomImageField';
+import BranchMenuFoodField from './BranchMenuFoodField';
 
-let branchId = '';
-
-const QrCodeField = (props: any) => {
-    const { record } = props;
-    if (!record) return null;
-    return (
-        <QRCode id={record.id} size={150} value={apiBaseUrl + "/app/qr/?type=food-branch&food_id=" + record.id + "&branch_id=" + branchId} />
-    );
-};
-
-const QrCodeDownloadButton = (props: any) => {
-    const { record } = props;
-    if (!record) return null;
-    return (
-        <>
-            <Button
-                variant="contained"
-                color="primary"
-                size="small"
-                startIcon={<CloudDownload />}
-                onClick={() => {
-                    const canvas = document.getElementById(record.id) as any;
-                    const pngUrl = canvas.toDataURL('image/png').replace('image/png', 'image/octet-stream');
-                    let downloadLink = document.createElement('a');
-                    downloadLink.href = pngUrl;
-                    downloadLink.download = 'foo_branch_' + record.id + '.png';
-                    document.body.appendChild(downloadLink);
-                    downloadLink.click();
-                    document.body.removeChild(downloadLink);
-                }}
-            >
-                ＱＲコードのダウンロード
-            </Button>
-            <div style={{ display: "none" }}>
-                <QrCodeField  {...props} />
-            </div>
-        </>
-    );
-};
 
 const useStyles = makeStyles(styles);
 
 const BranchTitle = (props: FieldProps<any>) => {
     const { record } = props;
     const translate = useTranslate();
-    if (record) {
-        branchId = record.id;
-    }
     return record ? (
         <span>
             {translate('resources.branch.name', { smart_count: 1 })} &quot;
@@ -317,8 +273,8 @@ const BranchEdit = (props: EditProps) => {
                                     編集
                                 </Button>
                             </>
-
-                            <ReferenceArrayField
+                            <BranchMenuFoodField label="商品一覧（メニュー）" source="food_ids" />
+                            {/* <ReferenceArrayField
                                 filter={{}}
                                 reference="product"
                                 source="food_ids"
@@ -335,7 +291,7 @@ const BranchEdit = (props: EditProps) => {
                                     />
                                     <QrCodeDownloadButton />
                                 </Datagrid>
-                            </ReferenceArrayField>
+                            </ReferenceArrayField> */}
 
                         </>
                     )}
