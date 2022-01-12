@@ -35,7 +35,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { ChevronLeft } from '@material-ui/icons';
 import ContentCreate from '@material-ui/icons/Create';
 import _ from 'lodash';
-import { getDayOfWeek, minWorkingTime, styles, transform } from './BranchCreate';
+import { getDayOfWeek, minWorkingTime, processWorkingTime, styles, transform } from './BranchCreate';
 import BranchMenuFoodField from './BranchMenuFoodField';
 
 
@@ -75,6 +75,12 @@ const EditToolbar = (props: any) => {
             <SaveButton
                 transform={(data) => {
                     delete data.food_ids;
+                    if (data.working_times) {
+                        data.working_times = data.working_times.map((v: any) => { return processWorkingTime(v); });
+                    }
+                    if (!_.isUndefined(data.delivery_est)) {
+                        data.delivery_est = data.delivery_est * 60 * 1000;
+                    }
                     return data;
                 }}
             />
