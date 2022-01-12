@@ -31,15 +31,35 @@ const Spacer = () => <span style={{ width: '1em' }} />;
 
 const Dashboard = () => {
     const [state, setState] = useState<any>({});
+    const [startTime, setStartTime] = useState<number>(moment().startOf('month').valueOf());
+    const [endTime, setEndTime] = useState<number>(moment().endOf('month').valueOf());
     const version = useVersion();
     const dataProvider = useDataProvider();
 
-    const fetchOrders = useCallback(async () => {
-        const aMonthAgo = subDays(new Date(), 30);
-        const { data: monthOrders } = await dataProvider.getList<Order>(
+    const formatCurrency = (value: any) => {
+        return value.toLocaleString(undefined, {
+            style: 'currency',
+            currency: 'JPY',
+        })
+    }
+
+    const fetchOrders = useCallback(async (start, end) => {
+        const { data: orders } = await dataProvider.getList<Order>(
             'order',
             {
-                filter: { date_gte: aMonthAgo.valueOf(), st: OrderState.PAID },
+                filter: {
+                    date_gte: start,
+                    date_lte: end,
+                    st: [OrderState.PAID, OrderState.WAITING_RECEIVE, OrderState.COMPLETE, OrderState.CANCEL]
+                },
+                sort: { field: 'created_time', order: 'DESC' },
+                pagination: {} as any,
+            }
+        );
+        const { data: ago30DayOrders } = await dataProvider.getList<Order>(
+            'order',
+            {
+                filter: { date_gte: subDays(new Date(), 30).valueOf(), st: [OrderState.PAID, OrderState.WAITING_RECEIVE, OrderState.COMPLETE, OrderState.CANCEL] },
                 sort: { field: 'created_time', order: 'DESC' },
                 pagination: {} as any,
             }
@@ -47,109 +67,186 @@ const Dashboard = () => {
         const { data: todayOrders } = await dataProvider.getList<Order>(
             'order',
             {
-                filter: { date_gte: moment().startOf('day').valueOf(), st: OrderState.PAID },
+                filter: { date_gte: moment().startOf('day').valueOf(), st: [OrderState.PAID, OrderState.WAITING_RECEIVE, OrderState.COMPLETE, OrderState.CANCEL] },
                 sort: { field: 'created_time', order: 'DESC' },
                 pagination: {} as any,
             }
         );
-        const month = monthOrders
+        const byDay = orders
             .reduce(
                 (stats: any, order: any) => {
-                    stats.revenue += order.total;
-                    stats.total++;
+                    const revenue = order.total;
+                    stats.revenue += revenue;
+                    stats.tax_total += order?.tax_total ?? 0;
+                    stats.fee_amount += order?.payment?.fee_amount ?? 0;
+                    stats.total_order++;
+                    if (order.st === OrderState.CANCEL) {
+                        stats.total_cancel++;
+                    }
 
                     if (order.payment.type === PaymentType.Paypay) {
-                        stats.revenuePaypay += order.total;
-                        stats.totalPayPay++;
+                        stats.paypay.revenue += revenue;
+                        stats.paypay.tax_total += order?.tax_total ?? 0;
+                        stats.paypay.fee_amount += order?.payment?.fee_amount ?? 0;
+                        stats.paypay.total_order++;
+                        if (order.st === OrderState.CANCEL) {
+                            stats.paypay.total_cancel++;
+                        }
                     } else if (order.payment.type === PaymentType.Card) {
-                        stats.revenueCardPay += order.total;
-                        stats.totalCardPay++;
+                        stats.card.revenue += revenue;
+                        stats.card.tax_total += order?.tax_total ?? 0;
+                        stats.card.fee_amount += order?.payment?.fee_amount ?? 0;
+                        stats.card.total_order++;
+                        if (order.st === OrderState.CANCEL) {
+                            stats.card.total_cancel++;
+                        }
                     } else if (order.payment.type === PaymentType.Google) {
-                        stats.revenueGooglePay += order.total;
-                        stats.totalGooglePay++;
+                        stats.google_pay.revenue += revenue;
+                        stats.google_pay.tax_total += order?.tax_total ?? 0;
+                        stats.google_pay.fee_amount += order?.payment?.fee_amount ?? 0;
+                        stats.google_pay.total_order++;
+                        if (order.st === OrderState.CANCEL) {
+                            stats.google_pay.total_cancel++;
+                        }
                     } else if (order.payment.type === PaymentType.Apple) {
-                        stats.revenueApplePay += order.total;
-                        stats.totalApplePay++;
+                        stats.apple_pay.revenue += revenue;
+                        stats.apple_pay.tax_total += order?.tax_total ?? 0;
+                        stats.apple_pay.fee_amount += order?.payment?.fee_amount ?? 0;
+                        stats.apple_pay.total_order++;
+                        if (order.st === OrderState.CANCEL) {
+                            stats.apple_pay.total_cancel++;
+                        }
                     }
+
+                    if (order.platform === 'ios') {
+                        stats.apple_store.revenue += revenue;
+                        stats.apple_store.tax_total += order?.tax_total ?? 0;
+                        stats.apple_store.fee_amount += order?.payment?.fee_amount ?? 0;
+                        stats.apple_store.total_order++;
+                        if (order.st === OrderState.CANCEL) {
+                            stats.apple_store.total_cancel++;
+                        }
+                    } else if (order.platform === 'android') {
+                        stats.google_store.revenue += revenue;
+                        stats.google_store.tax_total += order?.tax_total ?? 0;
+                        stats.google_store.fee_amount += order?.payment?.fee_amount ?? 0;
+                        stats.google_store.total_order++;
+                        if (order.st === OrderState.CANCEL) {
+                            stats.google_store.total_cancel++;
+                        }
+                    }
+
                     return stats;
                 },
                 {
                     revenue: 0,
-                    total: 0,
-                    revenuePaypay: 0,
-                    totalPayPay: 0,
-                    revenueCardPay: 0,
-                    totalCardPay: 0,
-                    revenueGooglePay: 0,
-                    totalGooglePay: 0,
-                    revenueApplePay: 0,
-                    totalApplePay: 0,
+                    tax_total: 0,
+                    fee_amount: 0,
+                    total_order: 0,
+                    total_cancel: 0,
+                    paypay: {
+                        revenue: 0,
+                        tax_total: 0,
+                        fee_amount: 0,
+                        total_order: 0,
+                        total_cancel: 0,
+                    },
+                    card: {
+                        revenue: 0,
+                        tax_total: 0,
+                        fee_amount: 0,
+                        total_order: 0,
+                        total_cancel: 0,
+                    },
+                    google_pay: {
+                        revenue: 0,
+                        tax_total: 0,
+                        fee_amount: 0,
+                        total_order: 0,
+                        total_cancel: 0,
+                    },
+                    apple_pay: {
+                        revenue: 0,
+                        tax_total: 0,
+                        fee_amount: 0,
+                        total_order: 0,
+                        total_cancel: 0,
+                    },
+                    apple_store: {
+                        revenue: 0,
+                        tax_total: 0,
+                        fee_amount: 0,
+                        total_order: 0,
+                        total_cancel: 0,
+                    },
+                    google_store: {
+                        revenue: 0,
+                        tax_total: 0,
+                        fee_amount: 0,
+                        total_order: 0,
+                        total_cancel: 0,
+                    }
+                }
+            );
+        const ago30Day = ago30DayOrders
+            .reduce(
+                (stats: any, order: any) => {
+                    const revenue = order.total - (order?.refund_total ?? 0) - (order?.payment?.fee_amount ?? 0);
+                    stats.revenue += revenue;
+                    stats.tax_total += order?.tax_total ?? 0;
+                    stats.fee_amount += order?.payment?.fee_amount ?? 0;
+                    stats.total_order++;
+                    if (order.st === OrderState.CANCEL) {
+                        stats.total_cancel++;
+                    }
+
+                    return stats;
+                },
+                {
+                    revenue: 0,
+                    tax_total: 0,
+                    fee_amount: 0,
+                    total_order: 0,
+                    total_cancel: 0,
                 }
             );
         const today = todayOrders
             .reduce(
                 (stats: any, order: any) => {
-                    stats.revenue += order.total;
-                    stats.total++;
+                    const revenue = order.total - (order?.refund_total ?? 0) - (order?.payment?.fee_amount ?? 0);
+                    stats.revenue += revenue;
+                    stats.tax_total += order?.tax_total ?? 0;
+                    stats.fee_amount += order?.payment?.fee_amount ?? 0;
+                    stats.total_order++;
+                    if (order.st === OrderState.CANCEL) {
+                        stats.total_cancel++;
+                    }
+
                     return stats;
                 },
                 {
                     revenue: 0,
-                    total: 0,
+                    tax_total: 0,
+                    fee_amount: 0,
+                    total_order: 0,
+                    total_cancel: 0,
                 }
             );
         setState((state: any) => ({
             ...state,
-            monthOrders,
-            revenueMonth: month.revenue.toLocaleString(undefined, {
-                style: 'currency',
-                currency: 'JPY',
-                minimumFractionDigits: 0,
-                maximumFractionDigits: 0,
-            }),
-            monthTotalOrder: month.total,
-            revenuePaypayMonth: month.revenuePaypay.toLocaleString(undefined, {
-                style: 'currency',
-                currency: 'JPY',
-                minimumFractionDigits: 0,
-                maximumFractionDigits: 0,
-            }),
-            monthPaypayTotalOrder: month.totalPayPay,
-            revenueCardPayMonth: month.revenueCardPay.toLocaleString(undefined, {
-                style: 'currency',
-                currency: 'JPY',
-                minimumFractionDigits: 0,
-                maximumFractionDigits: 0,
-            }),
-            monthCarPayTotalOrder: month.totalCardPay,
-            revenueGooglePayMonth: month.revenueGooglePay.toLocaleString(undefined, {
-                style: 'currency',
-                currency: 'JPY',
-                minimumFractionDigits: 0,
-                maximumFractionDigits: 0,
-            }),
-            monthGooglePayTotalOrder: month.totalGooglePay,
-            revenueApplePayMonth: month.revenueApplePay.toLocaleString(undefined, {
-                style: 'currency',
-                currency: 'JPY',
-                minimumFractionDigits: 0,
-                maximumFractionDigits: 0,
-            }),
-            monthApplePayTotalOrder: month.totalApplePay,
-            revenueToday: today.revenue.toLocaleString(undefined, {
-                style: 'currency',
-                currency: 'JPY',
-                minimumFractionDigits: 0,
-                maximumFractionDigits: 0,
-            }),
-            todayTotalOrder: today.total,
-
+            order: {
+                ago30DayOrders,
+                ago30Day,
+                today,
+                byDay,
+            }
         }));
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [dataProvider]);
 
-    const fetchCustomers = useCallback(async () => {
+    const fetchCustomers = useCallback(async (start, end) => {
         const aMonthAgo = subDays(new Date(), 30);
-        const { data: monthCustomers } = await dataProvider.getList<any>(
+        const ago30Day = await dataProvider.getList<any>(
             'customer',
             {
                 filter: { date_gte: aMonthAgo.valueOf() },
@@ -157,7 +254,7 @@ const Dashboard = () => {
                 pagination: {} as any,
             }
         );
-        const { data: todayCustomers } = await dataProvider.getList<any>(
+        const today = await dataProvider.getList<any>(
             'customer',
             {
                 filter: { date_gte: moment().startOf('day').valueOf(), st: OrderState.PAID },
@@ -167,44 +264,33 @@ const Dashboard = () => {
         );
         setState((state: any) => ({
             ...state,
-            todayTotalCustomer: todayCustomers ? todayCustomers.reduce((v: number) => ++v, 0) : 0,
-            monthTotalCustomer: monthCustomers ? monthCustomers.reduce((v: number) => ++v, 0) : 0,
+            customer: {
+                today: today?.total ?? 0,
+                ago30Day: ago30Day?.total ?? 0,
+            }
         }));
     }, [dataProvider]);
 
     useEffect(() => {
-        fetchOrders();
-        fetchCustomers();
-    }, [version]); // eslint-disable-line react-hooks/exhaustive-deps
+        fetchOrders(startTime, endTime);
+        fetchCustomers(startTime, endTime);
+    }, [version, startTime, endTime]); // eslint-disable-line react-hooks/exhaustive-deps
 
     const {
-        monthOrders,
-        revenueMonth,
-        revenueToday,
-        monthTotalOrder,
-        todayTotalOrder,
-        revenuePaypayMonth,
-        monthPaypayTotalOrder,
-        revenueCardPayMonth,
-        monthCarPayTotalOrder,
-        revenueGooglePayMonth,
-        monthGooglePayTotalOrder,
-        revenueApplePayMonth,
-        monthApplePayTotalOrder,
-        todayTotalCustomer,
-        monthTotalCustomer
+        order,
+        customer
     } = state;
-    return (
+    return order && customer ? (
         <>
             <div style={styles.flex}>
                 <div style={styles.leftCol}>
                     <div style={styles.flex}>
-                        <MonthlyRevenue value={revenueMonth} />
+                        <MonthlyRevenue value={formatCurrency(order?.ago30Day?.revenue ?? 0)} />
                         <Spacer />
-                        <NbNewOrders value={todayTotalOrder} />
+                        <NbNewOrders value={order?.ago30Day?.total_order ?? 0} />
                     </div>
                     <div style={styles.singleCol}>
-                        <OrderChart orders={monthOrders} />
+                        <OrderChart orders={order?.ago30DayOrders ?? []} />
                     </div>
                 </div>
                 <div style={styles.rightCol}>
@@ -234,22 +320,16 @@ const Dashboard = () => {
                                                 本日
                                             </TableCell>
                                             <TableCell>
-                                                {(revenueToday ?? 0).toLocaleString(undefined, {
-                                                    style: 'currency',
-                                                    currency: 'JPY',
-                                                })}
+                                                {formatCurrency(order?.today?.revenue ?? 0)}
                                             </TableCell>
                                             <TableCell>
-                                                {(revenueToday ?? 0).toLocaleString(undefined, {
-                                                    style: 'currency',
-                                                    currency: 'JPY',
-                                                })}
+                                                {formatCurrency((order?.today?.revenue ?? 0) - (order?.today?.fee_amount ?? 0))}
                                             </TableCell>
                                             <TableCell>
-                                                {todayTotalOrder}
+                                                {order?.today?.total_order}
                                             </TableCell>
                                             <TableCell>
-                                                {todayTotalCustomer}
+                                                {customer?.today}
                                             </TableCell>
                                         </TableRow>
                                         <TableRow>
@@ -257,22 +337,16 @@ const Dashboard = () => {
                                                 当月
                                             </TableCell>
                                             <TableCell>
-                                                {(revenueMonth ?? 0).toLocaleString(undefined, {
-                                                    style: 'currency',
-                                                    currency: 'JPY',
-                                                })}
+                                                {formatCurrency(order?.ago30Day?.revenue ?? 0)}
                                             </TableCell>
                                             <TableCell>
-                                                {(revenueMonth ?? 0).toLocaleString(undefined, {
-                                                    style: 'currency',
-                                                    currency: 'JPY',
-                                                })}
+                                                {formatCurrency((order?.ago30Day?.revenue ?? 0) - (order?.ago30Day?.fee_amount ?? 0))}
                                             </TableCell>
                                             <TableCell>
-                                                {monthTotalOrder}
+                                                {order.ago30Day?.total_order}
                                             </TableCell>
                                             <TableCell>
-                                                {monthTotalCustomer}
+                                                {customer?.ago30Day}
                                             </TableCell>
                                         </TableRow>
                                     </TableBody>
@@ -284,16 +358,36 @@ const Dashboard = () => {
                     <div style={styles.singleCol}>
                         <Card>
                             <CardContent>
-                                {/* <TextField
-                                    id="date"
-                                    label="Birthday"
-                                    type="date"
-                                    defaultValue="2017-05-24"
-                                    // className={classes.textField}
-                                    InputLabelProps={{
-                                        shrink: true,
-                                    }}
-                                /> */}
+                                <div style={{ display: 'flex', flexDirection: 'row', marginBottom: 15 }}>
+                                    <TextField
+                                        label="集計開始日"
+                                        type="date"
+                                        defaultValue={moment(startTime).format('YYYY-MM-DD')}
+                                        style={{ marginRight: 25 }}
+                                        // className={classes.textField}
+                                        InputLabelProps={{
+                                            shrink: true,
+                                        }}
+                                        onBlur={(event) => {
+                                            console.log(event.target.value);
+                                            console.log(moment(event.target.value).valueOf());
+                                            setStartTime(moment(event.target.value).valueOf());
+                                        }}
+                                    />
+                                    <TextField
+                                        label="集計終了日"
+                                        type="date"
+                                        defaultValue={moment(endTime).format('YYYY-MM-DD')}
+                                        // className={classes.textField}
+                                        InputLabelProps={{
+                                            shrink: true,
+                                        }}
+                                        onBlur={(event) => {
+                                            setEndTime(moment(event.target.value).valueOf())
+                                        }}
+                                    />
+                                </div>
+
                                 <Table>
                                     <TableBody>
                                         <TableRow>
@@ -325,197 +419,211 @@ const Dashboard = () => {
                                             <TableCell>
                                                 売上
                                             </TableCell>
-                                            <TableCell>0
-                                            </TableCell>
-                                            <TableCell>0
+                                            <TableCell>
+                                                {formatCurrency(order?.byDay?.apple_store?.revenue ?? 0)}
                                             </TableCell>
                                             <TableCell>
-                                                {(revenueMonth ?? 0).toLocaleString(undefined, {
-                                                    style: 'currency',
-                                                    currency: 'JPY',
-                                                })}
+                                                {formatCurrency(order?.byDay?.google_store?.revenue ?? 0)}
                                             </TableCell>
                                             <TableCell>
-                                                {(revenueCardPayMonth ?? 0).toLocaleString(undefined, {
-                                                    style: 'currency',
-                                                    currency: 'JPY',
-                                                })}
+                                                {formatCurrency(order?.byDay?.revenue ?? 0)}
                                             </TableCell>
                                             <TableCell>
-                                                {(revenueApplePayMonth ?? 0).toLocaleString(undefined, {
-                                                    style: 'currency',
-                                                    currency: 'JPY',
-                                                })}
+                                                {formatCurrency(order?.byDay?.card?.revenue ?? 0)}
                                             </TableCell>
                                             <TableCell>
-                                                {(revenueGooglePayMonth ?? 0).toLocaleString(undefined, {
-                                                    style: 'currency',
-                                                    currency: 'JPY',
-                                                })}
+                                                {formatCurrency(order?.byDay?.apple_pay?.revenue ?? 0)}
                                             </TableCell>
                                             <TableCell>
-                                                {(revenuePaypayMonth ?? 0).toLocaleString(undefined, {
-                                                    style: 'currency',
-                                                    currency: 'JPY',
-                                                })}
+                                                {formatCurrency(order?.byDay?.google_pay?.revenue ?? 0)}
+                                            </TableCell>
+                                            <TableCell>
+                                                {formatCurrency(order?.byDay?.paypay?.revenue ?? 0)}
                                             </TableCell>
                                         </TableRow>
                                         <TableRow>
                                             <TableCell>
                                                 売上 - 決済手数料
                                             </TableCell>
-                                            <TableCell>0
-                                            </TableCell>
-                                            <TableCell>0
+                                            <TableCell>
+                                                {formatCurrency(order?.byDay?.apple_store?.revenue ?? 0 - order?.byDay?.apple_store?.fee_amount ?? 0)}
+
                                             </TableCell>
                                             <TableCell>
-                                                {(revenueMonth ?? 0).toLocaleString(undefined, {
-                                                    style: 'currency',
-                                                    currency: 'JPY',
-                                                })}
+                                                {formatCurrency(order?.byDay?.google_store?.revenue ?? 0 - order?.byDay?.google_store?.fee_amount ?? 0)}
                                             </TableCell>
                                             <TableCell>
-                                                {(revenueCardPayMonth ?? 0).toLocaleString(undefined, {
-                                                    style: 'currency',
-                                                    currency: 'JPY',
-                                                })}
+                                                {formatCurrency(order?.byDay?.revenue ?? 0 - order?.byDay?.fee_amount ?? 0)}
                                             </TableCell>
                                             <TableCell>
-                                                {(revenueApplePayMonth ?? 0).toLocaleString(undefined, {
-                                                    style: 'currency',
-                                                    currency: 'JPY',
-                                                })}
+                                                {formatCurrency(order?.byDay?.card?.revenue ?? 0 - order?.byDay?.card?.fee_amount ?? 0)}
+
                                             </TableCell>
                                             <TableCell>
-                                                {(revenueGooglePayMonth ?? 0).toLocaleString(undefined, {
-                                                    style: 'currency',
-                                                    currency: 'JPY',
-                                                })}
+                                                {formatCurrency(order?.byDay?.apple_pay?.revenue ?? 0 - order?.byDay?.apple_pay?.fee_amount ?? 0)}
                                             </TableCell>
                                             <TableCell>
-                                                {(revenuePaypayMonth ?? 0).toLocaleString(undefined, {
-                                                    style: 'currency',
-                                                    currency: 'JPY',
-                                                })}
+                                                {formatCurrency(order?.byDay?.google_pay?.revenue ?? 0 - order?.byDay?.google_pay?.fee_amount ?? 0)}
+                                            </TableCell>
+                                            <TableCell>
+                                                {formatCurrency(order?.byDay?.paypay?.revenue ?? 0 - order?.byDay?.paypay?.fee_amount ?? 0)}
                                             </TableCell>
                                         </TableRow>
                                         <TableRow>
                                             <TableCell>
                                                 消費税
                                             </TableCell>
-                                            <TableCell>0
+                                            <TableCell>
+                                                {formatCurrency(order?.byDay?.apple_store?.tax_total ?? 0)}
                                             </TableCell>
-                                            <TableCell>0
+                                            <TableCell>
+                                                {formatCurrency(order?.byDay?.google_store?.tax_total ?? 0)}
                                             </TableCell>
-                                            <TableCell>0
+                                            <TableCell>
+                                                {formatCurrency(order?.byDay?.tax_total ?? 0)}
                                             </TableCell>
-                                            <TableCell>0
+                                            <TableCell>
+                                                {formatCurrency(order?.byDay?.card?.tax_total ?? 0)}
                                             </TableCell>
-                                            <TableCell>0
+                                            <TableCell>
+                                                {formatCurrency(order?.byDay?.apple_pay?.tax_total ?? 0)}
                                             </TableCell>
-                                            <TableCell>0
+                                            <TableCell>
+                                                {formatCurrency(order?.byDay?.google_pay?.tax_total ?? 0)}
                                             </TableCell>
-                                            <TableCell>0
+                                            <TableCell>
+                                                {formatCurrency(order?.byDay?.paypay?.tax_total ?? 0)}
                                             </TableCell>
                                         </TableRow>
                                         <TableRow>
                                             <TableCell>
                                                 注文数
                                             </TableCell>
-                                            <TableCell>0
-                                            </TableCell>
-                                            <TableCell>0
+                                            <TableCell>
+                                                {order?.byDay?.apple_store?.total_order ?? 0}
                                             </TableCell>
                                             <TableCell>
-                                                {monthTotalOrder}
+                                                {order?.byDay?.google_store?.total_order ?? 0}
                                             </TableCell>
                                             <TableCell>
-                                                {monthCarPayTotalOrder}
+                                                {order?.byDay?.total_order ?? 0}
                                             </TableCell>
                                             <TableCell>
-                                                {monthApplePayTotalOrder}
+                                                {order?.byDay?.card?.total_order ?? 0}
                                             </TableCell>
                                             <TableCell>
-                                                {monthGooglePayTotalOrder}
+                                                {order?.byDay?.apple_pay?.total_order ?? 0}
                                             </TableCell>
                                             <TableCell>
-                                                {monthPaypayTotalOrder}
+                                                {order?.byDay?.google_pay?.total_order ?? 0}
                                             </TableCell>
-                                        </TableRow>
-                                        <TableRow>
                                             <TableCell>
-                                                新規会員数
-                                            </TableCell>
-                                            <TableCell>0
-                                            </TableCell>
-                                            <TableCell>0
-                                            </TableCell>
-                                            <TableCell>0
-                                            </TableCell>
-                                            <TableCell>0
-                                            </TableCell>
-                                            <TableCell>0
-                                            </TableCell>
-                                            <TableCell>0
-                                            </TableCell>
-                                            <TableCell>0
+                                                {order?.byDay?.paypay?.total_order ?? 0}
                                             </TableCell>
                                         </TableRow>
                                         <TableRow>
                                             <TableCell>
                                                 キャンセル数
                                             </TableCell>
-                                            <TableCell>0
+                                            <TableCell>
+                                                {order?.byDay?.apple_store?.total_cancel ?? 0}
                                             </TableCell>
-                                            <TableCell>0
+                                            <TableCell>
+                                                {order?.byDay?.google_store?.total_cancel ?? 0}
                                             </TableCell>
-                                            <TableCell>0
+                                            <TableCell>
+                                                {order?.byDay?.total_cancel ?? 0}
                                             </TableCell>
-                                            <TableCell>0
+                                            <TableCell>
+                                                {order?.byDay?.card?.total_cancel ?? 0}
                                             </TableCell>
-                                            <TableCell>0
+                                            <TableCell>
+                                                {order?.byDay?.apple_pay?.total_cancel ?? 0}
                                             </TableCell>
-                                            <TableCell>0
+                                            <TableCell>
+                                                {order?.byDay?.google_pay?.total_cancel ?? 0}
                                             </TableCell>
-                                            <TableCell>0
+                                            <TableCell>
+                                                {order?.byDay?.paypay?.total_cancel ?? 0}
                                             </TableCell>
                                         </TableRow>
                                         <TableRow>
                                             <TableCell>
+                                                新規会員数
+                                            </TableCell>
+                                            <TableCell>
+                                                {customer?.byDay?.apple_store?.total_new ?? 0}
+                                            </TableCell>
+                                            <TableCell>
+                                                {customer?.byDay?.google_store?.total_new ?? 0}
+                                            </TableCell>
+                                            <TableCell>
+                                                -
+                                            </TableCell>
+                                            <TableCell>
+                                                -
+                                            </TableCell>
+                                            <TableCell>
+                                                -
+                                            </TableCell>
+                                            <TableCell>
+                                                -
+                                            </TableCell>
+                                            <TableCell>
+                                                -
+                                            </TableCell>
+                                        </TableRow>
+
+                                        <TableRow>
+                                            <TableCell>
                                                 合計会員数
                                             </TableCell>
-                                            <TableCell>0
+                                            <TableCell>
+                                                {customer?.byDay?.apple_store?.total ?? 0}
                                             </TableCell>
-                                            <TableCell>0
+                                            <TableCell>
+                                                {customer?.byDay?.google_store?.total ?? 0}
                                             </TableCell>
-                                            <TableCell>0
+                                            <TableCell>
+                                                -
                                             </TableCell>
-                                            <TableCell>0
+                                            <TableCell>
+                                                -
                                             </TableCell>
-                                            <TableCell>0
+                                            <TableCell>
+                                                -
                                             </TableCell>
-                                            <TableCell>0
+                                            <TableCell>
+                                                -
                                             </TableCell>
-                                            <TableCell>0
+                                            <TableCell>
+                                                -
                                             </TableCell>
                                         </TableRow>
                                         <TableRow>
                                             <TableCell>
                                                 ダウンロード数
                                             </TableCell>
-                                            <TableCell>0
+                                            <TableCell>
+                                                -
                                             </TableCell>
-                                            <TableCell>0
+                                            <TableCell>
+                                                -
                                             </TableCell>
-                                            <TableCell>0
+                                            <TableCell>
+                                                -
                                             </TableCell>
-                                            <TableCell>0
+                                            <TableCell>
+                                                -
                                             </TableCell>
-                                            <TableCell>0
+                                            <TableCell>
+                                                -
                                             </TableCell>
-                                            <TableCell>0
+                                            <TableCell>
+                                                -
                                             </TableCell>
-                                            <TableCell>0
+                                            <TableCell>
+                                                -
                                             </TableCell>
                                         </TableRow>
                                     </TableBody>
@@ -526,7 +634,7 @@ const Dashboard = () => {
                 </div>
             </div>
         </>
-    );
+    ) : null;
 };
 
 export default Dashboard;

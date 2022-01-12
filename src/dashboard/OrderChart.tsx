@@ -24,7 +24,6 @@ const dateFormatter = (date: number): string =>
 
 const aggregateOrdersByDay = (orders: Order[]): { [key: string]: number } =>
     orders
-        .filter((order: Order) => order.status !== 'cancelled')
         .reduce((acc, curr) => {
             const day = moment(curr.created_time).format('YYYY-MM-DD');
             if (!acc[day]) {
