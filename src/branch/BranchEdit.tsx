@@ -11,9 +11,6 @@ import {
     NumberInput,
     ReferenceArrayInput,
     AutocompleteArrayInput,
-    ReferenceArrayField,
-    NumberField,
-    Datagrid,
     required,
     minValue,
     ArrayInput,
@@ -25,9 +22,9 @@ import {
     Toolbar,
     SaveButton,
     DeleteButton,
-    TextField,
     useRedirect,
     useNotify,
+    useRefresh,
     usePermissions
 } from 'react-admin';
 import {
@@ -62,7 +59,9 @@ const EditActions = ({ basePath, data }: any) => (
 );
 
 const EditToolbar = (props: any) => {
-    const { isTabMenuFood, isEditMenuFood, record } = props;
+    const { isTabMenuFood, isEditMenuFood, setIsEditMenuFood, record } = props;
+    const notify = useNotify();
+    const refresh = useRefresh();
     const useToolbarStyles = makeStyles({
         defaultToolbar: {
             flex: 1,
@@ -74,10 +73,10 @@ const EditToolbar = (props: any) => {
     return !isTabMenuFood ? (
         <Toolbar {...props} className={classes.defaultToolbar}>
             <SaveButton
-                // transform={(data) => {
-                //     delete data.food_ids;
-                //     return { ...data, st: 1 };
-                // }}
+                transform={(data) => {
+                    delete data.food_ids;
+                    return data;
+                }}
             />
             <DeleteButton confirmTitle={`店舗管理 "${record?.name}"を削除`} />)
         </Toolbar>
@@ -85,6 +84,11 @@ const EditToolbar = (props: any) => {
         <Toolbar {...props} className={classes.defaultToolbar}>
             <SaveButton
                 transform={data => ({ food_ids: data.food_ids })}
+                onSuccess={(response: any) => {
+                    setIsEditMenuFood(false);
+                    notify(`更新しました`);
+                    refresh();
+                }}
             />
         </Toolbar>
     ) : null;
@@ -119,7 +123,7 @@ const BranchEdit = (props: EditProps) => {
             undoable={false}
             actions={<EditActions />}
             transform={transform}>
-            <TabbedForm toolbar={<EditToolbar {...props} isEditMenuFood={isEditMenuFood} isTabMenuFood={isTabMenuFood} />}>
+            <TabbedForm toolbar={<EditToolbar {...props} isEditMenuFood={isEditMenuFood} isTabMenuFood={isTabMenuFood} setIsEditMenuFood={setIsEditMenuFood} />}>
                 <FormTab label="resources.branch.tabs.info">
                     <TextInput
                         autoFocus
