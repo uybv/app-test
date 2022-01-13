@@ -176,19 +176,19 @@ const OrderForm = (props: any) => {
                                                     choices={[
                                                         {
                                                             id: 10,
-                                                            name: '注文済み',
+                                                            name: '1.オーダー',
                                                         },
                                                         {
                                                             id: 89,
-                                                            name: '来店待ち',
+                                                            name: '2.確認済',
                                                         },
                                                         {
                                                             id: 90,
-                                                            name: '完了',
+                                                            name: '3.受取済',
                                                         },
                                                         {
                                                             id: 81,
-                                                            name: 'キャンセル済み',
+                                                            name: '4.その他',
                                                         },
                                                     ]}
                                                 />
@@ -214,12 +214,12 @@ const OrderForm = (props: any) => {
                                     <Grid container>
                                         <Grid item xs={12} sm={12} md={6}>
                                             <Labeled
-                                                label="来店予定時刻"
+                                                label="来店予定日時"
                                                 source="delivery_est"
                                                 resource="order"
                                             >
                                                 <DateField
-                                                    label="来店予定時刻"
+                                                    label="来店予定日時"
                                                     source="delivery_est"
                                                     resource="order"
                                                     record={formProps.record}
@@ -231,12 +231,12 @@ const OrderForm = (props: any) => {
                                         {formProps.record.st === OrderState.COMPLETE && (
                                             <Grid item xs={12} sm={12} md={6}>
                                                 <Labeled
-                                                    label="完了日時"
+                                                    label="受取日時"
                                                     source="complete_time"
                                                     resource="order"
                                                 >
                                                     <DateField
-                                                        label="完了日時"
+                                                        label="受取日時"
                                                         source="complete_time"
                                                         resource="order"
                                                         record={formProps.record}
@@ -249,12 +249,12 @@ const OrderForm = (props: any) => {
                                         {formProps.record.st === OrderState.CANCEL && (
                                             <Grid item xs={12} sm={12} md={6}>
                                                 <Labeled
-                                                    label="完了日時"
+                                                    label="受取日時"
                                                     source="cancel_time"
                                                     resource="order"
                                                 >
                                                     <DateField
-                                                        label="完了日時"
+                                                        label="受取日時"
                                                         source="cancel_time"
                                                         resource="order"
                                                         record={formProps.record}
@@ -340,7 +340,7 @@ const OrderForm = (props: any) => {
                             )}
                             {formProps.record.st === OrderState.CANCEL && (
                                 <Box style={{ marginTop: 35 }}>
-                                    <TextInput fullWidth source="cancel_reason" label="キャンセル理由" />
+                                    <TextInput fullWidth source="cancel_reason" label="その他理由" />
                                 </Box>
                             )}
 
@@ -357,7 +357,7 @@ const OrderForm = (props: any) => {
                                 <Box display="flex" justifyContent="space-between" width="100%">
                                     <SaveButton
                                         undoable={false}
-                                        label="来店待ちに変更する"
+                                        label="2.確認済に変更"
                                         handleSubmitWithRedirect={formProps.handleSubmitWithRedirect}
                                         transform={data => ({ ...data, st: OrderState.WAITING_RECEIVE })}
                                     />
@@ -368,19 +368,19 @@ const OrderForm = (props: any) => {
                                         color={'default'}
                                         startIcon={<Delete />}
                                         onClick={() => {
-                                            if (!window.confirm('本当にキャンセルしますか?'))
+                                            if (!window.confirm('本当に変更しますか?'))
                                                 return false;
                                             handleUpdate(formProps.record, { st: OrderState.CANCEL });
                                         }}
                                     >
-                                        キャンセル
+                                        4.その他に変更
                                     </Button>
                                 </Box>
                             )}
                             {formProps.record.st === OrderState.WAITING_RECEIVE && (
                                 <Box display="flex" justifyContent="space-between" width="100%">
                                     <SaveButton
-                                        label="完了する"
+                                        label="3.受取済に変更"
                                         undoable={false}
                                         saving={formProps.saving}
                                         handleSubmitWithRedirect={formProps.handleSubmitWithRedirect}
@@ -392,7 +392,7 @@ const OrderForm = (props: any) => {
                                         color={'default'}
                                         onClick={() => { handleUpdate(formProps.record, { st: OrderState.PAID }); }}
                                     >
-                                        注文済みに戻す
+                                        1.オーダーに戻す
                                     </Button>
                                     <Button
                                         className={classes.label}
@@ -401,19 +401,19 @@ const OrderForm = (props: any) => {
                                         color={'default'}
                                         startIcon={<Delete />}
                                         onClick={() => {
-                                            if (!window.confirm('本当にキャンセルしますか?'))
+                                            if (!window.confirm('本当に変更しますか?'))
                                                 return false;
                                             handleUpdate(formProps.record, { st: OrderState.CANCEL });
                                         }}
                                     >
-                                        キャンセル
+                                        4.その他に変更
                                     </Button>
                                 </Box>
                             )}
                             {formProps.record.st === OrderState.COMPLETE && (
                                 <Box display="flex" justifyContent="space-between" width="100%">
                                     <SaveButton
-                                        label="来店待ちに変更する"
+                                        label="2.確認済に変更"
                                         undoable={false}
                                         variant="outlined"
                                         icon={<></>}
@@ -428,12 +428,12 @@ const OrderForm = (props: any) => {
                                         color={'default'}
                                         startIcon={<Delete />}
                                         onClick={() => {
-                                            if (!window.confirm('本当にキャンセルしますか?'))
+                                            if (!window.confirm('本当に変更しますか?'))
                                                 return false;
                                             handleUpdate(formProps.record, { st: OrderState.CANCEL });
                                         }}
                                     >
-                                        キャンセル
+                                        4.その他に変更
                                     </Button>
                                 </Box>
                             )}
@@ -454,7 +454,7 @@ const OrderForm = (props: any) => {
                                         color={'default'}
                                         onClick={() => { handleUpdate(formProps.record, { st: OrderState.PAID }); }}
                                     >
-                                        注文済みに戻す
+                                        1.オーダーに戻す
                                     </Button>
                                     <Button
                                         className={classes.label}

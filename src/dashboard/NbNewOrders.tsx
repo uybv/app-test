@@ -13,7 +13,7 @@ const NbNewOrders = (props: Props) => {
         <CardWithIcon
             to="/order"
             icon={ShoppingCartIcon}
-            title={"本日の注文数"}
+            title={"本日のオーダー数"}
             subtitle={value?.toString()}
         />
     );

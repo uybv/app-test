@@ -40,7 +40,7 @@ const QrCodeDownloadButton = (props: any) => {
                     document.body.removeChild(downloadLink);
                 }}
             >
-                ＱＲコードのダウンロード
+                QRダウンロード
             </Button>
             <div style={{ display: "none" }}>
                 <QrCodeField  {...props} branchId={branchId} />
@@ -55,7 +55,7 @@ const BranchMenuFoodField = (props: any) => {
     if (!values) {
         return null;
     }
-    
+
     const { data, loading, error } = useGetMany('product', values?.food_ids ?? []);
     if (loading) { return <Loading />; }
     if (error) { return <p>ERROR</p>; }

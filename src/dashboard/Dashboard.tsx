@@ -332,7 +332,7 @@ const Dashboard = () => {
                                                 売上 - 決済手数料
                                             </TableCell>
                                             <TableCell>
-                                                注文数
+                                                オーダー数
                                             </TableCell>
                                             <TableCell>
                                                 新規会員数
@@ -518,7 +518,7 @@ const Dashboard = () => {
                                         </TableRow>
                                         <TableRow>
                                             <TableCell>
-                                                注文数
+                                                オーダー数
                                             </TableCell>
                                             <TableCell>
                                                 {order?.byDay?.apple_store?.total_order ?? 0}
@@ -544,7 +544,7 @@ const Dashboard = () => {
                                         </TableRow>
                                         <TableRow>
                                             <TableCell>
-                                                キャンセル数
+                                                4.その他数
                                             </TableCell>
                                             <TableCell>
                                                 {order?.byDay?.apple_store?.total_cancel ?? 0}
