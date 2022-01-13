@@ -44,7 +44,7 @@ const Dashboard = () => {
     }
 
     const fetchOrders = useCallback(async (start, end) => {
-        const { data: orders } = await dataProvider.getList<Order>(
+        const { data: byDayOrders } = await dataProvider.getList<Order>(
             'order',
             {
                 filter: {
@@ -56,7 +56,7 @@ const Dashboard = () => {
                 pagination: {} as any,
             }
         );
-        const { data: ago30DayOrders } = await dataProvider.getList<Order>(
+        const { data: monthOrders } = await dataProvider.getList<Order>(
             'order',
             {
                 filter: { date_gte: subDays(new Date(), 30).valueOf(), st: [OrderState.PAID, OrderState.WAITING_RECEIVE, OrderState.COMPLETE, OrderState.CANCEL] },
@@ -72,7 +72,7 @@ const Dashboard = () => {
                 pagination: {} as any,
             }
         );
-        const byDay = orders
+        const byDay = byDayOrders
             .reduce(
                 (stats: any, order: any) => {
                     const revenue = order.total;
@@ -188,7 +188,7 @@ const Dashboard = () => {
                     }
                 }
             );
-        const ago30Day = ago30DayOrders
+        const month = monthOrders
             .reduce(
                 (stats: any, order: any) => {
                     const revenue = order.total - (order?.refund_total ?? 0) - (order?.payment?.fee_amount ?? 0);
@@ -235,8 +235,8 @@ const Dashboard = () => {
         setState((state: any) => ({
             ...state,
             order: {
-                ago30DayOrders,
-                ago30Day,
+                monthOrders,
+                month,
                 today,
                 byDay,
             }
@@ -245,11 +245,26 @@ const Dashboard = () => {
     }, [dataProvider]);
 
     const fetchCustomers = useCallback(async (start, end) => {
-        const aMonthAgo = subDays(new Date(), 30);
-        const ago30Day = await dataProvider.getList<any>(
+        const customers = await dataProvider.getList<any>(
             'customer',
             {
-                filter: { date_gte: aMonthAgo.valueOf() },
+                filter: { },
+                sort: { field: 'created_at', order: 'DESC' },
+                pagination: {} as any,
+            }
+        );
+        const byDay = await dataProvider.getList<any>(
+            'customer',
+            {
+                filter: { date_gte: start, date_lte: end },
+                sort: { field: 'created_at', order: 'DESC' },
+                pagination: {} as any,
+            }
+        );
+        const month = await dataProvider.getList<any>(
+            'customer',
+            {
+                filter: { date_gte: moment().startOf('month').valueOf(), date_lte: moment().endOf('month').valueOf() },
                 sort: { field: 'created_at', order: 'DESC' },
                 pagination: {} as any,
             }
@@ -257,7 +272,7 @@ const Dashboard = () => {
         const today = await dataProvider.getList<any>(
             'customer',
             {
-                filter: { date_gte: moment().startOf('day').valueOf(), st: OrderState.PAID },
+                filter: { date_gte: moment().startOf('day').valueOf() },
                 sort: { field: 'created_at', order: 'DESC' },
                 pagination: {} as any,
             }
@@ -265,8 +280,16 @@ const Dashboard = () => {
         setState((state: any) => ({
             ...state,
             customer: {
+                total: customers?.total ?? 0,
+                apple_store: (customers && customers.data) ? customers.data.filter(v => { return v.platform === 'ios'; }).reduce((nb: number) => ++nb, 0) : 0,
+                google_store: (customers && customers.data) ? customers.data.filter(v => { return v.platform === 'android'; }).reduce((nb: number) => ++nb, 0) : 0,
+                byDay: {
+                    total: byDay?.total ?? 0,
+                    apple_store: (byDay && byDay.data) ? byDay.data.filter(v => { return v.platform === 'ios'; }).reduce((nb: number) => ++nb, 0) : 0,
+                    google_store: (byDay && byDay.data) ? byDay.data.filter(v => { return v.platform === 'android'; }).reduce((nb: number) => ++nb, 0) : 0,
+                },
                 today: today?.total ?? 0,
-                ago30Day: ago30Day?.total ?? 0,
+                month: month?.total ?? 0,
             }
         }));
     }, [dataProvider]);
@@ -285,12 +308,12 @@ const Dashboard = () => {
             <div style={styles.flex}>
                 <div style={styles.leftCol}>
                     <div style={styles.flex}>
-                        <MonthlyRevenue value={formatCurrency(order?.ago30Day?.revenue ?? 0)} />
+                        <MonthlyRevenue value={formatCurrency(order?.month?.revenue ?? 0)} />
                         <Spacer />
-                        <NbNewOrders value={order?.ago30Day?.total_order ?? 0} />
+                        <NbNewOrders value={order?.month?.total_order ?? 0} />
                     </div>
                     <div style={styles.singleCol}>
-                        <OrderChart orders={order?.ago30DayOrders ?? []} />
+                        <OrderChart orders={order?.monthOrders ?? []} />
                     </div>
                 </div>
                 <div style={styles.rightCol}>
@@ -337,16 +360,16 @@ const Dashboard = () => {
                                                 当月
                                             </TableCell>
                                             <TableCell>
-                                                {formatCurrency(order?.ago30Day?.revenue ?? 0)}
+                                                {formatCurrency(order?.month?.revenue ?? 0)}
                                             </TableCell>
                                             <TableCell>
-                                                {formatCurrency((order?.ago30Day?.revenue ?? 0) - (order?.ago30Day?.fee_amount ?? 0))}
+                                                {formatCurrency((order?.month?.revenue ?? 0) - (order?.month?.fee_amount ?? 0))}
                                             </TableCell>
                                             <TableCell>
-                                                {order.ago30Day?.total_order}
+                                                {order.month?.total_order}
                                             </TableCell>
                                             <TableCell>
-                                                {customer?.ago30Day}
+                                                {customer?.month}
                                             </TableCell>
                                         </TableRow>
                                     </TableBody>
@@ -369,8 +392,6 @@ const Dashboard = () => {
                                             shrink: true,
                                         }}
                                         onBlur={(event) => {
-                                            console.log(event.target.value);
-                                            console.log(moment(event.target.value).valueOf());
                                             setStartTime(moment(event.target.value).valueOf());
                                         }}
                                     />
@@ -552,10 +573,10 @@ const Dashboard = () => {
                                                 新規会員数
                                             </TableCell>
                                             <TableCell>
-                                                {customer?.byDay?.apple_store?.total_new ?? 0}
+                                                {customer?.byDay?.apple_store ?? 0}
                                             </TableCell>
                                             <TableCell>
-                                                {customer?.byDay?.google_store?.total_new ?? 0}
+                                                {customer?.byDay?.google_store ?? 0}
                                             </TableCell>
                                             <TableCell>
                                                 -
@@ -579,10 +600,10 @@ const Dashboard = () => {
                                                 合計会員数
                                             </TableCell>
                                             <TableCell>
-                                                {customer?.byDay?.apple_store?.total ?? 0}
+                                                {customer?.apple_store ?? 0}
                                             </TableCell>
                                             <TableCell>
-                                                {customer?.byDay?.google_store?.total ?? 0}
+                                                {customer?.google_store ?? 0}
                                             </TableCell>
                                             <TableCell>
                                                 -

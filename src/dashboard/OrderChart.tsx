@@ -10,13 +10,13 @@ import {
     Tooltip,
 } from 'recharts';
 import { useTranslate } from 'react-admin';
-import { format, subDays, addDays } from 'date-fns';
+import { subDays, addDays } from 'date-fns';
 
 import { Order } from '../types';
 import moment from 'moment';
 
-const lastDay = new Date();
-const lastMonthDays = Array.from({ length: 30 }, (_, i) => subDays(lastDay, i));
+const lastDay = new Date(moment().endOf('month').valueOf());
+const lastMonthDays = Array.from({ length: moment().daysInMonth() }, (_, i) => subDays(lastDay, i));
 const aMonthAgo = subDays(new Date(), 30);
 
 const dateFormatter = (date: number): string =>
