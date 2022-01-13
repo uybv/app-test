@@ -42,10 +42,10 @@ const orderFilters = [
 ];
 
 const tabs = [
-    { id: 1, name: '注文済み' },
-    { id: 2, name: '来店待ち' },
-    { id: 3, name: '完了' },
-    { id: 4, name: 'キャンセル済み' },
+    { id: 1, name: '1.オーダー' },
+    { id: 2, name: '2.確認済' },
+    { id: 3, name: '3.受取済' },
+    { id: 4, name: '4.その他' },
 ];
 
 const TabbedDatagrid = (props: any) => {

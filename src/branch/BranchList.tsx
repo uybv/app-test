@@ -52,7 +52,7 @@ const QrCodeDownloadButton = (props: any) => {
                     document.body.removeChild(downloadLink);
                 }}
             >
-                ＱＲコードのダウンロード
+                QRダウンロード
             </Button>
             <div style={{ display: "none" }}>
                 <QrCodeField  {...props} />
@@ -68,7 +68,7 @@ const ListActions = (props: any) => (
     </TopToolbar>
 );
 
-const BranchList = (props: ListProps) => { 
+const BranchList = (props: ListProps) => {
     const redirect = useRedirect();
     const notify = useNotify();
     const { permissions } = usePermissions();

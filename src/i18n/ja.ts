@@ -13,7 +13,7 @@ const japaneseDomainMessages = {
         dashboard: {
             monthly_revenue: '当月売上',
             month_history: '売り上げ履歴',
-            new_orders: '新規注文',
+            new_orders: '新規オーダー',
             new_customers: '新規登録ユーザー',
             all_customers: 'ユーザー一覧',
             pending_orders: 'オーダー：承認待ち',

@@ -53,7 +53,7 @@ const QrCodeDownloadButton = (props: any) => {
                     document.body.removeChild(downloadLink);
                 }}
             >
-                ＱＲコードのダウンロード
+                ＱＲダウンロード
             </Button>
             <div style={{ display: "none" }}>
                 <QrCodeField  {...props} />
@@ -81,7 +81,7 @@ const NewList = (props: ListProps) => {
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [permissions]);
-    
+
     return (
         <List
             {...props}
