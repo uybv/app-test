@@ -8,7 +8,8 @@ import {
     required,
     useRedirect,
     useNotify,
-    usePermissions
+    usePermissions,
+    maxLength
 } from 'react-admin';
 import { makeStyles, Theme } from '@material-ui/core/styles';
 import { Styles } from '@material-ui/styles/withStyles';
@@ -42,7 +43,7 @@ const CategoryCreate = (props: CreateProps) => {
                     autoFocus
                     source="name"
                     formClassName={classes.name}
-                    validate={required()}
+                    validate={[required(), maxLength(8)]}
                 />
             </SimpleForm>
         </Create>

@@ -14,7 +14,9 @@ import {
     DeleteButton,
     useRedirect,
     useNotify,
-    usePermissions
+    usePermissions,
+    required,
+    maxLength
 } from 'react-admin';
 import { ChevronLeft } from '@material-ui/icons';
 
@@ -79,7 +81,7 @@ const CategoryEdit = (props: EditProps) => {
             actions={<EditActions />}
         >
             <SimpleForm toolbar={<EditToolbar />}>
-                <TextInput source="name" />
+                <TextInput source="name" validate={[required(), maxLength(8)]} />
             </SimpleForm>
         </Edit>
     )
