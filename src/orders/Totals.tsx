@@ -48,7 +48,7 @@ const Totals = (props: any) => {
                             classes.rightAlignedCell
                         )}
                     >
-                        {record.st === OrderState.CANCEL && (
+                        {/* {record.st === OrderState.CANCEL && (
                             <Button
                             style={{ backgroundColor: 'red', marginRight: 15 }}
                             variant={'contained'}
@@ -63,7 +63,7 @@ const Totals = (props: any) => {
                         >
                             払い戻しする
                         </Button>
-                        )}
+                        )} */}
                         {record?.total.toLocaleString(undefined, {
                             style: 'currency',
                             currency: 'JPY',
