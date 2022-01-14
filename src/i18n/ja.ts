@@ -66,7 +66,7 @@ const japaneseDomainMessages = {
             fieldGroups: {
                 identity: '性別',
                 address: '住所',
-                stats: 'ユーザーステータス',
+                stats: 'ステータス',
                 history: '履歴',
             },
             page: {
@@ -115,7 +115,7 @@ const japaneseDomainMessages = {
                 cat_ids: 'カテゴリー',
                 tax_ids: '税金',
                 image: '画像',
-                name: '氏名',
+                name: '商品名',
                 price: '価格',
                 price_no_tax: '価格（税抜き）',
                 delivery_est: '受け取り時間（予定)',
@@ -151,7 +151,7 @@ const japaneseDomainMessages = {
         category: {
             name: '商品カテゴリ',
             fields: {
-                name: '氏名',
+                name: 'カテゴリ名',
                 description: '内容',
                 products: '商品一覧（メニュー）',
                 created_at: '登録日時',
@@ -165,7 +165,7 @@ const japaneseDomainMessages = {
                 working_times: '営業時間'
             },
             fields: {
-                name: '氏名',
+                name: '店舗名',
                 banner: '画像',
                 food_ids: '商品一覧（メニュー）',
                 staff_ids: 'スタッフ',
@@ -196,7 +196,7 @@ const japaneseDomainMessages = {
         tax: {
             name: '消費税設定',
             fields: {
-                name: '氏名',
+                name: '設定名',
                 value: '消費税(%)',
                 description: '内容',
                 created_at: '登録日時',
@@ -205,7 +205,7 @@ const japaneseDomainMessages = {
         news: {
             name: 'ニュース',
             fields: {
-                name: '氏名',
+                name: '名前',
                 title: 'タイトル',
                 banner: '画像',
                 description: '内容',
