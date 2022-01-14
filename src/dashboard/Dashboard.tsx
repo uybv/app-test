@@ -191,7 +191,7 @@ const Dashboard = () => {
         const month = monthOrders
             .reduce(
                 (stats: any, order: any) => {
-                    const revenue = order.total - (order?.refund_total ?? 0) - (order?.payment?.fee_amount ?? 0);
+                    const revenue = order.total;
                     stats.revenue += revenue;
                     stats.tax_total += order?.tax_total ?? 0;
                     stats.fee_amount += order?.payment?.fee_amount ?? 0;
@@ -213,7 +213,7 @@ const Dashboard = () => {
         const today = todayOrders
             .reduce(
                 (stats: any, order: any) => {
-                    const revenue = order.total - (order?.refund_total ?? 0) - (order?.payment?.fee_amount ?? 0);
+                    const revenue = order.total;
                     stats.revenue += revenue;
                     stats.tax_total += order?.tax_total ?? 0;
                     stats.fee_amount += order?.payment?.fee_amount ?? 0;
@@ -392,7 +392,11 @@ const Dashboard = () => {
                                             shrink: true,
                                         }}
                                         onBlur={(event) => {
-                                            setStartTime(moment(event.target.value).valueOf());
+                                            const time = moment(event.target.value).valueOf();
+                                            if (time > endTime) {
+                                                setEndTime(moment(event.target.value).endOf('day').valueOf());
+                                            }
+                                            setStartTime(time);
                                         }}
                                     />
                                     <TextField
@@ -404,7 +408,11 @@ const Dashboard = () => {
                                             shrink: true,
                                         }}
                                         onBlur={(event) => {
-                                            setEndTime(moment(event.target.value).valueOf())
+                                            const time = moment(event.target.value).endOf('day').valueOf();
+                                            if (time < startTime) {
+                                                setStartTime(moment(event.target.value).valueOf());
+                                            }
+                                            setEndTime(time);
                                         }}
                                     />
                                 </div>
@@ -467,27 +475,27 @@ const Dashboard = () => {
                                                 売上 - 決済手数料
                                             </TableCell>
                                             <TableCell>
-                                                {formatCurrency(order?.byDay?.apple_store?.revenue ?? 0 - order?.byDay?.apple_store?.fee_amount ?? 0)}
+                                                {formatCurrency((order?.byDay?.apple_store?.revenue ?? 0) - (order?.byDay?.apple_store?.fee_amount ?? 0))}
 
                                             </TableCell>
                                             <TableCell>
-                                                {formatCurrency(order?.byDay?.google_store?.revenue ?? 0 - order?.byDay?.google_store?.fee_amount ?? 0)}
+                                                {formatCurrency((order?.byDay?.google_store?.revenue ?? 0) - (order?.byDay?.google_store?.fee_amount ?? 0))}
                                             </TableCell>
                                             <TableCell>
-                                                {formatCurrency(order?.byDay?.revenue ?? 0 - order?.byDay?.fee_amount ?? 0)}
+                                                {formatCurrency((order?.byDay?.revenue ?? 0) - (order?.byDay?.fee_amount ?? 0))}
                                             </TableCell>
                                             <TableCell>
-                                                {formatCurrency(order?.byDay?.card?.revenue ?? 0 - order?.byDay?.card?.fee_amount ?? 0)}
+                                                {formatCurrency((order?.byDay?.card?.revenue ?? 0) - (order?.byDay?.card?.fee_amount ?? 0))}
 
                                             </TableCell>
                                             <TableCell>
-                                                {formatCurrency(order?.byDay?.apple_pay?.revenue ?? 0 - order?.byDay?.apple_pay?.fee_amount ?? 0)}
+                                                {formatCurrency((order?.byDay?.apple_pay?.revenue ?? 0) - (order?.byDay?.apple_pay?.fee_amount ?? 0))}
                                             </TableCell>
                                             <TableCell>
-                                                {formatCurrency(order?.byDay?.google_pay?.revenue ?? 0 - order?.byDay?.google_pay?.fee_amount ?? 0)}
+                                                {formatCurrency((order?.byDay?.google_pay?.revenue ?? 0) - (order?.byDay?.google_pay?.fee_amount ?? 0))}
                                             </TableCell>
                                             <TableCell>
-                                                {formatCurrency(order?.byDay?.paypay?.revenue ?? 0 - order?.byDay?.paypay?.fee_amount ?? 0)}
+                                                {formatCurrency((order?.byDay?.paypay?.revenue ?? 0) - (order?.byDay?.paypay?.fee_amount ?? 0))}
                                             </TableCell>
                                         </TableRow>
                                         <TableRow>
@@ -579,7 +587,7 @@ const Dashboard = () => {
                                                 {customer?.byDay?.google_store ?? 0}
                                             </TableCell>
                                             <TableCell>
-                                                -
+                                                {customer?.byDay?.total ?? 0}
                                             </TableCell>
                                             <TableCell>
                                                 -
@@ -606,7 +614,7 @@ const Dashboard = () => {
                                                 {customer?.google_store ?? 0}
                                             </TableCell>
                                             <TableCell>
-                                                -
+                                                {customer?.total ?? 0}
                                             </TableCell>
                                             <TableCell>
                                                 -
