@@ -166,6 +166,7 @@ const japaneseDomainMessages = {
             },
             fields: {
                 name: '氏名',
+                banner: '画像',
                 food_ids: '商品一覧（メニュー）',
                 staff_ids: 'スタッフ',
                 delivery_est: '受け取り時間（予定)',

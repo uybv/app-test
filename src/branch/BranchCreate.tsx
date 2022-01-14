@@ -17,7 +17,9 @@ import {
     BooleanInput,
     useRedirect,
     useNotify,
-    usePermissions
+    usePermissions,
+    ImageInput,
+    ImageField
 } from 'react-admin';
 import { makeStyles } from '@material-ui/core/styles';
 import { InputAdornment } from '@material-ui/core';
@@ -130,6 +132,13 @@ const BranchCreate = (props: CreateProps) => {
         <Create {...props} transform={transform}>
             <TabbedForm redirect="list">
                 <FormTab label="resources.branch.tabs.info">
+                    <ImageInput source="images"
+                        label="resources.branch.fields.banner"
+                        accept="image/*"
+                        maxSize={1000000}
+                    >
+                        <ImageField source="src" title="title" />
+                    </ImageInput>
                     <TextInput
                         autoFocus
                         source="name"

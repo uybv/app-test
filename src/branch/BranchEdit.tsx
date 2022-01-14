@@ -37,6 +37,7 @@ import ContentCreate from '@material-ui/icons/Create';
 import _ from 'lodash';
 import { getDayOfWeek, minWorkingTime, processWorkingTime, styles, transform } from './BranchCreate';
 import BranchMenuFoodField from './BranchMenuFoodField';
+import FormControlImageField from '../base/form/FormControlImageField';
 
 
 const useStyles = makeStyles(styles);
@@ -131,6 +132,7 @@ const BranchEdit = (props: EditProps) => {
             transform={transform}>
             <TabbedForm toolbar={<EditToolbar {...props} isEditMenuFood={isEditMenuFood} isTabMenuFood={isTabMenuFood} setIsEditMenuFood={setIsEditMenuFood} />}>
                 <FormTab label="resources.branch.tabs.info">
+                    <FormControlImageField {...props} source="banner" />
                     <TextInput
                         autoFocus
                         source="name"
