@@ -34,6 +34,7 @@ const renderPaymentMethod = (type: any) => {
 const Totals = (props: any) => {
     const { record, handleUpdate } = props;
     const classes = useStyles();
+    const buttonType = record.refund_total ? 'text' : 'button';
 
     return (
         <Table className={classes.container}>
@@ -48,22 +49,28 @@ const Totals = (props: any) => {
                             classes.rightAlignedCell
                         )}
                     >
-                        {/* {record.st === OrderState.CANCEL && (
-                            <Button
-                            style={{ backgroundColor: 'red', marginRight: 15 }}
-                            variant={'contained'}
-                            type={'button'}
-                            color={'secondary'}
-                            startIcon={<ContentSave />}
-                            onClick={() => {
-                                if (!window.confirm('本当に払い戻ししますか?'))
-                                    return false;
-                                handleUpdate(record, { refund_total: record?.total, st: 0 });
-                            }}
-                        >
-                            払い戻しする
-                        </Button>
-                        )} */}
+                        {record.st === OrderState.CANCEL && (
+                            <>
+                                {record.refund_total ? (
+                                    <span style={{ fontSize: '120%', color: 'red', marginRight: 15 }}>払い戻し済み</span>
+                                ) : (
+                                    <Button
+                                        style={{ backgroundColor: 'red', marginRight: 15 }}
+                                        variant={'contained'}
+                                        type={'button'}
+                                        color={'secondary'}
+                                        startIcon={<ContentSave />}
+                                        onClick={() => {
+                                            if (!window.confirm('本当に払い戻ししますか?'))
+                                                return false;
+                                            handleUpdate(record, { refund: true, st: OrderState.CANCEL }, false);
+                                        }}
+                                    >
+                                        払い戻しする
+                                    </Button>
+                                )}
+                            </>
+                        )}
                         {record?.total.toLocaleString(undefined, {
                             style: 'currency',
                             currency: 'JPY',

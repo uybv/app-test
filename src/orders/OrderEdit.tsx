@@ -19,6 +19,7 @@ import {
     useRedirect,
     useNotify,
     useRefresh,
+    useDelete,
     ReferenceArrayInput,
     AutocompleteArrayInput,
     required
@@ -103,14 +104,17 @@ const OrderForm = (props: any) => {
     const translate = useTranslate();
     const classes = useButtonStyles();
     const [update] = useUpdate();
+    const [deleteOne] = useDelete();
     const notify = useNotify();
     const refresh = useRefresh();
     const redirect = useRedirect();
-
-    const handleUpdate = (record: any, data: any) => {
-        update('order', record.id, data, {});
+   
+    const handleUpdate = async (record: any, data: any, isRedirect = true) => {
+        await update('order', record.id, data, {});
         notify(`更新しました`);
-        redirect('list', '/order?displayedFilters=%7B%7D&filter=%7B"st"%3A' + (data.st ? data.st : OrderState.PAID) + '%7D&order=DESC&page=1&perPage=50&sort=created_time');
+        if (isRedirect) {
+            redirect('list', '/order?displayedFilters=%7B%7D&filter=%7B"st"%3A' + (data.st ? data.st : OrderState.PAID) + '%7D&order=DESC&page=1&perPage=50&sort=created_time');
+        }
         refresh();
     }
 
@@ -448,14 +452,16 @@ const OrderForm = (props: any) => {
                                             return { cancel_reason: data?.cancel_reason }
                                         }}
                                     />
-                                    <Button
-                                        variant={'outlined'}
-                                        type={'button'}
-                                        color={'default'}
-                                        onClick={() => { handleUpdate(formProps.record, { st: OrderState.PAID }); }}
-                                    >
-                                        1.オーダーに戻す
-                                    </Button>
+                                    {!formProps.record.refund_total && (
+                                        <Button
+                                            variant={'outlined'}
+                                            type={'button'}
+                                            color={'default'}
+                                            onClick={() => { handleUpdate(formProps.record, { st: OrderState.PAID }); }}
+                                        >
+                                            1.オーダーに戻す
+                                        </Button>
+                                    )}
                                     <Button
                                         className={classes.label}
                                         variant={'text'}
@@ -465,7 +471,7 @@ const OrderForm = (props: any) => {
                                         onClick={() => {
                                             if (!window.confirm('本当に削除しますか?'))
                                                 return false;
-                                            handleUpdate(formProps.record, { st: 0 });
+                                            deleteOne('order', formProps.record.id, formProps.record);
                                         }}
                                     >
                                         削除
