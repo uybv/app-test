@@ -20,8 +20,8 @@ import {
     useNotify,
     useRefresh,
     useDelete,
-    ReferenceArrayInput,
-    AutocompleteArrayInput,
+    ReferenceInput,
+    SelectInput,
     required
 } from 'react-admin';
 import {
@@ -332,14 +332,14 @@ const OrderForm = (props: any) => {
                             </Box>
                             {formProps.record.st === OrderState.WAITING_RECEIVE && (
                                 <Box style={{ marginTop: 35 }}>
-                                    <ReferenceArrayInput
+                                    <ReferenceInput
                                         label="スタッフ"
                                         reference="staff"
                                         source="staff_id"
                                         validate={[required()]}
                                     >
-                                        <AutocompleteArrayInput optionText="display_name" />
-                                    </ReferenceArrayInput>
+                                        <SelectInput optionText="display_name" />
+                                    </ReferenceInput>
                                 </Box>
                             )}
                             {formProps.record.st === OrderState.CANCEL && (
