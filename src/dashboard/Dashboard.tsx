@@ -73,6 +73,7 @@ const Dashboard = () => {
             }
         );
         const byDay = byDayOrders
+            .filter(v => { return !v.refund_total })
             .reduce(
                 (stats: any, order: any) => {
                     const revenue = order.total;
@@ -189,6 +190,7 @@ const Dashboard = () => {
                 }
             );
         const month = monthOrders
+            .filter(v => { return !v.refund_total })
             .reduce(
                 (stats: any, order: any) => {
                     const revenue = order.total;
@@ -211,6 +213,7 @@ const Dashboard = () => {
                 }
             );
         const today = todayOrders
+            .filter(v => { return !v.refund_total })
             .reduce(
                 (stats: any, order: any) => {
                     const revenue = order.total;
@@ -235,7 +238,7 @@ const Dashboard = () => {
         setState((state: any) => ({
             ...state,
             order: {
-                monthOrders,
+                monthOrders: monthOrders.filter((v) => { return !v.refund_total }),
                 month,
                 today,
                 byDay,

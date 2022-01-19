@@ -101,6 +101,7 @@ export interface Order extends Record {
     created_time?: number;
     paid_time?: number;
     complete_time?: number;
+    refund_total?: number;
 }
 
 export interface BasketItem {
