@@ -29,7 +29,7 @@ const aggregateOrdersByDay = (orders: Order[]): { [key: string]: number } =>
             if (!acc[day]) {
                 acc[day] = 0;
             }
-            acc[day] += curr.total;
+            acc[day] += curr.refund_total ? 0 : curr.total;
             return acc;
         }, {} as { [key: string]: number });
 

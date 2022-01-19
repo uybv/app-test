@@ -73,13 +73,14 @@ const Dashboard = () => {
             }
         );
         const byDay = byDayOrders
-            .filter(v => { return !v.refund_total })
             .reduce(
                 (stats: any, order: any) => {
-                    const revenue = order.total;
+                    const revenue = order.refund_total ? 0 : order.total;
+                    const tax_total = order.refund_total ? 0 : (order?.tax_total ?? 0);
+                    const fee_amount = order.refund_total ? 0 : (order?.payment?.fee_amount ?? 0);
                     stats.revenue += revenue;
-                    stats.tax_total += order?.tax_total ?? 0;
-                    stats.fee_amount += order?.payment?.fee_amount ?? 0;
+                    stats.tax_total += tax_total;
+                    stats.fee_amount += fee_amount;
                     stats.total_order++;
                     if (order.st === OrderState.CANCEL) {
                         stats.total_cancel++;
@@ -87,32 +88,32 @@ const Dashboard = () => {
 
                     if (order.payment.type === PaymentType.Paypay) {
                         stats.paypay.revenue += revenue;
-                        stats.paypay.tax_total += order?.tax_total ?? 0;
-                        stats.paypay.fee_amount += order?.payment?.fee_amount ?? 0;
+                        stats.paypay.tax_total += tax_total;
+                        stats.paypay.fee_amount += fee_amount;
                         stats.paypay.total_order++;
                         if (order.st === OrderState.CANCEL) {
                             stats.paypay.total_cancel++;
                         }
                     } else if (order.payment.type === PaymentType.Card) {
                         stats.card.revenue += revenue;
-                        stats.card.tax_total += order?.tax_total ?? 0;
-                        stats.card.fee_amount += order?.payment?.fee_amount ?? 0;
+                        stats.card.tax_total += tax_total;
+                        stats.card.fee_amount += fee_amount;
                         stats.card.total_order++;
                         if (order.st === OrderState.CANCEL) {
                             stats.card.total_cancel++;
                         }
                     } else if (order.payment.type === PaymentType.Google) {
                         stats.google_pay.revenue += revenue;
-                        stats.google_pay.tax_total += order?.tax_total ?? 0;
-                        stats.google_pay.fee_amount += order?.payment?.fee_amount ?? 0;
+                        stats.google_pay.tax_total += tax_total;
+                        stats.google_pay.fee_amount += fee_amount;
                         stats.google_pay.total_order++;
                         if (order.st === OrderState.CANCEL) {
                             stats.google_pay.total_cancel++;
                         }
                     } else if (order.payment.type === PaymentType.Apple) {
                         stats.apple_pay.revenue += revenue;
-                        stats.apple_pay.tax_total += order?.tax_total ?? 0;
-                        stats.apple_pay.fee_amount += order?.payment?.fee_amount ?? 0;
+                        stats.apple_pay.tax_total += tax_total;
+                        stats.apple_pay.fee_amount += fee_amount;
                         stats.apple_pay.total_order++;
                         if (order.st === OrderState.CANCEL) {
                             stats.apple_pay.total_cancel++;
@@ -121,16 +122,16 @@ const Dashboard = () => {
 
                     if (order.platform === 'ios') {
                         stats.apple_store.revenue += revenue;
-                        stats.apple_store.tax_total += order?.tax_total ?? 0;
-                        stats.apple_store.fee_amount += order?.payment?.fee_amount ?? 0;
+                        stats.apple_store.tax_total += tax_total;
+                        stats.apple_store.fee_amount += fee_amount;
                         stats.apple_store.total_order++;
                         if (order.st === OrderState.CANCEL) {
                             stats.apple_store.total_cancel++;
                         }
                     } else if (order.platform === 'android') {
                         stats.google_store.revenue += revenue;
-                        stats.google_store.tax_total += order?.tax_total ?? 0;
-                        stats.google_store.fee_amount += order?.payment?.fee_amount ?? 0;
+                        stats.google_store.tax_total += tax_total;
+                        stats.google_store.fee_amount += fee_amount;
                         stats.google_store.total_order++;
                         if (order.st === OrderState.CANCEL) {
                             stats.google_store.total_cancel++;
@@ -190,13 +191,14 @@ const Dashboard = () => {
                 }
             );
         const month = monthOrders
-            .filter(v => { return !v.refund_total })
             .reduce(
                 (stats: any, order: any) => {
-                    const revenue = order.total;
+                    const revenue = order.refund_total ? 0 : order.total;
+                    const tax_total = order.refund_total ? 0 : (order?.tax_total ?? 0);
+                    const fee_amount = order.refund_total ? 0 : (order?.payment?.fee_amount ?? 0);
                     stats.revenue += revenue;
-                    stats.tax_total += order?.tax_total ?? 0;
-                    stats.fee_amount += order?.payment?.fee_amount ?? 0;
+                    stats.tax_total += tax_total;
+                    stats.fee_amount += fee_amount;
                     stats.total_order++;
                     if (order.st === OrderState.CANCEL) {
                         stats.total_cancel++;
@@ -213,13 +215,14 @@ const Dashboard = () => {
                 }
             );
         const today = todayOrders
-            .filter(v => { return !v.refund_total })
             .reduce(
                 (stats: any, order: any) => {
-                    const revenue = order.total;
+                    const revenue = order.refund_total ? 0 : order.total;
+                    const tax_total = order.refund_total ? 0 : (order?.tax_total ?? 0);
+                    const fee_amount = order.refund_total ? 0 : (order?.payment?.fee_amount ?? 0);
                     stats.revenue += revenue;
-                    stats.tax_total += order?.tax_total ?? 0;
-                    stats.fee_amount += order?.payment?.fee_amount ?? 0;
+                    stats.tax_total += tax_total;
+                    stats.fee_amount += fee_amount;
                     stats.total_order++;
                     if (order.st === OrderState.CANCEL) {
                         stats.total_cancel++;
@@ -238,7 +241,7 @@ const Dashboard = () => {
         setState((state: any) => ({
             ...state,
             order: {
-                monthOrders: monthOrders.filter((v) => { return !v.refund_total }),
+                monthOrders,
                 month,
                 today,
                 byDay,
