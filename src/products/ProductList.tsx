@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useEffect } from 'react';
-import { Box, Chip, useMediaQuery, Theme } from '@material-ui/core';
+import { Box, Chip } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import {
     CreateButton,
@@ -8,7 +8,6 @@ import {
     InputProps,
     ListBase,
     ListProps,
-    Pagination,
     SearchInput,
     Title,
     TopToolbar,
@@ -21,19 +20,8 @@ import {
 } from 'react-admin';
 
 import GridList from './GridList';
-import Aside from './Aside';
-
-const useQuickFilterStyles = makeStyles(theme => ({
-    root: {
-        marginBottom: theme.spacing(1),
-    },
-}));
-
-const QuickFilter = ({ label }: InputProps) => {
-    const translate = useTranslate();
-    const classes = useQuickFilterStyles();
-    return <Chip className={classes.root} label={translate(label)} />;
-};
+import PrevNextPagination from '../base/list/PrevNextPagination';
+import MyList from '../base/list/MyList';
 
 export const productFilters = [
     <SearchInput source="q" alwaysOn />,
@@ -47,7 +35,6 @@ const ListActions = ({ isSmall }: any) => (
 );
 
 const ProductList = (props: ListProps) => {
-    const isSmall = useMediaQuery<Theme>(theme => theme.breakpoints.down('sm'));
     const redirect = useRedirect();
     const notify = useNotify();
     const { permissions } = usePermissions();
@@ -61,32 +48,17 @@ const ProductList = (props: ListProps) => {
     }, [permissions]);
 
     return (
-        <ListBase
-            perPage={50}
+        <MyList
             {...props}
+            perPage={50}
+            pagination={<PrevNextPagination />}
+            component="div"
+            filters={productFilters}
+            actions={<ListActions />}
         >
-            <ListToolbar
-                filters={productFilters}
-                actions={<ListActions/>}
-            />
-            <ProductListView isSmall={isSmall} />
-        </ListBase>
+            <GridList />
+        </MyList>
     );
 };
 
-const ProductListView = ({ isSmall }: { isSmall: boolean }) => {
-    const { defaultTitle } = useListContext();
-    return (
-        <>
-            <Title defaultTitle={defaultTitle} />
-            <Box display="flex">
-                {/* <Aside /> */}
-                <Box width={'100%'}>
-                    <GridList />
-                    <Pagination rowsPerPageOptions={[50]} />
-                </Box>
-            </Box>
-        </>
-    );
-};
 export default ProductList;

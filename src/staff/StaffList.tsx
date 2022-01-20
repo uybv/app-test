@@ -14,6 +14,8 @@ import {
     usePermissions
 } from 'react-admin';
 import MyDatagrid from '../base/datagrid/MyDatagrid';
+import MyList from '../base/list/MyList';
+import PrevNextPagination from '../base/list/PrevNextPagination';
 import StaffTypeField from './StaffTypeField';
 
 const filters = [
@@ -41,10 +43,10 @@ const StaffList = (props: ListProps) => {
     }, [permissions]);
 
     return (
-        <List
+        <MyList
             {...props}
             perPage={50}
-            pagination={false}
+            pagination={<PrevNextPagination />}
             component="div"
             filters={filters}
             actions={<ListActions />}
@@ -56,7 +58,7 @@ const StaffList = (props: ListProps) => {
                 <DateField source="created_at" showTime sortable={false} />
                 <EditButton />
             </MyDatagrid>
-        </List>
+        </MyList>
     )
 };
 

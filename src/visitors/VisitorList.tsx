@@ -12,6 +12,8 @@ import {
 } from 'react-admin';
 import CustomerLinkField from './CustomerLinkField';
 import MyDatagrid from '../base/datagrid/MyDatagrid';
+import PrevNextPagination from '../base/list/PrevNextPagination';
+import MyList from '../base/list/MyList';
 
 const visitorFilters = [
     <SearchInput source="q" alwaysOn />,
@@ -26,8 +28,9 @@ const ListActions = (props: any) => (
 
 const VisitorList = (props: ListProps) => {
     return (
-        <List
+        <MyList
             {...props}
+            pagination={<PrevNextPagination />}
             filters={visitorFilters}
             perPage={50}
             sort={{ field: 'last_updated_at', order: 'DESC' }}
@@ -40,7 +43,7 @@ const VisitorList = (props: ListProps) => {
                 <EditButton />
             </MyDatagrid>
 
-        </List>
+        </MyList>
     );
 };
 

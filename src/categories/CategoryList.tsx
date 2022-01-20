@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useEffect } from 'react';
 import {
-    List, ListProps,
+    ListProps,
     EditButton,
     DateField,
     SearchInput,
@@ -13,14 +13,16 @@ import {
     useNotify,
     useRefresh,
     useRedirect,
-    usePermissions
+    usePermissions,
 } from 'react-admin';
 import MyDatagrid from '../base/datagrid/MyDatagrid';
+import MyList from '../base/list/MyList';
 import PositionField from '../base/list/PositionField';
+import PrevNextPagination from '../base/list/PrevNextPagination';
 
-// const categoryFilters = [
-//     <SearchInput source="q" alwaysOn />,
-// ];
+const categoryFilters = [
+    <SearchInput source="q" alwaysOn />,
+];
 
 const ListActions = (props: any) => (
     <TopToolbar>
@@ -55,12 +57,12 @@ const CategoryList = (props: ListProps) => {
     }
 
     return (
-        <List
+        <MyList
             {...props}
             perPage={50}
-            pagination={false}
+            pagination={<PrevNextPagination />}
             component="div"
-            filters={[]}
+            filters={categoryFilters}
             actions={<ListActions />}
         >
             <MyDatagrid optimized>
@@ -69,7 +71,8 @@ const CategoryList = (props: ListProps) => {
                 <DateField source="created_at" sortable={false} showTime />
                 <EditButton />
             </MyDatagrid>
-        </List>
+
+        </MyList>
     );
 }
 

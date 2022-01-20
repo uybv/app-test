@@ -73,6 +73,7 @@ export interface ListControllerProps<RecordType extends Record = Record> {
     onUnselectItems: () => void;
     page: number;
     perPage: number;
+    nextToken: string;
     refetch: Refetch;
     resource: string;
     selectedIds: Identifier[];
@@ -191,8 +192,6 @@ const useListController = <RecordType extends Record = Record>(
         }
     );
 
-    console.log(nextToken);
-
     const totalPages = Math.ceil(total / query.perPage) || 1;
 
     useEffect(() => {
@@ -251,6 +250,7 @@ const useListController = <RecordType extends Record = Record>(
         setSort: queryModifiers.setSort,
         showFilter: queryModifiers.showFilter,
         total: total,
+        nextToken,
     };
 };
 
@@ -283,6 +283,7 @@ export const injectedProps = [
     'setSort',
     'showFilter',
     'total',
+    'nextToken',
     'totalPages',
     'version',
 ];

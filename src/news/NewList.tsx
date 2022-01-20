@@ -19,6 +19,8 @@ import { CloudDownload } from '@material-ui/icons'
 import { apiBaseUrl } from '../config';
 import MyDatagrid from '../base/datagrid/MyDatagrid';
 import NewsStatusField from './NewsStatusField';
+import PrevNextPagination from '../base/list/PrevNextPagination';
+import MyList from '../base/list/MyList';
 
 const filters = [
     <SearchInput source="q" alwaysOn />,
@@ -83,10 +85,10 @@ const NewList = (props: ListProps) => {
     }, [permissions]);
 
     return (
-        <List
+        <MyList
             {...props}
             perPage={50}
-            pagination={false}
+            pagination={<PrevNextPagination />}
             component="div"
             filters={filters}
             actions={<ListActions />}
@@ -100,7 +102,7 @@ const NewList = (props: ListProps) => {
                 <QrCodeDownloadButton />
                 <EditButton />
             </MyDatagrid>
-        </List>
+        </MyList>
     )
 };
 

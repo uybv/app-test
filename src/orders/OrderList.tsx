@@ -19,6 +19,8 @@ import OrderCreatedTimeAndBranchField from './OrderCreatedTimeAndBranchField';
 import OrderDeliveryTimeAndUserField from './OrderDeliveryTimeAndUserField';
 import OrderFoodField from './OrderFoodField';
 import OrderPaymentMethodAndTotalCostField from './OrderPaymentMethodAndTotalCostField';
+import MyList from '../base/list/MyList';
+import PrevNextPagination from '../base/list/PrevNextPagination';
 
 const orderFilters = [
     <ReferenceInput source="branch_id" reference="branch" alwaysOn >
@@ -210,8 +212,9 @@ const ListActions = (props: any) => (
 );
 
 const OrderList = (props: ListProps) => (
-    <List
+    <MyList
         {...props}
+        pagination={<PrevNextPagination />}
         filterDefaultValues={{ st: OrderState.PAID }}
         perPage={50}
         sort={{ field: 'created_time', order: 'DESC' }}
@@ -219,7 +222,7 @@ const OrderList = (props: ListProps) => (
         actions={<ListActions />}
     >
         <TabbedDatagrid />
-    </List>
+    </MyList>
 );
 
 export default OrderList;

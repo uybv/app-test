@@ -13,6 +13,8 @@ import {
     usePermissions,
 } from 'react-admin';
 import MyDatagrid from '../base/datagrid/MyDatagrid';
+import MyList from '../base/list/MyList';
+import PrevNextPagination from '../base/list/PrevNextPagination';
 
 const ListActions = (props: any) => (
     <TopToolbar>
@@ -34,10 +36,10 @@ const TaxList = (props: ListProps) => {
     }, [permissions]);
 
     return (
-        <List
+        <MyList
             {...props}
             perPage={50}
-            pagination={false}
+            pagination={<PrevNextPagination />}
             component="div"
             actions={<ListActions />}
         >
@@ -48,7 +50,7 @@ const TaxList = (props: ListProps) => {
                 <DateField source="created_at" showTime sortable={false} />
                 <EditButton />
             </MyDatagrid>
-        </List>
+        </MyList>
     )
 };
 

@@ -15,7 +15,9 @@ import {
 } from 'react-admin';
 import MyDatagrid from '../base/datagrid/MyDatagrid';
 import CustomImageField from '../base/list/CustomImageField';
+import MyList from '../base/list/MyList';
 import PositionField from '../base/list/PositionField';
+import PrevNextPagination from '../base/list/PrevNextPagination';
 import SlideIsPublicField from './SlideIsPublicField';
 
 const ListActions = (props: any) => (
@@ -50,10 +52,10 @@ const SlideList = (props: ListProps) => {
     }
 
     return (
-        <List
+        <MyList
             {...props}
             perPage={50}
-            pagination={false}
+            pagination={<PrevNextPagination />}
             component="div"
             filters={[]}
             actions={<ListActions />}
@@ -65,7 +67,7 @@ const SlideList = (props: ListProps) => {
                 <DateField source="created_at" showTime sortable={false} />
                 <EditButton />
             </MyDatagrid>
-        </List>
+        </MyList>
     )
 };
 

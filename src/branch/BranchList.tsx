@@ -18,6 +18,7 @@ import { CloudDownload } from '@material-ui/icons'
 import { apiBaseUrl } from '../config';
 import MyDatagrid from '../base/datagrid/MyDatagrid';
 import MyList from '../base/list/MyList';
+import PrevNextPagination from '../base/list/PrevNextPagination';
 
 const branchFilters = [
     <SearchInput source="q" alwaysOn />,
@@ -82,10 +83,10 @@ const BranchList = (props: ListProps) => {
     }, [permissions]);
 
     return (
-        <List
+        <MyList
             {...props}
             perPage={50}
-            pagination={false}
+            pagination={<PrevNextPagination />}
             component="div"
             filters={branchFilters}
             actions={<ListActions />}
@@ -96,7 +97,7 @@ const BranchList = (props: ListProps) => {
                 <QrCodeDownloadButton sortable={false} />
                 <EditButton />
             </MyDatagrid>
-        </List>
+        </MyList>
     );
 }
 
