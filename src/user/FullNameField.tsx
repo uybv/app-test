@@ -4,7 +4,7 @@ import { makeStyles } from '@material-ui/core/styles';
 
 import { FieldProps } from 'react-admin';
 import AvatarField from './AvatarField';
-import { Customer } from '../types';
+import { User } from '../types';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -19,7 +19,7 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-interface Props extends FieldProps<Customer> {
+interface Props extends FieldProps<User> {
     size?: string;
 }
 
@@ -33,14 +33,14 @@ const FullNameField = (props: Props) => {
                 record={record}
                 size={size}
             />
-            {record?.display_name?.first_name ? record?.display_name?.first_name : ''} {record?.display_name?.last_name ? record?.display_name?.last_name : ''}
+            {record?.display_name?.last_name ? record?.display_name?.last_name : ''} {record?.display_name?.first_name ? record?.display_name?.first_name : ''}
         </div>
     ) : null;
 };
 
 FullNameField.defaultProps = {
     source: 'last_name',
-    label: 'resources.customer.fields.name',
+    label: 'resources.user.fields.name',
 };
 
 export default memo<Props>(FullNameField);

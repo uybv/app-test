@@ -7,7 +7,7 @@ const FullNameField = (props: any) => {
     const { record, } = props;
     return record ? (
         <div>
-            {record?.display_name?.first_name ? record?.display_name?.first_name : ''} {record?.display_name?.last_name ? record?.display_name?.last_name : ''}
+            {record?.display_name?.last_name ? record?.display_name?.last_name : ''} {record?.display_name?.first_name ? record?.display_name?.first_name : ''}
         </div>
     ) : null;
 };
@@ -19,7 +19,7 @@ const OrderDeliveryTimeAndUserField = (props: Omit<ReferenceFieldProps, 'referen
     return (
         <>
             <div style={{ marginBottom: 10 }}>{moment(record?.delivery_est).format('YYYY-MM-DD HH:mm')}</div>
-            <ReferenceField source="user_id" reference="customer" link={false} {...props}>
+            <ReferenceField source="user_id" reference="user" link={false} {...props}>
                 <FullNameField />
             </ReferenceField>
         </>

@@ -32,15 +32,14 @@ export interface Product extends Record {
     cat_ids?: string[];
 }
 
-export interface Customer extends Record {
+export interface User extends Record {
     email: string;
     username: string;
     display_name: {
-        first_name?: string;
         last_name?: string;
-        first_name_kata?: string;
+        first_name?: string;
         last_name_kata?: string;
-        nick_name?: string;
+        first_name_kata?: string;
     };
     birth_day: number;
     gender: number;
@@ -116,7 +115,7 @@ export type ReviewStatus = 'accepted' | 'pending' | 'rejected';
 export interface Review extends Record {
     date: Date;
     status: ReviewStatus;
-    customer_id: Identifier;
+    user_id: Identifier;
     product_id: Identifier;
 }
 

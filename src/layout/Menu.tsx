@@ -12,10 +12,10 @@ import {
     usePermissions
 } from 'react-admin';
 import { AppState } from '../types';
-import orders from '../orders';
-import visitors from '../visitors';
-import products from '../products';
-import categories from '../categories';
+import order from '../order';
+import user from '../user';
+import product from '../product';
+import category from '../category';
 import branch from '../branch';
 import tax from '../tax';
 import news from '../news';
@@ -23,13 +23,13 @@ import staff from '../staff';
 import slide from '../slide';
 import SubMenu from './SubMenu';
 
-type MenuName = 'menuCatalog' | 'menuSales' | 'menuCustomers';
+type MenuName = 'menuCatalog' | 'menuSales' | 'menuUsers';
 
 const Menu = ({ dense = false }: MenuProps) => {
     const [state, setState] = useState({
         menuCatalog: true,
         menuSales: true,
-        menuCustomers: true,
+        menuUsers: true,
     });
     const translate = useTranslate();
     const open = useSelector((state: ReduxState) => state.admin.ui.sidebarOpen);
@@ -58,18 +58,18 @@ const Menu = ({ dense = false }: MenuProps) => {
                 primaryText={translate(`resources.order.name`, {
                     smart_count: 2,
                 })}
-                leftIcon={<orders.icon />}
+                leftIcon={<order.icon />}
                 dense={dense}
             />
             <MenuItemLink
                 to={{
-                    pathname: '/customer',
+                    pathname: '/user',
                     state: { _scrollToTop: true },
                 }}
-                primaryText={translate(`resources.customer.name`, {
+                primaryText={translate(`resources.user.name`, {
                     smart_count: 2,
                 })}
-                leftIcon={<visitors.icon />}
+                leftIcon={<user.icon />}
                 dense={dense}
             />
             {permissions === 'admin' && (
@@ -104,7 +104,7 @@ const Menu = ({ dense = false }: MenuProps) => {
                         primaryText={translate(`resources.category.name`, {
                             smart_count: 2,
                         })}
-                        leftIcon={<categories.icon />}
+                        leftIcon={<category.icon />}
                         dense={dense}
                     />
 
@@ -116,7 +116,7 @@ const Menu = ({ dense = false }: MenuProps) => {
                         primaryText={translate(`resources.product.name`, {
                             smart_count: 2,
                         })}
-                        leftIcon={<products.icon />}
+                        leftIcon={<product.icon />}
                         dense={dense}
                     />
 

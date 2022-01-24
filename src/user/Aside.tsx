@@ -26,7 +26,7 @@ import { Link as RouterLink } from 'react-router-dom';
 import AccessTimeIcon from '@material-ui/icons/AccessTime';
 import { makeStyles } from '@material-ui/core/styles';
 
-import order from '../orders';
+import order from '../order';
 import { Order as OrderRecord } from '../types';
 
 const useAsideStyles = makeStyles(theme => ({
@@ -75,10 +75,10 @@ const EventList = ({ record, basePath }: EventListProps) => {
     const classes = useEventStyles();
     const locale = useLocale();
     const { data: orders, ids: orderIds } = useGetList<OrderRecord>(
-        'customer',
+        'user',
         { page: 1, perPage: 100 },
         { field: 'date', order: 'DESC' },
-        { customer_id: record && record.id }
+        { user_id: record && record.id }
     );
     const events = processOrders(orders, orderIds);
 
@@ -89,7 +89,7 @@ const EventList = ({ record, basePath }: EventListProps) => {
                     <CardContent>
                         <Typography variant="h6" gutterBottom>
                             {translate(
-                                'resources.customer.fieldGroups.history'
+                                'resources.user.fieldGroups.history'
                             )}
                         </Typography>
                         <Box display="flex">
@@ -104,7 +104,7 @@ const EventList = ({ record, basePath }: EventListProps) => {
                                     <Box flexGrow={1}>
                                         <Typography>
                                             {translate(
-                                                'resources.customer.fields.first_seen'
+                                                'resources.user.fields.first_seen'
                                             )}
                                         </Typography>
                                         <DateField
@@ -146,7 +146,7 @@ const EventList = ({ record, basePath }: EventListProps) => {
                                     <Box flexGrow={1}>
                                         <Typography>
                                             {translate(
-                                                'resources.customer.fields.last_seen'
+                                                'resources.user.fields.last_seen'
                                             )}
                                         </Typography>
                                         <DateField

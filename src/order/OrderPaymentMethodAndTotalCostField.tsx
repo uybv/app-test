@@ -25,7 +25,7 @@ const OrderPaymentMethodAndTotalCostField = (props: any) => {
     const { record } = props;
     return record ? (
         <>
-            <div>{renderPaymentMethod(record.payment.type)}</div>
+            <div style={{ marginBottom: 10 }}>{renderPaymentMethod(record.payment.type)}</div>
             <div>{new Intl.NumberFormat('ja-JP', { style: 'currency', currency: 'JPY' }).format(record.total)}</div>
         </>
     ) : null;

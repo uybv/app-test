@@ -10,12 +10,12 @@ import {
     FilterButton,
     CreateButton
 } from 'react-admin';
-import CustomerLinkField from './CustomerLinkField';
+import UserLinkField from './UserLinkField';
 import MyDatagrid from '../base/datagrid/MyDatagrid';
 import PrevNextPagination from '../base/list/PrevNextPagination';
 import MyList from '../base/list/MyList';
 
-const visitorFilters = [
+const userFilters = [
     <SearchInput source="q" alwaysOn />,
 ];
 
@@ -26,19 +26,19 @@ const ListActions = (props: any) => (
     </TopToolbar>
 );
 
-const VisitorList = (props: ListProps) => {
+const UserList = (props: ListProps) => {
     return (
         <MyList
             {...props}
             pagination={<PrevNextPagination />}
-            filters={visitorFilters}
+            filters={userFilters}
             perPage={50}
             sort={{ field: 'last_updated_at', order: 'DESC' }}
             actions={<ListActions />}
         >
             <MyDatagrid optimized>
                 <TextField source="email" sortable={false}/>
-                <CustomerLinkField sortable={false} />
+                <UserLinkField sortable={false} />
                 <DateField source="last_updated_at" showTime />
                 <EditButton />
             </MyDatagrid>
@@ -47,4 +47,4 @@ const VisitorList = (props: ListProps) => {
     );
 };
 
-export default VisitorList;
+export default UserList;

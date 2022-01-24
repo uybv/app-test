@@ -19,11 +19,10 @@ import { Box, Card, CardContent, Typography } from '@material-ui/core';
 
 import Aside from './Aside';
 import FullNameField from './FullNameField';
-import { validatePasswords } from './VisitorCreate';
-import { Customer } from '../types';
+import { User } from '../types';
 import { ChevronLeft } from '@material-ui/icons';
 
-const VisitorTitle = ({ record }: FieldProps<Customer>) =>
+const UserTitle = ({ record }: FieldProps<User>) =>
     record ? <FullNameField record={record} size="32" /> : null;
 
 const EditActions = ({ basePath, data }: any) => (
@@ -32,17 +31,17 @@ const EditActions = ({ basePath, data }: any) => (
     </TopToolbar>
 );
 
-const VisitorEdit = (props: EditProps) => {
+const UserEdit = (props: EditProps) => {
     return (
         <Edit
-            title={<VisitorTitle />}
+            title={<UserTitle />}
             // aside={<Aside />}
             component="div"
             {...props}
             undoable={false}
             actions={<EditActions />}
         >
-            <VisitorForm />
+            <UserForm />
         </Edit>
     );
 };
@@ -62,19 +61,18 @@ function renderAuthSNS(data: string[]): string {
         if (v === 'apple') {
             string += 'Apple,'
         }
-        
+
     });
     return string;
 }
 
 
-const VisitorForm = (props: any) => {
+const UserForm = (props: any) => {
     const translate = useTranslate();
 
     return (
         <FormWithRedirect
             {...props}
-            validate={validatePasswords}
             render={(formProps: any) => (
                 <Card>
                     <form>
@@ -90,21 +88,21 @@ const VisitorForm = (props: any) => {
                                             mr={{ xs: 0, sm: '0.5em' }}
                                         >
                                             <TextInput
-                                                label="resources.customer.fields.display_name.first_name"
-                                                source="display_name.first_name"
-                                                fullWidth
-                                            />
-                                        </Box>
-                                        <Box
-                                            flex={1}
-                                            ml={{ xs: 0, sm: '0.5em' }}
-                                        >
-                                            <TextInput
-                                                label="resources.customer.fields.display_name.last_name"
+                                                label="resources.user.fields.display_name.last_name"
                                                 source="display_name.last_name"
                                                 fullWidth
                                             />
                                         </Box>
+                                        <Box
+                                            flex={1}
+                                            ml={{ xs: 0, sm: '0.5em' }}
+                                        >
+                                            <TextInput
+                                                label="resources.user.fields.display_name.first_name"
+                                                source="display_name.first_name"
+                                                fullWidth
+                                            />
+                                        </Box>
                                     </Box>
                                     <Box display={{ xs: 'block', sm: 'flex' }}>
                                         <Box
@@ -112,8 +110,8 @@ const VisitorForm = (props: any) => {
                                             mr={{ xs: 0, sm: '0.5em' }}
                                         >
                                             <TextInput
-                                                label="resources.customer.fields.display_name.first_name_kata"
-                                                source="display_name.first_name_kata"
+                                                label="resources.user.fields.display_name.last_name_kata"
+                                                source="display_name.last_name_kata"
                                                 fullWidth
                                             />
                                         </Box>
@@ -122,8 +120,8 @@ const VisitorForm = (props: any) => {
                                             ml={{ xs: 0, sm: '0.5em' }}
                                         >
                                             <TextInput
-                                                label="resources.customer.fields.display_name.last_name_kata"
-                                                source="display_name.last_name_kata"
+                                                label="resources.user.fields.display_name.first_name_kata"
+                                                source="display_name.first_name_kata"
                                                 fullWidth
                                             />
                                         </Box>
@@ -134,7 +132,7 @@ const VisitorForm = (props: any) => {
                                             mr={{ xs: 0, sm: '0.5em' }}
                                         >
                                             <TextInput
-                                                label="resources.customer.fields.email"
+                                                label="resources.user.fields.email"
                                                 source="email"
                                                 validate={[email()]}
                                                 fullWidth
@@ -145,7 +143,7 @@ const VisitorForm = (props: any) => {
                                             ml={{ xs: 0, sm: '0.5em' }}
                                         >
                                             <TextInput
-                                                label="resources.customer.fields.phone"
+                                                label="resources.user.fields.phone"
                                                 source="phone_number"
                                                 fullWidth
                                             />
@@ -168,7 +166,7 @@ const VisitorForm = (props: any) => {
                                         >
                                             <SelectInput
                                                 label="性別"
-                                                resource="customer"
+                                                resource="user"
                                                 source="gender"
                                                 choices={[
                                                     {
@@ -192,11 +190,11 @@ const VisitorForm = (props: any) => {
 
                                     <Typography variant="h6" gutterBottom>
                                         {translate(
-                                            'resources.customer.fieldGroups.address'
+                                            'resources.user.fieldGroups.address'
                                         )}
                                     </Typography>
                                     <TextInput
-                                        label="resources.customer.fields.address.address"
+                                        label="resources.user.fields.address.address"
                                         source="address.address"
                                         multiline
                                         fullWidth
@@ -206,7 +204,7 @@ const VisitorForm = (props: any) => {
                                         <Box flex={2}
                                             mr={{ xs: 0, sm: '0.5em' }}>
                                             <TextInput
-                                                label="resources.customer.fields.address.postal_code"
+                                                label="resources.user.fields.address.postal_code"
                                                 source="address.postal_code"
                                                 fullWidth
                                                 helperText={false}
@@ -217,7 +215,7 @@ const VisitorForm = (props: any) => {
                                             mr={{ xs: 0, sm: '0.5em' }}
                                         >
                                             <TextInput
-                                                label="resources.customer.fields.address.prefecture"
+                                                label="resources.user.fields.address.prefecture"
                                                 source="address.prefecture"
                                                 fullWidth
                                                 helperText={false}
@@ -228,7 +226,7 @@ const VisitorForm = (props: any) => {
                                             mr={{ xs: 0, sm: '0.5em' }}
                                         >
                                             <TextInput
-                                                label="resources.customer.fields.address.city"
+                                                label="resources.user.fields.address.city"
                                                 source="address.city"
                                                 fullWidth
                                                 helperText={false}
@@ -238,7 +236,7 @@ const VisitorForm = (props: any) => {
                                             flex={2}
                                         >
                                             <TextInput
-                                                label="resources.customer.fields.address.apartment"
+                                                label="resources.user.fields.address.apartment"
                                                 source="address.apartment"
                                                 fullWidth
                                                 helperText={false}
@@ -308,7 +306,7 @@ const VisitorForm = (props: any) => {
                             invalid={formProps.invalid}
                             handleSubmit={formProps.handleSubmit}
                             saving={formProps.saving}
-                            resource="customer"
+                            resource="user"
                         />
                     </form>
                 </Card>
@@ -317,4 +315,4 @@ const VisitorForm = (props: any) => {
     );
 };
 
-export default VisitorEdit;
+export default UserEdit;

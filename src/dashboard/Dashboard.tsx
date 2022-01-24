@@ -77,7 +77,7 @@ const Dashboard = () => {
                 (stats: any, order: any) => {
                     const revenue = order.refund_total ? 0 : order.total;
                     const tax_total = order.refund_total ? 0 : (order?.tax_total ?? 0);
-                    const fee_amount = order.refund_total ? 0 : (order?.payment?.fee_amount ?? 0);
+                    const fee_amount = order?.payment?.fee_amount ?? 0;
                     stats.revenue += revenue;
                     stats.tax_total += tax_total;
                     stats.fee_amount += fee_amount;
@@ -195,7 +195,7 @@ const Dashboard = () => {
                 (stats: any, order: any) => {
                     const revenue = order.refund_total ? 0 : order.total;
                     const tax_total = order.refund_total ? 0 : (order?.tax_total ?? 0);
-                    const fee_amount = order.refund_total ? 0 : (order?.payment?.fee_amount ?? 0);
+                    const fee_amount = order?.payment?.fee_amount ?? 0;
                     stats.revenue += revenue;
                     stats.tax_total += tax_total;
                     stats.fee_amount += fee_amount;
@@ -219,7 +219,7 @@ const Dashboard = () => {
                 (stats: any, order: any) => {
                     const revenue = order.refund_total ? 0 : order.total;
                     const tax_total = order.refund_total ? 0 : (order?.tax_total ?? 0);
-                    const fee_amount = order.refund_total ? 0 : (order?.payment?.fee_amount ?? 0);
+                    const fee_amount = order?.payment?.fee_amount ?? 0;
                     stats.revenue += revenue;
                     stats.tax_total += tax_total;
                     stats.fee_amount += fee_amount;
@@ -250,9 +250,9 @@ const Dashboard = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [dataProvider]);
 
-    const fetchCustomers = useCallback(async (start, end) => {
-        const customers = await dataProvider.getList<any>(
-            'customer',
+    const fetchUsers = useCallback(async (start, end) => {
+        const users = await dataProvider.getList<any>(
+            'user',
             {
                 filter: { },
                 sort: { field: 'created_at', order: 'DESC' },
@@ -260,7 +260,7 @@ const Dashboard = () => {
             }
         );
         const byDay = await dataProvider.getList<any>(
-            'customer',
+            'user',
             {
                 filter: { date_gte: start, date_lte: end },
                 sort: { field: 'created_at', order: 'DESC' },
@@ -268,7 +268,7 @@ const Dashboard = () => {
             }
         );
         const month = await dataProvider.getList<any>(
-            'customer',
+            'user',
             {
                 filter: { date_gte: moment().startOf('month').valueOf(), date_lte: moment().endOf('month').valueOf() },
                 sort: { field: 'created_at', order: 'DESC' },
@@ -276,7 +276,7 @@ const Dashboard = () => {
             }
         );
         const today = await dataProvider.getList<any>(
-            'customer',
+            'user',
             {
                 filter: { date_gte: moment().startOf('day').valueOf() },
                 sort: { field: 'created_at', order: 'DESC' },
@@ -285,10 +285,10 @@ const Dashboard = () => {
         );
         setState((state: any) => ({
             ...state,
-            customer: {
-                total: customers?.total ?? 0,
-                apple_store: (customers && customers.data) ? customers.data.filter(v => { return v.platform === 'ios'; }).reduce((nb: number) => ++nb, 0) : 0,
-                google_store: (customers && customers.data) ? customers.data.filter(v => { return v.platform === 'android'; }).reduce((nb: number) => ++nb, 0) : 0,
+            user: {
+                total: users?.total ?? 0,
+                apple_store: (users && users.data) ? users.data.filter(v => { return v.platform === 'ios'; }).reduce((nb: number) => ++nb, 0) : 0,
+                google_store: (users && users.data) ? users.data.filter(v => { return v.platform === 'android'; }).reduce((nb: number) => ++nb, 0) : 0,
                 byDay: {
                     total: byDay?.total ?? 0,
                     apple_store: (byDay && byDay.data) ? byDay.data.filter(v => { return v.platform === 'ios'; }).reduce((nb: number) => ++nb, 0) : 0,
@@ -302,14 +302,14 @@ const Dashboard = () => {
 
     useEffect(() => {
         fetchOrders(startTime, endTime);
-        fetchCustomers(startTime, endTime);
+        fetchUsers(startTime, endTime);
     }, [version, startTime, endTime]); // eslint-disable-line react-hooks/exhaustive-deps
 
     const {
         order,
-        customer
+        user
     } = state;
-    return order && customer ? (
+    return order && user ? (
         <>
             <div style={styles.flex}>
                 <div style={styles.leftCol}>
@@ -358,7 +358,7 @@ const Dashboard = () => {
                                                 {order?.today?.total_order}
                                             </TableCell>
                                             <TableCell>
-                                                {customer?.today}
+                                                {user?.today}
                                             </TableCell>
                                         </TableRow>
                                         <TableRow>
@@ -375,7 +375,7 @@ const Dashboard = () => {
                                                 {order.month?.total_order}
                                             </TableCell>
                                             <TableCell>
-                                                {customer?.month}
+                                                {user?.month}
                                             </TableCell>
                                         </TableRow>
                                     </TableBody>
@@ -587,13 +587,13 @@ const Dashboard = () => {
                                                 新規会員数
                                             </TableCell>
                                             <TableCell>
-                                                {customer?.byDay?.apple_store ?? 0}
+                                                {user?.byDay?.apple_store ?? 0}
                                             </TableCell>
                                             <TableCell>
-                                                {customer?.byDay?.google_store ?? 0}
+                                                {user?.byDay?.google_store ?? 0}
                                             </TableCell>
                                             <TableCell>
-                                                {customer?.byDay?.total ?? 0}
+                                                {user?.byDay?.total ?? 0}
                                             </TableCell>
                                             <TableCell>
                                                 -
@@ -614,39 +614,13 @@ const Dashboard = () => {
                                                 合計会員数
                                             </TableCell>
                                             <TableCell>
-                                                {customer?.apple_store ?? 0}
+                                                {user?.apple_store ?? 0}
                                             </TableCell>
                                             <TableCell>
-                                                {customer?.google_store ?? 0}
+                                                {user?.google_store ?? 0}
                                             </TableCell>
                                             <TableCell>
-                                                {customer?.total ?? 0}
-                                            </TableCell>
-                                            <TableCell>
-                                                -
-                                            </TableCell>
-                                            <TableCell>
-                                                -
-                                            </TableCell>
-                                            <TableCell>
-                                                -
-                                            </TableCell>
-                                            <TableCell>
-                                                -
-                                            </TableCell>
-                                        </TableRow>
-                                        <TableRow>
-                                            <TableCell>
-                                                ダウンロード数
-                                            </TableCell>
-                                            <TableCell>
-                                                -
-                                            </TableCell>
-                                            <TableCell>
-                                                -
-                                            </TableCell>
-                                            <TableCell>
-                                                -
+                                                {user?.total ?? 0}
                                             </TableCell>
                                             <TableCell>
                                                 -

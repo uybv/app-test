@@ -52,7 +52,7 @@ const Totals = (props: any) => {
                         {record.st === OrderState.CANCEL && (
                             <>
                                 {record.refund_total ? (
-                                    <span style={{ fontSize: '120%', color: 'red', marginRight: 15 }}>払い戻し済み</span>
+                                    <span style={{ fontSize: '120%', color: 'red', marginRight: 15 }}>返金済み</span>
                                 ) : (
                                     <Button
                                         style={{ backgroundColor: 'red', marginRight: 15 }}
@@ -61,12 +61,12 @@ const Totals = (props: any) => {
                                         color={'secondary'}
                                         startIcon={<ContentSave />}
                                         onClick={() => {
-                                            if (!window.confirm('本当に払い戻ししますか?'))
+                                            if (!window.confirm('返金しても支払い方法によっては決済手数料が掛かります。本当に返金しますか?'))
                                                 return false;
                                             handleUpdate(record, { refund: true, st: OrderState.CANCEL }, false);
                                         }}
                                     >
-                                        払い戻しする
+                                        返金する
                                     </Button>
                                 )}
                             </>

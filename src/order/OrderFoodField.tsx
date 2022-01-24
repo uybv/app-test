@@ -6,7 +6,7 @@ const OrderFoodField = (props: any) => {
     const { record } = props;
     return record ? (
         <>
-            <div style={{ marginBottom: 20 }}>{'受取番号: ' + record?.queuing}</div>
+            <div style={{ marginBottom: 10 }}>{'受取番号: ' + record?.queuing}</div>
             <div>
                 {record.foods.map((food: any, index: any) => (
                     <div key={`${food.id}-${index}`}>

@@ -34,10 +34,11 @@ import {
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
-import { Order, Customer, OrderState } from '../types';
+import { Order, User, OrderState } from '../types';
 import Basket from './Basket';
 import Totals from './Totals';
 import { ChevronLeft, Delete } from '@material-ui/icons';
+import { Chip } from '@material-ui/core';
 
 interface OrderTitleProps {
     record?: Order;
@@ -51,11 +52,11 @@ const OrderTitle = ({ record }: OrderTitleProps) => {
     ) : null;
 };
 
-const CustomerDetails = ({ record }: { record?: Customer }) => (
+const UserDetails = ({ record }: { record?: User }) => (
     <Box display="flex" flexDirection="column">
         <Typography>
-            {(record?.display_name.first_name || record?.display_name.last_name)
-                ? (record?.display_name.first_name + ' ' + record?.display_name.last_name)
+            {(record?.display_name.last_name || record?.display_name.first_name)
+                ? (record?.display_name.last_name + ' ' + record?.display_name.first_name)
                 : 'お客様'
             }
         </Typography>
@@ -81,6 +82,22 @@ const StaffDetail = ({ record }: { record?: any }) => (
     </Box>
 );
 
+const StatusText = (props: any) => {
+    const { record } = props;
+    if (record && record.st) {
+        switch (record.st) {
+          case 10:
+            return (<Chip label="1.オーダー" color="primary"/>);
+          case 89:
+            return (<Chip label="2.確認済" color="primary"/>);
+          case 90:
+            return (<Chip label="3.受取済" color="primary"/>);
+          case 81:
+            return (<Chip label="4.その他" color="primary"/>);
+        }
+    }
+    return null;
+};
 
 const useEditStyles = makeStyles({
     root: { alignItems: 'flex-start' },
@@ -108,7 +125,7 @@ const OrderForm = (props: any) => {
     const notify = useNotify();
     const refresh = useRefresh();
     const redirect = useRedirect();
-   
+
     const handleUpdate = async (record: any, data: any, isRedirect = true) => {
         await update('order', record.id, data, {});
         notify(`更新しました`);
@@ -173,31 +190,8 @@ const OrderForm = (props: any) => {
                                                 source="st"
                                                 resource="order"
                                             >
-                                                <SelectField
-                                                    label="状態"
-                                                    resource="order"
-                                                    source="st"
-                                                    choices={[
-                                                        {
-                                                            id: 10,
-                                                            name: '1.オーダー',
-                                                        },
-                                                        {
-                                                            id: 89,
-                                                            name: '2.確認済',
-                                                        },
-                                                        {
-                                                            id: 90,
-                                                            name: '3.受取済',
-                                                        },
-                                                        {
-                                                            id: 81,
-                                                            name: '4.その他',
-                                                        },
-                                                    ]}
-                                                />
+                                              <StatusText record={formProps.record} />
                                             </Labeled>
-
                                         </Grid>
                                         <Grid item xs={12} sm={12} md={6}>
                                             <Labeled
@@ -298,18 +292,18 @@ const OrderForm = (props: any) => {
                                 <Grid item xs={12} sm={12} md={4}>
                                     <Typography variant="h6" gutterBottom>
                                         {translate(
-                                            'resources.order.section.customer'
+                                            'resources.order.section.user'
                                         )}
                                     </Typography>
                                     <ReferenceField
                                         source="user_id"
                                         resource="order"
-                                        reference="customer"
-                                        basePath="/customer"
+                                        reference="user"
+                                        basePath="/user"
                                         record={formProps.record}
                                         link={true}
                                     >
-                                        <CustomerDetails />
+                                        <UserDetails />
                                     </ReferenceField>
                                     <Spacer />
                                 </Grid>

@@ -12,7 +12,7 @@ const ProductReferenceField = (
     <ReferenceField
         label="Product"
         source="product_id"
-        reference="products"
+        reference="product"
         {...props}
     >
         <TextField source="name" />

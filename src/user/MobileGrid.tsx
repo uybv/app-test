@@ -14,7 +14,7 @@ import {
 
 import AvatarField from './AvatarField';
 import ColoredNumberField from './ColoredNumberField';
-import { Customer } from '../types';
+import { User } from '../types';
 
 const useStyles = makeStyles(theme => ({
     root: { margin: '1em' },
@@ -39,7 +39,7 @@ const useStyles = makeStyles(theme => ({
 
 interface Props {
     ids?: Identifier[];
-    data?: { [key: string]: Customer };
+    data?: { [key: string]: User };
     basePath?: string;
 }
 
@@ -59,9 +59,9 @@ const MobileGrid = ({ ids, data, basePath }: Props) => {
                     <CardHeader
                         title={
                             <div className={classes.cardTitleContent}>
-                                <h2>{`${data[id].display_name.first_name} ${data[id].display_name.last_name}`}</h2>
+                                <h2>{`${data[id].display_name.last_name} ${data[id].display_name.first_name}`}</h2>
                                 <EditButton
-                                    resource="visitors"
+                                    resource="user"
                                     basePath={basePath}
                                     record={data[id]}
                                 />
@@ -72,7 +72,7 @@ const MobileGrid = ({ ids, data, basePath }: Props) => {
                     <CardContent className={classes.cardContent}>
                         <div>
                             {translate(
-                                'resources.customer.fields.last_seen'
+                                'resources.user.fields.last_seen'
                             )}
                             &nbsp;
                             <DateField record={data[id]} source="last_seen" />
@@ -86,12 +86,12 @@ const MobileGrid = ({ ids, data, basePath }: Props) => {
                             <NumberField
                                 record={data[id]}
                                 source="order"
-                                label="resources.customer.fields.order"
+                                label="resources.user.fields.order"
                             />
                         </div>
                         <div>
                             {translate(
-                                'resources.customer.fields.total_spent'
+                                'resources.user.fields.total_spent'
                             )}
                             &nbsp; :{' '}
                             <ColoredNumberField

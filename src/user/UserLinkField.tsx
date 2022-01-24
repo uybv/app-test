@@ -2,18 +2,18 @@ import * as React from 'react';
 import { Link, FieldProps } from 'react-admin';
 
 import FullNameField from './FullNameField';
-import { Customer } from '../types';
+import { User } from '../types';
 
-const CustomerLinkField = (props: FieldProps<Customer>) =>
+const UserLinkField = (props: FieldProps<User>) =>
     props.record ? (
-        <Link to={`/customers/${props.record.id}`}>
+        <Link to={`/user/${props.record.id}`}>
             <FullNameField {...props} />
         </Link>
     ) : null;
 
-CustomerLinkField.defaultProps = {
+UserLinkField.defaultProps = {
     source: 'user_id',
     addLabel: true,
 };
 
-export default CustomerLinkField;
+export default UserLinkField;

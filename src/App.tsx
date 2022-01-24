@@ -6,10 +6,10 @@ import { dataProvider } from './dataProvider';
 import { Login, Layout } from './layout/index';
 import { Dashboard } from './dashboard';
 import japaneseMessages from './i18n/ja';
-import orders from './orders';
-import visitors from './visitors';
-import products from './products';
-import categories from './categories';
+import order from './order';
+import user from './user';
+import product from './product';
+import category from './category';
 import branch from './branch';
 import tax from './tax';
 import news from './news';
@@ -39,10 +39,10 @@ const App = () => (
     loginPage={Login}
     dashboard={Dashboard}
   >
-    <Resource name="order" {...orders} />
-    <Resource name="customer" {...visitors} />
-    <Resource name="product" {...products} />
-    <Resource name="category" {...categories} />
+    <Resource name="order" {...order} />
+    <Resource name="user" {...user} />
+    <Resource name="product" {...product} />
+    <Resource name="category" {...category} />
     <Resource name="branch" {...branch} />
     <Resource name="tax" {...tax} />
     <Resource name="news" {...news} />

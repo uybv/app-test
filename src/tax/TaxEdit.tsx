@@ -117,7 +117,7 @@ const TaxEdit = (props: EditProps) => {
                 {/* <ReferenceManyField
                     reference="product"
                     target="tax_ids"
-                    label="resources.branch.fields.products"
+                    label="resources.branch.fields.product"
                     perPage={20}
                     fullWidth
                 >

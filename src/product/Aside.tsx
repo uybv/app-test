@@ -13,7 +13,6 @@ import {
 } from 'react-admin';
 
 import { Category } from '../types';
-import categories from '../categories';
 
 const useStyles = makeStyles(theme => ({
     root: {

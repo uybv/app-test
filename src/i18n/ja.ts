@@ -12,27 +12,23 @@ const japaneseDomainMessages = {
         },
         dashboard: {
             monthly_revenue: '当月売上',
-            month_history: '売り上げ履歴',
-            new_orders: '新規オーダー',
-            new_customers: '新規登録ユーザー',
-            all_customers: 'ユーザー一覧',
-            pending_orders: 'オーダー：承認待ち',
+            month_history: '売上履歴',
             order: {
                 items:
-                    'by %{customer_name}, one item |||| by %{customer_name}, %{nb_items} items',
+                    'by %{user_name}, one item |||| by %{user_name}, %{nb_items} items',
             },
         },
     },
     resources: {
-        customer: {
+        user: {
             name: '会員管理',
             fields: {
                 order: 'ユーザー：オーダー履歴',
                 display_name: {
-                    first_name: '性',
-                    last_name: '名',
-                    first_name_kata: '性（カナ）',
-                    last_name_kata: '名（カナ）',
+                    last_name: '性',
+                    first_name: '名',
+                    last_name_kata: '性（カナ）',
+                    first_name_kata: '名（カナ）',
                 },
                 address: {
                     postal_code: '郵便番号',
@@ -70,7 +66,7 @@ const japaneseDomainMessages = {
                 history: '履歴',
             },
             page: {
-                delete: 'Delete Customer',
+                delete: 'Delete User',
             },
             errors: {
                 password_mismatch:
@@ -93,8 +89,8 @@ const japaneseDomainMessages = {
                     nb_items: 'Total item'
                 },
                 address: '住所',
-                user_id: 'ユーザー管理',
-                branch_id: '店舗管理',
+                user_id: '会員情報',
+                branch_id: '店舗',
                 nb_items: 'Nb Items',
                 total_gte: 'Min amount',
                 st: '状態',
@@ -103,7 +99,7 @@ const japaneseDomainMessages = {
             },
             section: {
                 order: 'オーダー管理',
-                customer: 'ユーザー管理',
+                user: 'ユーザー管理',
                 branch: '店舗',
                 items: '商品情報',
                 total: '合計',

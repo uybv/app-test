@@ -5,7 +5,7 @@ import { Product } from '../types';
 
 const ProductRefField = ({ record }: FieldProps<Product>) =>
     record ? (
-        <Link to={`products/${record.id}`}>{record.name}</Link>
+        <Link to={`product/${record.id}`}>{record.name}</Link>
     ) : null;
 
 ProductRefField.defaultProps = {

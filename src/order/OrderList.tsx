@@ -13,7 +13,7 @@ import {
 } from 'react-admin';
 import { Divider, Tabs, Tab } from '@material-ui/core';
 
-import { Customer, OrderState } from '../types';
+import { User, OrderState } from '../types';
 import MyDatagrid from '../base/datagrid/MyDatagrid';
 import OrderCreatedTimeAndBranchField from './OrderCreatedTimeAndBranchField';
 import OrderDeliveryTimeAndUserField from './OrderDeliveryTimeAndUserField';
@@ -32,11 +32,11 @@ const orderFilters = [
             }
         />
     </ReferenceInput>,
-    <ReferenceInput source="user_id" reference="customer" alwaysOn >
+    <ReferenceInput source="user_id" reference="user" alwaysOn >
         <AutocompleteInput
-            optionText={(choice: Customer) =>
+            optionText={(choice: User) =>
                 choice && choice.id // the empty choice is { id: '' }
-                    ? `${choice.display_name.first_name} ${choice.display_name.last_name}`
+                    ? `${choice.display_name.last_name} ${choice.display_name.first_name}`
                     : ''
             }
         />
@@ -157,7 +157,7 @@ const TabbedDatagrid = (props: any) => {
                         value={{ ...listContext, ids: ordered }}
                     >
                         <MyDatagrid {...props} optimized rowClick='edit'>
-                            <OrderCreatedTimeAndBranchField />
+                            <OrderCreatedTimeAndBranchField sortable={false} />
                             <OrderDeliveryTimeAndUserField sortable={false} />
                             <OrderFoodField sortable={false} />
                             <OrderPaymentMethodAndTotalCostField sortable={false} />
@@ -169,7 +169,7 @@ const TabbedDatagrid = (props: any) => {
                         value={{ ...listContext, ids: waitingReceive }}
                     >
                         <MyDatagrid {...props} optimized rowClick='edit'>
-                            <OrderCreatedTimeAndBranchField />
+                            <OrderCreatedTimeAndBranchField sortable={false} />
                             <OrderDeliveryTimeAndUserField sortable={false} />
                             <OrderFoodField sortable={false} />
                             <OrderPaymentMethodAndTotalCostField sortable={false} />
@@ -181,7 +181,7 @@ const TabbedDatagrid = (props: any) => {
                         value={{ ...listContext, ids: completed }}
                     >
                         <MyDatagrid {...props} optimized rowClick='edit'>
-                            <OrderCreatedTimeAndBranchField />
+                            <OrderCreatedTimeAndBranchField sortable={false} />
                             <OrderDeliveryTimeAndUserField sortable={false} />
                             <OrderFoodField sortable={false} />
                             <OrderPaymentMethodAndTotalCostField sortable={false} />
@@ -193,7 +193,7 @@ const TabbedDatagrid = (props: any) => {
                         value={{ ...listContext, ids: cancelled }}
                     >
                         <MyDatagrid {...props} optimized rowClick='edit'>
-                            <OrderCreatedTimeAndBranchField />
+                            <OrderCreatedTimeAndBranchField sortable={false} />
                             <OrderDeliveryTimeAndUserField sortable={false} />
                             <OrderFoodField sortable={false} />
                             <OrderPaymentMethodAndTotalCostField sortable={false} />
