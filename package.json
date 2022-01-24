@@ -9,7 +9,6 @@
     "@material-ui/icons": "^4.11.2",
     "@nivo/bar": "^0.74.0",
     "@nivo/core": "^0.74.0",
-    "@types/recharts": "^1.8.23",
     "clsx": "^1.1.1",
     "date-fns": "^2.25.0",
     "lodash": "~4.17.5",
@@ -37,6 +36,7 @@
     "@types/lodash": "~4.14.168",
     "@types/node": "^12.20.33",
     "@types/qrcode.react": "^1.0.2",
+    "@types/recharts": "^1.8.23",
     "@types/react": "^17.0.30",
     "@types/react-beautiful-dnd": "^13.0.0",
     "@types/react-dom": "^17.0.9",
@@ -48,8 +48,8 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "echo \"No test specified\" && exit 0",
+    "build": "DISABLE_ESLINT_PLUGIN=true GENERATE_SOURCEMAP=false react-scripts build && exit 0",
+    "test": "DISABLE_ESLINT_PLUGIN=true GENERATE_SOURCEMAP=false react-scripts build && exit 0",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {

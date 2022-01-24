@@ -1,4 +1,3 @@
-import * as React from 'react';
 import { useSelector } from 'react-redux';
 import { Layout, LayoutProps } from 'react-admin';
 import AppBar from './AppBar';

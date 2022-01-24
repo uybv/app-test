@@ -1,7 +1,6 @@
 import { fetchUtils } from 'react-admin';
 import { stringify } from 'query-string';
 import { apiBaseUrl } from './config';
-import _ from 'lodash';
 
 const apiUrl = `${apiBaseUrl}/admin`;
 

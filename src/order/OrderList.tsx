@@ -3,7 +3,6 @@ import { Fragment, useEffect, useState } from 'react';
 import {
     AutocompleteInput,
     Identifier,
-    List,
     ListContextProvider,
     ListProps,
     ReferenceInput,

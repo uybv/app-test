@@ -17,7 +17,6 @@ import {
 } from 'react-admin';
 import { Box, Card, CardContent, Typography } from '@material-ui/core';
 
-import Aside from './Aside';
 import FullNameField from './FullNameField';
 import { User } from '../types';
 import { ChevronLeft } from '@material-ui/icons';

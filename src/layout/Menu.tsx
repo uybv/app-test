@@ -1,5 +1,4 @@
-import * as React from 'react';
-import { useState, useEffect } from 'react';
+// import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
@@ -21,25 +20,24 @@ import tax from '../tax';
 import news from '../news';
 import staff from '../staff';
 import slide from '../slide';
-import SubMenu from './SubMenu';
 
-type MenuName = 'menuCatalog' | 'menuSales' | 'menuUsers';
+// type MenuName = 'menuCatalog' | 'menuSales' | 'menuUsers';
 
 const Menu = ({ dense = false }: MenuProps) => {
-    const [state, setState] = useState({
-        menuCatalog: true,
-        menuSales: true,
-        menuUsers: true,
-    });
+    // const [state, setState] = useState({
+    //     menuCatalog: true,
+    //     menuSales: true,
+    //     menuUsers: true,
+    // });
     const translate = useTranslate();
     const open = useSelector((state: ReduxState) => state.admin.ui.sidebarOpen);
     useSelector((state: AppState) => state.theme); // force rerender on theme change
     const classes = useStyles();
     const { permissions } = usePermissions();
 
-    const handleToggle = (menu: MenuName) => {
-        setState(state => ({ ...state, [menu]: !state[menu] }));
-    };
+    // const handleToggle = (menu: MenuName) => {
+    //     setState(state => ({ ...state, [menu]: !state[menu] }));
+    // };
 
     return (
         <div

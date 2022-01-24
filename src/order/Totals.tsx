@@ -34,7 +34,7 @@ const renderPaymentMethod = (type: any) => {
 const Totals = (props: any) => {
     const { record, handleUpdate } = props;
     const classes = useStyles();
-    const buttonType = record.refund_total ? 'text' : 'button';
+    // const buttonType = record.refund_total ? 'text' : 'button';
 
     return (
         <Table className={classes.container}>

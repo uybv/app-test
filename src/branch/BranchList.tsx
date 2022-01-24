@@ -1,7 +1,6 @@
-import * as React from 'react';
 import { useEffect } from 'react';
 import {
-    List, ListProps,
+    ListProps,
     EditButton,
     TextField,
     SearchInput,

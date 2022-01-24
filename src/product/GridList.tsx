@@ -1,4 +1,3 @@
-import * as React from 'react';
 import MuiGridList from '@material-ui/core/GridList';
 import GridListTile from '@material-ui/core/GridListTile';
 import { makeStyles } from '@material-ui/core/styles';
@@ -87,7 +86,7 @@ const CategoryNameField = (props: any) => {
 };
 
 const LoadedGridList = (props: any) => {
-    const { width } = props;
+    // const { width } = props;
     const { ids, data, basePath } = useListContext();
     const classes = useStyles();
     const [update] = useUpdate();

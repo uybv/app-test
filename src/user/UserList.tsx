@@ -1,14 +1,11 @@
-import * as React from 'react';
 import {
     EditButton,
     DateField,
-    List,
     ListProps,
     TextField,
     SearchInput,
     TopToolbar,
-    FilterButton,
-    CreateButton
+    FilterButton
 } from 'react-admin';
 import UserLinkField from './UserLinkField';
 import MyDatagrid from '../base/datagrid/MyDatagrid';

@@ -1,10 +1,8 @@
-import * as React from 'react';
 import { useEffect } from 'react';
 import {
-    List, ListProps,
+    ListProps,
     EditButton,
     DateField,
-    ImageField,
     TopToolbar,
     CreateButton,
     useUpdate,

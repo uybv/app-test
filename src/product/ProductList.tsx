@@ -1,19 +1,10 @@
-import * as React from 'react';
 import { useEffect } from 'react';
-import { Box, Chip } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
 import {
     CreateButton,
     FilterButton,
-    InputProps,
-    ListBase,
     ListProps,
     SearchInput,
-    Title,
     TopToolbar,
-    useListContext,
-    useTranslate,
-    ListToolbar,
     useRedirect,
     useNotify,
     usePermissions

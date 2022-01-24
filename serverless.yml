@@ -1,15 +1,13 @@
-org: avadkk
-app: wgs
-service: wgs-admin
-# frameworkVersion: '2'
+org: uybv91
+app: app-test
+name: react-starter
 component: website
-name: wgs-admin
 stage: dev
 
 inputs:
   src:
-    src: ./src
-    hook: 'DISABLE_ESLINT_PLUGIN=true npm run build'
-    dist: ./build
+    src: ./build
+    # src: ./src
+    # hook: 'npm run build'
+    # dist: ./build
   region: 'ap-northeast-1'
-  bucketName: wgs-admin-${stage}

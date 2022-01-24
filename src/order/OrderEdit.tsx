@@ -1,5 +1,3 @@
-import * as React from 'react';
-import { useCallback } from 'react';
 import {
     TextInput,
     DateField,
@@ -8,7 +6,6 @@ import {
     FormWithRedirect,
     Labeled,
     ReferenceField,
-    SelectField,
     TextField,
     Toolbar,
     useTranslate,

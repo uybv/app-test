@@ -1,4 +1,3 @@
-import * as React from 'react';
 import {
     Table,
     TableBody,
@@ -7,7 +6,7 @@ import {
     TableRow,
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import { Link, FieldProps, TextField, useTranslate, useQueryWithStore } from 'react-admin';
+import { FieldProps, useTranslate } from 'react-admin';
 
 import { Order } from '../types';
 
